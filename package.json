@@ -1,7 +1,7 @@
 {
   "name": "depack",
-  "version": "0.0.0",
-  "description": "Unpackager Of Dependencies To Create "Zero-Dependency Build" With Closure.",
+  "version": "0.0.1",
+  "description": "Unpackager Of Dependencies To Create \"Zero-Dependency Build\" With Closure.",
   "main": "build",
   "scripts": {
     "t": "zoroaster -a",
