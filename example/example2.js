@@ -1,6 +1,6 @@
 /* yarn example/ */
-import { collect } from 'catchment'
-import { Readable } from 'stream'
+const { collect } = require('catchment');
+const { Readable } = require('stream');
 
 (async () => {
   const rs = new Readable({

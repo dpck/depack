@@ -40,6 +40,22 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Depack",
+      "program": "${workspaceFolder}/src/index.js",
+      "env": {
+        "NODE_DEBUG": "depack",
+      },
+      "console": "integratedTerminal",
+      "args": [
+        // "example/example.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }

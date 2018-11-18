@@ -1,6 +1,6 @@
 /* yarn example/ */
-import { collect } from 'catchment'
-import { Readable } from 'stream'
+const { collect } = require('../closure/2.js');
+const { Readable } = nodeRequire('stream');
 
 (async () => {
   const rs = new Readable({
