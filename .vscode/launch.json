@@ -56,6 +56,22 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Compiled",
+      "program": "${workspaceFolder}/compiled.js",
+      "env": {
+        "NODE_DEBUG": "depack",
+      },
+      "console": "integratedTerminal",
+      "args": [
+        // "example/example.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }

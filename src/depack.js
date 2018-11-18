@@ -6,7 +6,7 @@ import { builtinModules } from 'module'
 import TempContext from 'temp-context'
 import makePromise from 'makepromise'
 import { c } from 'erte'
-// import write from '@wrote/write'
+import write from '@wrote/write'
 import whichStream from 'which-stream'
 // import { collect } from 'catchment'
 
@@ -19,8 +19,16 @@ const compile = async (src) => {
   const closureCompiler = new ClosureCompiler({
     compilation_level: 'ADVANCED',
     language_in: 'ECMASCRIPT_2018',
+    language_out: 'ECMASCRIPT_2018',
     module_resolution: 'NODE',
     warning_level: 'QUIET',
+    third_party: true,
+    assume_function_wrapper: true,
+    output_wrapper: `
+const nodeRequire = require
+(function(){
+  %output%
+}).call(this)`,
 
     externs: ['externs/Buffer.js'],
     js: [
@@ -39,8 +47,14 @@ const compile = async (src) => {
     ],
   })
 
-  closureCompiler.run((exitCode, stdOut, stdErr) => {
-    console.log(exitCode)
+  closureCompiler.run(async (exitCode, stdOut, stdErr) => {
+    if (!exitCode) {
+      const C = 'compiled.js'
+      await write(C, stdOut)
+      console.log('Saved to %s', C)
+      return
+    }
+    // console.log(exitCode)
     console.log(stdOut)
     console.log(stdErr)
     //compilation complete
