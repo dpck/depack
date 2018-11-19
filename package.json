@@ -47,6 +47,7 @@
     "@a-la/markers": "a-la/markers",
     "erte": "1.1.4",
     "google-closure-compiler": "20181028.0.1",
+    "indicatrix": "1.0.0",
     "makepromise": "3.0.1",
     "restream": "3.3.0",
     "temp-context": "2.0.0",

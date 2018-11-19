@@ -8,28 +8,26 @@ import makePromise from 'makepromise'
 import { c } from 'erte'
 import write from '@wrote/write'
 import whichStream from 'which-stream'
+import loading from 'indicatrix'
 // import { collect } from 'catchment'
 
 const EXTERNS = relative('', join(require.resolve('google-closure-compiler'), '../contrib/nodejs'))
 console.log(EXTERNS) // absolute path to the contrib folder which contains externs ClosureCompiler.CONTRIB_PATH
 
-const compile = async (src) => {
-  const { file, dependencies } = await makeTemp(src)
-
+const runClosure = async (file, dependencies, output) => {
   const closureCompiler = new ClosureCompiler({
     compilation_level: 'ADVANCED',
     language_in: 'ECMASCRIPT_2018',
-    language_out: 'ECMASCRIPT_2018',
+    language_out: 'ECMASCRIPT_2017',
+    strict_mode_input: false,
     module_resolution: 'NODE',
     warning_level: 'QUIET',
     third_party: true,
     assume_function_wrapper: true,
-    output_wrapper: `
-const nodeRequire = require
-(function(){
-  %output%
-}).call(this)`,
-
+    create_source_map: '%outname%.map',
+    output_wrapper_file: 'src/wrapper.js',
+    js_output_file: output,
+    rewrite_polyfills: false,
     externs: ['externs/Buffer.js'],
     js: [
       // 'example/example.js',
@@ -47,18 +45,28 @@ const nodeRequire = require
     ],
   })
 
-  closureCompiler.run(async (exitCode, stdOut, stdErr) => {
-    if (!exitCode) {
-      const C = 'compiled.js'
-      await write(C, stdOut)
-      console.log('Saved to %s', C)
-      return
-    }
-    // console.log(exitCode)
-    console.log(stdOut)
-    console.log(stdErr)
-    //compilation complete
+  const { stdOut, stdErr } = await new Promise((r, j) => {
+    closureCompiler.run((e, so, se) => {
+      if (e) {
+        const [command, ...rest] = se.split('\n').filter(a => a)
+        const rr = rest.map(s => c(s.trim(), 'red')).join('\n')
+        const er = `Exit code ${e}\n${c(command, 'grey')}\n${rr}`
+
+        return j(new Error(er))
+      }
+      r({ exitCode: e, stdOut: so, stdErr: se })
+    })
   })
+  debugger
+  return stdOut
+}
+
+const compile = async (src, path) => {
+  const { file, dependencies } = await makeTemp(src)
+  const cc = runClosure(file, dependencies, path)
+  await loading('Compiling with Closure', cc)
+  // await write(path, output)
+  console.log('Saved to %s', path)
 }
 
 const makeTemp = async (src) => {
@@ -123,7 +131,11 @@ const transform = async (source, destDir) => {
 }
 
 (async () => {
-  await compile('example/example2.js')
+  try {
+    await compile('example/example2.js', 'closure.js')
+  } catch (err) {
+    console.log(err.stack)
+  }
 })()
 
 const compileDep = () => {
