@@ -61,13 +61,30 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Compiled",
-      "program": "${workspaceFolder}/compiled.js",
+      "program": "${workspaceFolder}/closure.js",
       "env": {
         "NODE_DEBUG": "depack",
       },
       "console": "integratedTerminal",
       "args": [
         // "example/example.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Depack Bin",
+      "program": "${workspaceFolder}/src/bin/index.js",
+      "env": {
+        "NODE_DEBUG": "depack",
+      },
+      "console": "integratedTerminal",
+      "args": [
+        "example/example2.js",
+        "-a",
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"

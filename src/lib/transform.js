@@ -5,6 +5,8 @@ import { createReadStream, lstat } from 'fs'
 import { relative, join, dirname } from 'path'
 import { c } from 'erte'
 import makePromise from 'makepromise'
+import erotic from 'erotic'
+// import { Transform } from 'stream';
 
 let i = 0
 const getId = () => {
@@ -15,13 +17,11 @@ const getId = () => {
 /**
  * Read the file and save it to destination.
  */
-const transform = async (source, destDir, cache = {}, level = 0) => {
-  const ind = ' '.repeat(level * 2)
-  // let l = ''; const log = d => { l+= `${d}\n` }
-  // console.log(`${ind}Processing ${relative('', source)}`)
-  const deps = []
-  const internals = {}
-  const r = [
+const transform = async (source, destDir, {
+  cache = {}, level = 0, callback = logCallback,
+} = {}) => {
+  const cb = erotic()
+  const rules = [
     {
       re: /=(\s+)require\(.(.+?).\)/g,
       // all requires are detected in parallel.
@@ -32,61 +32,125 @@ const transform = async (source, destDir, cache = {}, level = 0) => {
        * @param
        * @param {string} text
        */
-      async replacement(m, ws, mod, pos, text) {
-        async function fn() {
-          const internal = builtinModules.includes(mod)
-
-          if (internal) {
-            console.log(`%s[${c('node', 'green')}] ${mod}`, ind)
-            const symb = `DEPACK$${mod}`
-            internals[mod] = symb
-            return `=${ws}${symb}`
-          }
-          const isDep = !(mod.startsWith('.') || mod.startsWith('/'))
-
-          let d
-          if (isDep) {
-            try {
-              d = require.resolve(mod)
-            } catch ({ message }) {
-              const tt = text.slice(0, pos)
-              const n = tt.split('\n').length
-              console.log('%s, %s:%s', message, relative('', source), n)
-              return m
-            }
-          } else {
-            d = await getLibRequire(source, mod)
-          }
-          const dd = isDep ? `[${c('deps', 'red')}] ${mod} ${c(relative('', d), 'grey')}` : mod
-          if (!cache[d]) {
-            console.log('%s%s', ind, dd)
-            cache[d] = transform(d, destDir, cache, level + 1)
-          } else {
-            console.log('%s%s', ind, c(isDep ? `[deps] ${mod}` : mod, 'grey'))
-          }
-          const { file, deps: dependencies, internals: ints } = await cache[d]
-          Object.assign(internals, ints)
-
-          deps.push(file, ...dependencies)
-          return `=${ws}require('../${file}')`
-        }
-        this['promise'] = this['promise'].then(fn)
-        const res = await this['promise']
+      async replacement(match, ws, modName, pos, text) {
+        const fn = makeFn({
+          modName,
+          source,
+          cache,
+          level,
+          callback,
+          errCallback(message) {
+            const tt = text.slice(0, pos)
+            const n = tt.split('\n').length
+            console.warn('[!] %s, %s:%s', message, relative('', source), n)
+          },
+          async transformNext(path) {
+            return await transform(path, destDir, { callback, cache, level: level + 1 })
+          },
+        })
+        const item = this.addItem(async () => {
+          const mod = await fn()
+          return mod ? `=${ws}${mod}` : match
+        })
+        const res = await item
         return res
       },
     },
   ]
-  const readable = new Replaceable(r)
-  readable['promise'] = Promise.resolve()
-  createReadStream(source).pipe(readable)
+  const readable = new SerialReplaceable(rules)
+  const rs = createReadStream(source)
+  rs.pipe(readable)
   const id = getId()
-  const destination = join(destDir, `${id}.js`)
-  await whichStream({
-    source,
-    readable,
-    destination,
-  })
-  return { file: destination, deps, internals }
+  const filename = `${id}.js`
+  if (destDir) {
+    const destination = join(destDir, filename)
+    await whichStream({
+      source,
+      readable,
+      destination,
+    })
+  } else {
+    await new Promise((r, j) => {
+      rs.on('error', e => {
+        cb(e)
+        e.enriched = 1
+        j(e)
+      })
+      readable
+        .on('error', e => j(e.enriched ? e : cb(e)))
+        .on('finish', r)
+    })
+  }
+  return filename
+}
+
+class SerialReplaceable extends Replaceable {
+  constructor(rules) {
+    super()
+    this.rules = rules
+    this.promise = Promise.resolve()
+  }
+  addItem(fn) {
+    const pp = this['promise'].then(fn)
+    // .catch(er => {
+    //   this.emit(er)
+    // })
+    this['promise'] = pp
+    return pp
+  }
+}
+
+export const logCallback = ({ internal, modName, level, cached, path, external }) => {
+  const ind = ' '.repeat(level * 2)
+  if (internal) {
+    return console.log(`%s[${c('node', 'green')}] ${modName}`, ind)
+  }
+  if (cached) {
+    return console.log('%s%s', ind, c(external ? `[deps] ${modName}` : modName, 'grey'))
+  }
+  const dd = external ? `[${c('deps', 'red')}] ${modName} ${c(relative('', path), 'grey')}` : modName
+  console.log('%s%s', ind, dd)
+}
+
+const makeFn = ({
+  modName,
+  source,
+  cache,
+  transformNext,
+  level,
+  callback = () => { },
+  errCallback = () => { },
+}) => {
+  const internal = builtinModules.includes(modName)
+
+  async function fn() {
+    if (internal) {
+      callback({ source, modName, internal, level })
+      return modName
+    }
+    const isLib = /^[./]/.test(modName)
+    let path
+    if (isLib) {
+      path = await getLibRequire(source, modName)
+    } else {
+      try {
+        path = require.resolve(modName)
+        // callback({ source, modName, external: false, path, level })
+      } catch ({ message }) {
+        errCallback(message)
+        return
+      }
+    }
+    const cached = cache[path]
+    callback({ source, modName, path, external: !isLib, cached, level })
+
+    if (!cached) cache[path] = transformNext(path)
+
+    const filename = await cache[path]
+
+    return `require(./${filename})`
+  }
+  return fn
 }
 
 export default transform

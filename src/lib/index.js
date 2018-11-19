@@ -1,12 +1,11 @@
 import { join, relative } from 'path'
 import TempContext from 'temp-context'
 import loading from 'indicatrix'
-import { compiler as ClosureCompiler } from 'google-closure-compiler'
-import { c } from 'erte'
-import transform from './transform'
+import ensurePath from '@wrote/ensure-path'
+import transform, { logCallback } from './transform'
+import runClosure from './closure'
 
-
-export const EXTERNS = relative('', join(require.resolve('google-closure-compiler'), '../contrib/nodejs'))
+export const NODE_EXTERNS = relative('', join(require.resolve('google-closure-compiler'), '../contrib/nodejs'))
 // console.log(EXTERNS) // absolute path to the contrib folder which contains externs ClosureCompiler.CONTRIB_PATH
 
 const makeContext = async () => {
@@ -20,79 +19,43 @@ const makeContext = async () => {
   return tc
 }
 
-const writeWrapper = async (internals, t) => {
+const getWrapper = (internals) => {
   const requires = Object.keys(internals).map((key) => {
     return `const ${internals[key]} = require('${key}');`
   }, []).join('\n')
-  return await t.write('wrapper.js', `${requires}
+  return `${requires}
 (function(){
   %output%
-}).call(this)`)
+})()
+`
+}
+/**
+ * @param
+ * @param {TempContext} temp
+ */
+const writeExterns = async (internals, temp) => {
+  const externs = Object.keys(internals).map((mod) => {
+    const keys = Object.keys(require(mod))
+    return `const ${internals[mod]} = {}
+    ${keys.map((k) => `${internals[mod]}.${k} = {}`)}`
+  }, []).join('\n')
+  return await temp.write('externs.js', externs)
 }
 
 export const compile = async (src, path) => {
   const t = await makeContext()
 
-  const { file, internals } = await makeTemp(src, t.TEMP)
-  const wrapper = await writeWrapper(internals, t)
+  const depsDir = t.resolve('deps')
+  await ensurePath(join(depsDir, 't'))
+  const { internals } = await makeTemp(src, depsDir)
+  const wrapper = await getWrapper(internals, t)
+  // const externs = await writeExterns(internals, t)
 
-  const cc = runClosure({ file, path, wrapper, temp: t.TEMP })
+  const cc = runClosure({ path, wrapper, depsDir, externs: internals })
 
   await loading('Compiling with Closure', cc)
   // await write(path, output)
   console.log('Saved to %s', path)
-}
-
-
-const runClosure = async ({ file, path, temp, wrapper }) => {
-  const closureCompiler = new ClosureCompiler({
-    compilation_level: 'ADVANCED',
-    language_in: 'ECMASCRIPT_2018',
-    language_out: 'ECMASCRIPT_2017',
-    strict_mode_input: false,
-    module_resolution: 'NODE',
-    warning_level: 'QUIET',
-    third_party: true,
-    assume_function_wrapper: true,
-    create_source_map: '%outname%.map',
-    output_wrapper_file: wrapper,
-    js_output_file: path,
-    rewrite_polyfills: false,
-    externs: ['externs/Buffer.js'],
-    js: [
-      // 'example/example.js',
-      // 'node_modules/catchment/package.json',
-      // 'node_modules/erotic/package.json',
-      // 'node_modules/@artdeco/clean-stack/package.json',
-      // 'node_modules/catchment/build/index.js',
-    ],
-    process_common_js_modules: [
-      file,
-      `${temp}/**`,
-      // ...dependencies,
-      // 'node_modules/catchment/**/*.js',
-      // 'node_modules/erotic/**/*.js',
-      // 'node_modules/@artdeco/clean-stack/**/*.js',
-    ],
-  })
-
-  const { stdOut } = await new Promise((r, j) => {
-    closureCompiler.run((e, so, se) => {
-      if (e) {
-        const er = makeError(e, se)
-        j(new Error(er))
-      }
-      r({ exitCode: e, stdOut: so, stdErr: se })
-    })
-  })
-  return stdOut
-}
-
-const makeError = (exitCode, se) => {
-  const [command, ...rest] = se.split('\n').filter(a => a)
-  const rr = rest.map(s => c(s.trim(), 'red')).join('\n')
-  const er = `Exit code ${exitCode}\n${c(command, 'grey')}\n${rr}`
-  return er
 }
 
 /**

@@ -1,7 +1,7 @@
 /* yarn example/ */
 const { Readable } = require('stream');
 const { collect } = require('catchment');
-const { Replaceable } = require('restream')
+const { Replaceable } = require('restream');
 
 (async () => {
   const rs = new Readable({

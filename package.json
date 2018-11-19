@@ -11,9 +11,10 @@
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
-    "b": "alamode src -o build",
-    "d": "yarn-s d1",
+    "b": "alamode src -o build -s",
+    "d": "yarn-s d1 d2",
     "d1": "NODE_DEBUG=doc doc src/index.js -g",
+    "d2": "NODE_DEBUG=doc doc src/lib/closure.js -g",
     "build": "yarn-s d b doc",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "node example",
@@ -45,12 +46,15 @@
   "dependencies": {
     "@a-la/import": "a-la/import",
     "@a-la/markers": "a-la/markers",
+    "argufy": "1.2.1",
+    "erotic": "2.0.1",
     "erte": "1.1.4",
     "google-closure-compiler": "20181028.0.1",
     "indicatrix": "1.0.0",
     "makepromise": "3.0.1",
     "restream": "3.3.0",
     "temp-context": "2.0.0",
+    "usually": "1.0.0",
     "which-stream": "1.0.1"
   }
 }
