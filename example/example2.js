@@ -1,7 +1,7 @@
 /* yarn example/ */
-const { Readable } = require('stream');
-const { collect } = require('catchment');
-const { Replaceable } = require('restream');
+import { Readable } from 'stream'
+import { collect } from 'catchment'
+import { Replaceable } from 'restream'
 
 (async () => {
   const rs = new Readable({
@@ -10,9 +10,13 @@ const { Replaceable } = require('restream');
       this.push(null)
     },
   })
-  const rule = {}
-  rule['re'] = /ok/
-  rule['replacement'] = () => 'OK'
+  const rule = {
+    re: /ok/g,
+    replacement() {
+      this.brake()
+      return 'OK'
+    },
+  }
   const rp = new Replaceable([
     rule,
   ])

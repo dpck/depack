@@ -23,76 +23,76 @@
 /**
  * @const
  */
-var events = {};
+var DEPACK$events = {}
 
 /**
  * @constructor
  */
-events.EventEmitter = function() {};
+DEPACK$events.EventEmitter = function() {}
 
 /**
  * @param {string} event
  * @param {function(...)} listener
  * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.addListener;
+DEPACK$events.EventEmitter.prototype.addListener
 
 /**
  * @param {string} event
  * @param {function(...)} listener
  * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.on;
+DEPACK$events.EventEmitter.prototype.on
 
 /**
  * @param {string} event
  * @param {function(...)} listener
  * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.once;
+DEPACK$events.EventEmitter.prototype.once
 
 /**
  * @param {string} event
  * @param {function(...)} listener
  * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.removeListener;
+DEPACK$events.EventEmitter.prototype.removeListener
 
 /**
  * @param {string=} event
  * @return {events.EventEmitter}
  */
-events.EventEmitter.prototype.removeAllListeners;
+DEPACK$events.EventEmitter.prototype.removeAllListeners
 
 /**
  * @param {number} n
  * @return {void}
  */
-events.EventEmitter.prototype.setMaxListeners;
+DEPACK$events.EventEmitter.prototype.setMaxListeners
 
 /**
  * @param {string} event
  * @return {Array.<function(...)>}
  */
-events.EventEmitter.prototype.listeners;
+DEPACK$events.EventEmitter.prototype.listeners
 
 /**
  * @param {string} event
  * @param {...*} var_args
  * @return {boolean}
  */
-events.EventEmitter.prototype.emit;
+DEPACK$events.EventEmitter.prototype.emit
 
 // Undocumented
 
 /**
  * @type {boolean}
  */
-events.usingDomains;
+DEPACK$events.usingDomains
 
 /**
  * @param {events.EventEmitter} emitter
  * @param {string} type
  * @return {void}
  */
-events.EventEmitter.listenerCount;
+DEPACK$events.EventEmitter.listenerCount

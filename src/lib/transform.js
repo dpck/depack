@@ -1,4 +1,3 @@
-import { Replaceable } from 'restream'
 import { builtinModules } from 'module'
 import whichStream from 'which-stream'
 import { createReadStream, lstat } from 'fs'
@@ -6,7 +5,7 @@ import { relative, join, dirname } from 'path'
 import { c } from 'erte'
 import makePromise from 'makepromise'
 import erotic from 'erotic'
-// import { Transform } from 'stream';
+import { SerialAsyncReplaceable } from 'restream'
 
 let i = 0
 const getId = () => {
@@ -14,17 +13,17 @@ const getId = () => {
   return i
 }
 
+const REQUIRE_RE = /(?:^|=)(\s*)require\(.(.+?).\)/gm
 /**
- * Read the file and save it to destination.
+ * Read the file and find all dependencies inside of it.
  */
-const transform = async (source, destDir, {
-  cache = {}, level = 0, callback = logCallback,
-} = {}) => {
-  const cb = erotic()
+const transform = async (source, destDir, options = {}) => {
+  const {
+    cache = {}, level = 0, callback = logCallback,
+  } = options
   const rules = [
     {
-      re: /=(\s+)require\(.(.+?).\)/g,
-      // all requires are detected in parallel.
+      re: REQUIRE_RE,
       /**
        * @param
        * @param
@@ -33,39 +32,45 @@ const transform = async (source, destDir, {
        * @param {string} text
        */
       async replacement(match, ws, modName, pos, text) {
-        const fn = makeFn({
-          modName,
-          source,
-          cache,
-          level,
-          callback,
-          errCallback(message) {
-            const tt = text.slice(0, pos)
-            const n = tt.split('\n').length
-            console.warn('[!] %s, %s:%s', message, relative('', source), n)
-          },
-          async transformNext(path) {
-            return await transform(path, destDir, { callback, cache, level: level + 1 })
-          },
+        const errCallback = (message) => {
+          const tt = text.slice(0, pos)
+          const n = tt.split('\n').length
+          console.warn('[!] %s, %s:%s', message, relative('', source), n)
+        }
+
+        const res = await this.addItem(async () => {
+          return await extractDep({
+            modName, source, cache, level, callback, errCallback,
+            async transformNext(path) {
+              return await transform(path, destDir, { callback, cache, level: level + 1 })
+            },
+          })
         })
-        const item = this.addItem(async () => {
-          const mod = await fn()
-          return mod ? `=${ws}${mod}` : match
-        })
-        const res = await item
-        return res
+        return res ? `=${ws}${res}` : match
+      },
+    },
+    {
+      re: /^(\/\/# sourceMappingURL=)(.+)/gm,
+      replacement(m, r, path) {
+        const pp = join(dirname(source), path)
+        return `${r}${pp}`
       },
     },
   ]
-  const readable = new SerialReplaceable(rules)
+  return await proc(rules, source, destDir)
+}
+
+const proc = async (rules, source, dest) => {
+  const cb = erotic()
+  const readable = new SerialAsyncReplaceable(rules)
   const rs = createReadStream(source)
   rs.pipe(readable)
   const id = getId()
   const filename = `${id}.js`
-  if (destDir) {
-    const destination = join(destDir, filename)
+  if (dest) {
+    const destination = join(dest, filename)
+    rs.on('error', readable.emit.bind(readable))
     await whichStream({
-      source,
       readable,
       destination,
     })
@@ -84,22 +89,6 @@ const transform = async (source, destDir, {
   return filename
 }
 
-class SerialReplaceable extends Replaceable {
-  constructor(rules) {
-    super()
-    this.rules = rules
-    this.promise = Promise.resolve()
-  }
-  addItem(fn) {
-    const pp = this['promise'].then(fn)
-    // .catch(er => {
-    //   this.emit(er)
-    // })
-    this['promise'] = pp
-    return pp
-  }
-}
-
 export const logCallback = ({ internal, modName, level, cached, path, external }) => {
   const ind = ' '.repeat(level * 2)
   if (internal) {
@@ -112,45 +101,38 @@ export const logCallback = ({ internal, modName, level, cached, path, external }
   console.log('%s%s', ind, dd)
 }
 
-const makeFn = ({
-  modName,
-  source,
-  cache,
-  transformNext,
-  level,
-  callback = () => { },
-  errCallback = () => { },
-}) => {
+/**
+ * The function that will extract dependencies from a file and replace the require keyword.
+ */
+async function extractDep({
+  modName, callback, source, level, errCallback, cache, transformNext,
+}) {
   const internal = builtinModules.includes(modName)
-
-  async function fn() {
-    if (internal) {
-      callback({ source, modName, internal, level })
-      return modName
-    }
-    const isLib = /^[./]/.test(modName)
-    let path
-    if (isLib) {
-      path = await getLibRequire(source, modName)
-    } else {
-      try {
-        path = require.resolve(modName)
-        // callback({ source, modName, external: false, path, level })
-      } catch ({ message }) {
-        errCallback(message)
-        return
-      }
-    }
-    const cached = cache[path]
-    callback({ source, modName, path, external: !isLib, cached, level })
-
-    if (!cached) cache[path] = transformNext(path)
-
-    const filename = await cache[path]
-
-    return `require(./${filename})`
+  if (internal) {
+    const extern = `DEPACK$${modName}`
+    callback({ source, modName, internal, level, extern })
+    return extern
   }
-  return fn
+  const isLib = /^[./]/.test(modName)
+  let path
+  if (isLib) {
+    path = await getLibRequire(source, modName)
+  } else {
+    try {
+      path = require.resolve(modName)
+    } catch ({ message }) {
+      errCallback(message)
+      return
+    }
+  }
+  const cached = cache[path]
+  callback({ source, modName, path, external: !isLib, cached, level })
+
+  if (!cached) cache[path] = transformNext(path)
+
+  const filename = await cache[path]
+
+  return `require('./${filename}')`
 }
 
 export default transform

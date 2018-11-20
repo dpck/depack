@@ -1,10 +1,10 @@
 <types>
   <type name="ClosureOptions" desc="Options for the Closure Process.">
     <prop string name="path">
-      Path to the entry file.
+      The output path.
     </prop>
     <prop string name="depsDir">
-      The folder with the dependencies.
+      The temporary folder with the dependencies.
     </prop>
     <prop string name="wrapperPath">
       The path to the wrapper.

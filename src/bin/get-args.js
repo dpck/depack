@@ -3,6 +3,7 @@ import argufy from 'argufy'
 const args = argufy({
   src: { command: true },
   analyze: { short: 'a', boolean: true },
+  output: { short: 'o' },
 })
 
 /**
@@ -15,5 +16,10 @@ const src = args.src
  * @type {boolean}
  */
 const analyze = args.analyze
+/**
+ * The path where to save the built file.
+ * @type {string}
+ */
+const output = args.output
 
-export { src, analyze }
+export { src, analyze, output }

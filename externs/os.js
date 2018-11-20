@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 The Closure Compiler Authors.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -21,97 +21,97 @@
  */
 
 /** @const */
-var os = {};
+var DEPACK$os = {}
 
 /**
  * @return {string}
  * @nosideeffects
  */
-os.homedir
+DEPACK$os.homedir
 
 /**
  * @return {string}
  * @nosideeffects
  */
-os.tmpdir;
+DEPACK$os.tmpdir
 
 /**
  * @return {string}
  * @nosideeffects
  */
-os.hostname;
+DEPACK$os.hostname
 
 /**
  * @return {string}
  * @nosideeffects
  */
-os.type;
+DEPACK$os.type
 
 /**
  * @return {string}
  * @nosideeffects
  */
-os.platform;
+DEPACK$os.platform
 
 /**
  * @return {string}
  * @nosideeffects
  */
-os.arch;
+DEPACK$os.arch
 
 /**
  * @return {string}
  * @nosideeffects
  */
-os.release;
+DEPACK$os.release
 
 /**
  * @return {number}
  * @nosideeffects
  */
-os.uptime;
+DEPACK$os.uptime
 
 /**
  * @return {Array.<number>}
  * @nosideeffects
  */
-os.loadavg;
+DEPACK$os.loadavg
 
 /**
  * @return {number}
  * @nosideeffects
  */
-os.totalmem;
+DEPACK$os.totalmem
 
 /**
  * @return {number}
  * @nosideeffects
  */
-os.freemem;
+DEPACK$os.freemem
 
 /**
  * @typedef {{model: string, speed: number, times: {user: number, nice: number, sys: number, idle: number, irg: number}}}
  */
-var osCpusInfo;
+var osCpusInfo
 
 /**
  * @return {Array.<osCpusInfo>}
  * @nosideeffects
  */
-os.cpus;
+DEPACK$os.cpus
 
 /**
  * @typedef {{address: string, family: string, internal: boolean}}
  */
-var osNetworkInterfacesInfo;
+var osNetworkInterfacesInfo
 
 /**
  * @return {Object.<string,osNetworkInterfacesInfo>}
  * @nosideeffects
  */
-os.networkInterfaces;
+DEPACK$os.networkInterfaces
 
 /**
  * @type {string}
  */
-os.EOL;
+DEPACK$os.EOL
