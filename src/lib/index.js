@@ -1,4 +1,4 @@
-import { join, relative } from 'path'
+import { join, relative, dirname } from 'path'
 import makePromise from 'makepromise'
 import { lstat } from 'fs'
 
@@ -25,4 +25,24 @@ export const checkExists = async (path) => {
   } catch (err) {
     return null
   }
+}
+
+export const checkIfLib = modName => /^[./]/.test(modName)
+
+/**
+ * Returns the path that can be required by Node.js.
+ */
+export const getLibRequire = async (source, mod) => {
+  let d = join(dirname(source), mod)
+  if (mod.endsWith('/')) {
+    d = join(d, 'index.js')
+  } else {
+    const stat = await checkExists(d)
+    if (!stat) {
+      d = `${d}.js`
+    } else if (stat.isDirectory()) {
+      d = join(d, 'index.js')
+    }
+  }
+  return d
 }

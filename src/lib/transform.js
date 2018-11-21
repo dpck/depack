@@ -5,7 +5,7 @@ import { relative, join, dirname } from 'path'
 import { c } from 'erte'
 import erotic from 'erotic'
 import { SerialAsyncReplaceable } from 'restream'
-import { checkExists } from '.'
+import { checkIfLib, getLibRequire } from '.'
 
 let i = 0
 const getId = () => {
@@ -113,7 +113,7 @@ async function extractDep({
     callback({ source, modName, internal, level, extern })
     return extern
   }
-  const isLib = /^[./]/.test(modName)
+  const isLib = checkIfLib(modName)
   let path
   if (isLib) {
     path = await getLibRequire(source, modName)
@@ -137,21 +137,3 @@ async function extractDep({
 
 export default transform
 
-
-/**
- * Returns the path that can be required by Node.js.
- */
-export const getLibRequire = async (source, mod) => {
-  let d = join(dirname(source), mod)
-  if (mod.endsWith('/')) {
-    d = join(d, 'index.js')
-  } else {
-    const stat = await checkExists(d)
-    if (!stat) {
-      d = `${d}.js`
-    } else if (stat.isDirectory()) {
-      d = join(d, 'index.js')
-    }
-  }
-  return d
-}

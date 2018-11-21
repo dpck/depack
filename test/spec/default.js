@@ -1,6 +1,6 @@
 import { equal, ok } from 'zoroaster/assert'
 import Context from '../context'
-import depack from '../../src'
+// import depack from '../../src'
 
 /** @type {Object.<string, (c: Context)>} */
 const T = {
@@ -19,4 +19,4 @@ const T = {
   },
 }
 
-export default T
+// export default T
