@@ -1,11 +1,11 @@
 import { builtinModules } from 'module'
 import whichStream from 'which-stream'
-import { createReadStream, lstat } from 'fs'
+import { createReadStream } from 'fs'
 import { relative, join, dirname } from 'path'
 import { c } from 'erte'
-import makePromise from 'makepromise'
 import erotic from 'erotic'
 import { SerialAsyncReplaceable } from 'restream'
+import { checkExists } from '.'
 
 let i = 0
 const getId = () => {
@@ -154,13 +154,4 @@ export const getLibRequire = async (source, mod) => {
     }
   }
   return d
-}
-
-export const checkExists = async (path) => {
-  try {
-    const stat = await makePromise(lstat, path)
-    return stat
-  } catch (err) {
-    return null
-  }
 }

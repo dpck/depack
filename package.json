@@ -48,6 +48,7 @@
     "zoroaster": "3.6.6"
   },
   "dependencies": {
+    "@wrote/read": "1.0.0",
     "@a-la/import": "1.7.0",
     "@a-la/markers": "1.0.3",
     "argufy": "1.2.1",
@@ -56,6 +57,7 @@
     "google-closure-compiler": "20181028.0.1",
     "indicatrix": "1.0.0",
     "makepromise": "3.0.1",
+    "mismatch": "1.0.3",
     "restream": "3.4.0",
     "temp-context": "2.0.0",
     "usually": "1.0.0",
