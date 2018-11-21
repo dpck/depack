@@ -1,6 +1,10 @@
 import read from '@wrote/read'
 import { join, relative } from 'path'
 import { checkExists } from '..'
+import mismatch from 'mismatch'
+
+const RE = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm
+const RE2 = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm
 
 /**
  * Finds the location of the `package.json` for the given dependency in the directory, and the main file.
@@ -26,4 +30,14 @@ export const findPackageJson = async (dir, name) => {
   }
   if (dir == '/' && !e) throw new Error(`Package.json for module ${name} not found.`)
   return findPackageJson(join(dir, '..'), name)
+}
+
+/**
+ * Returns the names of the modules imported with `import` statements.
+ */
+export const getMatches = (source) => {
+  const r = mismatch(RE, source, ['q', 'from'])
+  const r2 = mismatch(RE2, source, ['q', 'from'])
+  const res = [...r, ...r2].map(({ from }) => from)
+  return res
 }
