@@ -1,5 +1,5 @@
 import read from '@wrote/read'
-import { join, relative } from 'path'
+import { join, relative, dirname } from 'path'
 import { checkExists } from '..'
 import mismatch from 'mismatch'
 
@@ -14,22 +14,32 @@ export const findPackageJson = async (dir, name) => {
   const path = join(fold, 'package.json')
   const e = await checkExists(path)
   if (e) {
-    const f = await read(path)
-    const { main } = JSON.parse(f)
-    const j = join(fold, main)
-    const stat = await checkExists(j)
-    if (!stat) throw new Error(`The main file for the package ${name} does not exist.`)
-    let entry
-    if (stat.isDirectory()) {
-      const tt = join(j, 'index.js')
-      const e2 = await checkExists(tt)
-      if (!e2) throw new Error(`The main file ${tt} for module ${name} does not exist.`)
-      entry = tt
-    } else entry = j
+    const entry = await findEntry(path)
+    if (!entry) throw new Error(`The entry for the module ${name} does not exist.`)
     return { entry: relative('', entry), packageJson: path }
   }
   if (dir == '/' && !e) throw new Error(`Package.json for module ${name} not found.`)
   return findPackageJson(join(dir, '..'), name)
+}
+
+/** Finds the path to the entry based on package.json file. */
+export const findEntry = async (path) => {
+  const f = await read(path)
+  let main
+  try {
+    ({ main } = JSON.parse(f))
+  } catch (err) {
+    throw new Error(`Could not parse ${path}.`)
+  }
+  const j = join(dirname(path), main)
+  const stat = await checkExists(j)
+  if (!stat) return null
+  if (stat.isDirectory()) {
+    const tt = join(j, 'index.js')
+    const e2 = await checkExists(tt)
+    if (!e2) return null
+    return tt
+  } else return j
 }
 
 /**

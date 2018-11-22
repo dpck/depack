@@ -22,12 +22,19 @@ test4
 test2
 
 /* error */
-The main file for the package test2 does not exist.
+The entry for the module test2 does not exist.
 /**/
 
 // throws when main in the dir does not exist
 test3
 
 /* error */
-The main file test/fixture/node_modules/test3/build/index.js for module test3 does not exist.
+The entry for the module test3 does not exist.
+/**/
+
+// throws when cannot parse package.json
+test5
+
+/* error */
+Could not parse test/fixture/node_modules/test5/package.json.
 /**/

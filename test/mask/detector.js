@@ -26,6 +26,10 @@ export const GetRequireMatches = makeTestSuite('test/result/get-require.md', {
 })
 
 export const Detect = makeTestSuite('test/result/detect.md', {
-  getResults: detect,
+  async getResults(input) {
+    const res = await detect(input)
+    delete res.isES6
+    return res
+  },
   jsonProps: ['expected'],
 })
