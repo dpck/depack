@@ -1,50 +1,84 @@
 import { compiler as ClosureCompiler } from 'google-closure-compiler'
+import { join, relative, dirname } from 'path'
+import { run, prepareCoreModules } from './closure/lib'
+import read from '@wrote/read'
+import write from '@wrote/write'
+import { checkExists } from '.'
 import { c } from 'erte'
-import { join } from 'path'
+
+//  * @param {ClosureOptions} options
+
+const EXTERNS_PATH = relative('', join(__dirname, '../../externs'))
+// const INTERNS = join(__dirname, '../../interns')
+// const NODE_MODULES = relative('', join(__dirname, '../../interns'))
 
 /**
- * Create an error with color.
+ * Update dependencies' package.json files to point to a file and not a directory. * https://github.com/google/closure-compiler/issues/3149
  */
-const makeError = (exitCode, se) => {
-  const [command, ...rest] = se.split('\n').filter(a => a)
-  const rr = rest.map(s => c(s.trim(), 'red')).join('\n')
-  const cc = c(command, 'grey')
-  const er = `Exit code ${exitCode}\n${cc}\n${rr}`
-  return er
+const fixDependencies = async (deps) => {
+  await Promise.all(deps.map(async (dep) => {
+    const f = await read(dep)
+    const p = JSON.parse(f)
+    const { main } = p
+    const j = join(dirname(dep), main)
+    const e = await checkExists(j)
+    if (!e) throw new Error(`The main for dependency ${dep} does not exist.`)
+    if (e.isDirectory()) {
+      const newMain = join(main, 'index.js')
+      p.main = newMain
+      console.warn('Updating %s to point to a file.', dep)
+      await write(dep, JSON.stringify(p, null, 2))
+    }
+  }))
 }
 
 /**
  * Execute the closure compiler, and throw an error if the error code is positive.
- * @param {ClosureOptions} options
+ * @param {Object} options The options.
+ * @param {Array<string>} [options.dependencies=[]] The paths to all package.json files.
+ * @param {Array<string>} [options.internals=[]] The names of core Node.js modules used in compilation.
  */
-const runClosure = async (options) => {
-  const { path, depsDir, externs, externsPath, js = [] } = options
-  const k = externs.map(e => join(externsPath, `${e}.js`))
-  const closureCompiler = new ClosureCompiler({
+const runClosure = async (options = {}) => {
+  const {
+    path, internals = [], externsPath = EXTERNS_PATH,
+    extraExterns = [], modules = [], dependencies,
+  } = options
+  const externs = [...internals, ...extraExterns]
+    .map(e => join(externsPath, `${e}.js`))
+  const {
+    packageJsons: corePackageJsons,
+    entries: coreEntries,
+  } = await prepareCoreModules({
+    internals, nodeModulesPath: 'node_modules',
+  })
+  await fixDependencies(dependencies)
+  const js = [...dependencies, ...corePackageJsons, ...coreEntries]
+  const compiler = new ClosureCompiler({
     compilation_level: 'ADVANCED',
     language_in: 'ECMASCRIPT_2018',
     language_out: 'ECMASCRIPT_2017',
     module_resolution: 'NODE',
     // debug: true,
     formatting: 'PRETTY_PRINT',
-    // warning_level: 'QUIET',
+    warning_level: 'QUIET',
+    // no other way to get a source map
     ...(path ? { create_source_map: `${path}.map` } : {}),
-    externs: ['externs/Buffer.js', ...k],
+    externs,
     js,
-    // process_common_js_modules: join(depsDir, '**'),
+    process_common_js_modules: modules,
   })
 
-  return await new Promise((r, j) => {
-    closureCompiler.run((e, so, se) => {
-      if (e) {
-        const er = makeError(e, se)
-        const err = new Error()
-        err.stack = er
-        return j(err)
-      }
-      r({ stdout: so, stderr: se })
+  console.warn(compiler.getFullCommand()
+    .replace(/--process_common_js_modules/g, '\n  --process_common_js_modules')
+    .replace(/--js=([^\s]+)/g, (m, f) => {
+      const ff = `\n  --js=${f}`
+      if (corePackageJsons.includes(f) || coreEntries.includes(f)) {
+        return c(ff, 'grey')
+      } return ff
     })
-  })
+  )
+
+  return await run(compiler)
 }
 
 export default runClosure

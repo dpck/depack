@@ -1,5 +1,5 @@
 import read from '@wrote/read'
-import { join, relative, dirname } from 'path'
+import { join, relative, dirname, resolve } from 'path'
 import { checkExists } from '..'
 import mismatch from 'mismatch'
 
@@ -16,10 +16,10 @@ export const findPackageJson = async (dir, name) => {
   if (e) {
     const entry = await findEntry(path)
     if (!entry) throw new Error(`The entry for the module ${name} does not exist.`)
-    return { entry: relative('', entry), packageJson: path }
+    return { entry: relative('', entry), packageJson: relative('', path) }
   }
   if (dir == '/' && !e) throw new Error(`Package.json for module ${name} not found.`)
-  return findPackageJson(join(dir, '..'), name)
+  return findPackageJson(join(resolve(dir), '..'), name)
 }
 
 /** Finds the path to the entry based on package.json file. */

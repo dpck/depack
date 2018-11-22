@@ -22,4 +22,4 @@ const analyze = args.analyze
  */
 const output = args.output
 
-export { src, analyze, output }
+export { src as _src, analyze as _analyze, output as _output }

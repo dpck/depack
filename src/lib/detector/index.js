@@ -1,5 +1,5 @@
 import { builtinModules } from 'module'
-import { dirname } from 'path'
+import { dirname, relative } from 'path'
 import { findPackageJson, getMatches, getRequireMatches } from './lib'
 import { checkIfLib, getLibRequire } from '..'
 import read from '@wrote/read'
@@ -13,11 +13,9 @@ export const detect = async (path, cache = {}) => {
   const matches = getMatches(source)
   const requireMatches = getRequireMatches(source)
 
-  const isES6 = !!matches.length
   const m = [...matches, ...requireMatches]
 
   const deps = await calculateDependencies(path, m)
-  deps.isES6 = isES6
   return deps
 }
 
@@ -45,22 +43,25 @@ export default async function recursiveDetect(path, _cache = {}, _parents = []) 
   try {
     const dependencies = await detect(path, _cache)
     if (!dependencies) {
-      // console.log('%s is in cache', path)
       return []
     }
     else _cache[path] = dependencies.isES6
-    const files = dependencies.filter(({ entry }) => entry).map(({ entry }) => entry)
-    const p = files.map(f => recursiveDetect(f, _cache, [..._parents, path]))
-    const pp = (await Promise.all(p))
-      .reduce((acc, current) => [...acc, ...current], [])
+    const files = dependencies
+      .filter(({ entry }) => entry).map(({ entry }) => entry)
+    const pp = await files.reduce(async (acc, f) => {
+      const ar = await acc
+      if (f in _cache) return ar
+      const res = await recursiveDetect(f, _cache, [..._parents, path])
+      return [...ar, ...res]
+    }, [])
 
     const res = [...pp, ...dependencies]
-    res.cache = _cache
     return res
-    // return [...res, ...pp]
   } catch (err) {
     if (err.code != 'ENOENT') throw err
-    const msg = `[ENOENT] Could not load ${path} from ${_parents.join(' > ')}`
+    const hasParents = _parents.length
+    const s = hasParents ? ` from ${_parents.join(' > ')}` : ''
+    const msg = `[ENOENT] Could not load ${path}${s}.`
     throw new Error(msg)
   }
 }

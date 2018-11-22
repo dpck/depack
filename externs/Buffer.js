@@ -4,6 +4,9 @@
 var Buffer = function() {}
 Buffer.concat
 
+var process
+process.stdout
+
 
 // interface Buffer extends Uint8Array {
 //   constructor: typeof Buffer;

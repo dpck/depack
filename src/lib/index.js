@@ -18,6 +18,9 @@ const writeExterns = async (internals, temp) => {
   return await temp.write('externs.js', externs)
 }
 
+/**
+ * @returns {import('fs').Stats}
+ */
 export const checkExists = async (path) => {
   try {
     const stat = await makePromise(lstat, path)
