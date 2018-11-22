@@ -1,7 +1,6 @@
 export default DEPACK$process
 export const {
   abort,
-  allowedNodeEnvironmentFlags,
   arch,
   argv,
   argv0,
@@ -25,7 +24,6 @@ export const {
   getgid,
   getgroups,
   getuid,
-  hasUncaughtExceptionCaptureCallback,
   hrtime,
   initgroups,
   kill,
@@ -39,7 +37,6 @@ export const {
   ppid,
   reallyExit,
   release,
-  setUncaughtExceptionCaptureCallback,
   setegid,
   seteuid,
   setgid,

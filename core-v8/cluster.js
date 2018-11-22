@@ -4,6 +4,7 @@ export const {
   SCHED_RR,
   Worker,
   disconnect,
+  domain,
   fork,
   isMaster,
   isWorker,

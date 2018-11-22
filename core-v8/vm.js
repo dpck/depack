@@ -1,11 +1,11 @@
 export default DEPACK$vm
 export const {
   Script,
-  compileFunction,
   createContext,
   createScript,
   isContext,
   runInContext,
+  runInDebugContext,
   runInNewContext,
   runInThisContext,
 } = DEPACK$vm

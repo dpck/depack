@@ -21,7 +21,6 @@ export const {
   table,
   time,
   timeEnd,
-  timeLog,
   timeStamp,
   timeline,
   timelineEnd,

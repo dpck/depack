@@ -1,6 +1,5 @@
 export default DEPACK$fs
 export const {
-  Dirent,
   F_OK,
   FileReadStream,
   FileWriteStream,

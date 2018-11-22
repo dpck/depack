@@ -6,7 +6,5 @@ export const {
   Stream,
   Transform,
   Writable,
-  finished,
-  pipeline,
   super_,
 } = DEPACK$stream

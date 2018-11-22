@@ -4,6 +4,7 @@ export const {
   CLIENT_RENEG_WINDOW,
   DEFAULT_CIPHERS,
   DEFAULT_ECDH_CURVE,
+  SLAB_BUFFER_SIZE,
   SecureContext,
   Server,
   TLSSocket,

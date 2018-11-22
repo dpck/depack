@@ -1,4 +1,4 @@
-export default DEPACK$sys
+export default DEPACK$util
 export const {
   TextDecoder,
   TextEncoder,
@@ -8,7 +8,6 @@ export const {
   deprecate,
   error,
   format,
-  formatWithOptions,
   getSystemErrorName,
   inherits,
   inspect,
@@ -16,7 +15,6 @@ export const {
   isBoolean,
   isBuffer,
   isDate,
-  isDeepStrictEqual,
   isError,
   isFunction,
   isNull,
@@ -32,5 +30,4 @@ export const {
   print,
   promisify,
   puts,
-  types,
-} = DEPACK$sys
+} = DEPACK$util

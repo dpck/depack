@@ -13,6 +13,5 @@ export const {
   relative,
   resolve,
   sep,
-  toNamespacedPath,
   win32,
 } = DEPACK$path

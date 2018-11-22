@@ -5,10 +5,8 @@ export const {
   Url,
   domainToASCII,
   domainToUnicode,
-  fileURLToPath,
   format,
   parse,
-  pathToFileURL,
   resolve,
   resolveObject,
 } = DEPACK$url
