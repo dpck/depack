@@ -67,9 +67,22 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "example/example2.js",
-        "-o", "out/example2.js",
+        "t.js",
+        // "-o", "out/example2.js",
       ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Analyze",
+      "program": "${workspaceFolder}/s.js",
+      "env": {
+        "NODE_DEBUG": "depack",
+      },
+      "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]

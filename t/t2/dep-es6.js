@@ -1,0 +1,1 @@
+export const TEST2 = 'TEST (es6)'

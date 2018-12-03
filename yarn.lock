@@ -464,10 +464,10 @@ restream@3.2.1:
   dependencies:
     "@artdeco/clean-stack" "1.0.0"
 
-restream@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/restream/-/restream-3.4.0.tgz#2479cc9803b6ac6feb0942ee45a57affd37af149"
-  integrity sha512-67xC+/nHHuXy2K8aQ3pYZ1iY5Gz+hy7xpqLkrPIjFBNEFDOqcuC2/0LGNir85bZHGW7APeuhBkNkn8/737mUNw==
+restream@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/restream/-/restream-3.4.1.tgz#3ae08677176a2ba484a55b7e2ec2105d7847f07e"
+  integrity sha512-aWur+X3dItQjmw2c7KPiyy2BEw20+0d1nk0IAgVEqcvNrGh7MZ4stZ1KnSr5ekcHwI9VDP/3lJ6N2+nLIZduLA==
   dependencies:
     "@artdeco/clean-stack" "1.0.0"
 
