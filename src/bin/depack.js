@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { _src, _analyze, _output } from './get-args'
 import Analyze from './commands/analyze'
 import Detect from './commands/detect'

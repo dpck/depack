@@ -70,7 +70,7 @@ const runClosure = async (options = {}) => {
     language_out: 'ECMASCRIPT_2017',
     module_resolution: 'NODE',
     // debug: true,
-    formatting: 'PRETTY_PRINT',
+    formatting: ['PRETTY_PRINT', 'SINGLE_QUOTES'],
     warning_level: 'QUIET',
     // no other way to get a source map
     ...(path ? { create_source_map: `${path}.map` } : {}),
