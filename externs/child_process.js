@@ -131,7 +131,7 @@ DEPACK$child_process.execFileSync
 /**
  * @param {string} modulePath
  * @param {Array.<string>=} args
- * @param {child_process.Options=} options
+ * @param {child_process.ForkOptions=} options
  * @return {child_process.ChildProcess}
  */
 DEPACK$child_process.fork
