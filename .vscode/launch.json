@@ -83,7 +83,7 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "t.js",
+        "t/error.js",
         // "-o", "out/example2.js",
       ],
       "skipFiles": [

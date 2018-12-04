@@ -43,16 +43,27 @@ const runClosure = async (options = {}) => {
     path, internals = [], externsPath = EXTERNS_PATH,
     extraExterns = [], modules = [], dependencies,
   } = options
-  const externs = [...internals, ...extraExterns]
+  const specialExterns = []
+  const i = internals
+    .reduce((acc, current) => {
+      if (current == 'child_process') {
+        const getE = e => `externs/${e}.js`
+        specialExterns.push(getE('stream'), getE('events'))
+      }
+      return [...acc, current]
+    }, [])
+    .filter((a, j, aa) => j == aa.indexOf(a))
+  const externs = [...i, ...extraExterns]
     .map(e => join(externsPath, `${e}.js`))
   const {
     packageJsons: corePackageJsons,
     entries: coreEntries,
   } = await prepareCoreModules({
-    internals, nodeModulesPath: 'node_modules',
+    internals: i, nodeModulesPath: 'node_modules',
   })
   await fixDependencies(dependencies)
-  const js = [...dependencies, ...corePackageJsons, ...coreEntries]
+  const js = [...dependencies, ...corePackageJsons, ...coreEntries].sort()
+  const Externs =  [...externs, ...specialExterns]
   const compiler = new ClosureCompiler({
     compilation_level: 'ADVANCED',
     language_in: 'ECMASCRIPT_2018',
@@ -63,22 +74,31 @@ const runClosure = async (options = {}) => {
     warning_level: 'QUIET',
     // no other way to get a source map
     ...(path ? { create_source_map: `${path}.map` } : {}),
-    externs,
+    externs: Externs,
     js,
     process_common_js_modules: modules,
   })
 
-  console.warn(compiler.getFullCommand()
-    .replace(/--process_common_js_modules/g, '\n  --process_common_js_modules')
+  const s = getStr(compiler.getFullCommand(), { corePackageJsons, coreEntries })
+  console.warn(s)
+
+  return await run(compiler)
+}
+
+const unique = (a, j, aa) => j == aa.indexOf(a)
+
+const getStr = (cmd, { corePackageJsons, coreEntries }) => {
+  const total = [...corePackageJsons, ...coreEntries].filter(unique)
+  return cmd.replace(
+    /--process_common_js_modules/g,
+    '\n  --process_common_js_modules'
+  )
     .replace(/--js=([^\s]+)/g, (m, f) => {
       const ff = `\n  --js=${f}`
-      if (corePackageJsons.includes(f) || coreEntries.includes(f)) {
+      if (total.includes(f)) {
         return c(ff, 'grey')
       } return ff
     })
-  )
-
-  return await run(compiler)
 }
 
 export default runClosure

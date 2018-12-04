@@ -6,6 +6,8 @@ Buffer.concat
 
 var process
 process.stdout
+process.stderr
+process.version
 
 
 // interface Buffer extends Uint8Array {

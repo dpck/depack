@@ -1,8 +1,11 @@
 import { fork } from 'child_process'
 
-fork('.', [], {
+const { stdout, stderr } =  fork('.', [], {
   stdio: 'pipe',
-  execArgv: [], //['--inspect-brk', '20462'],
+  execArgv: [], // for when debugging please ok
 }).on('error', (error) => {
   console.log(error)
 })
+
+stdout.pipe(process.stdout)
+stderr.pipe(process.stderr)
