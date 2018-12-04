@@ -28,6 +28,22 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Example @2",
+      "program": "${workspaceFolder}/tt.js",
+      "env": {
+        "NODE_DEBUG": "depack",
+      },
+      "console": "integratedTerminal",
+      "args": [
+        "example/example.js"
+      ],
+      // "skipFiles": [
+      //   "<node_internals>/**/*.js"
+      // ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Example",
       "program": "${workspaceFolder}/example/index.js",
       "env": {
