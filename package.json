@@ -25,7 +25,7 @@
     "build"
   ],
   "bin": {
-    "depack": "build/bin/depack.js"
+    "depack": "src/bin/index.js"
   },
   "repository": {
     "type": "git",

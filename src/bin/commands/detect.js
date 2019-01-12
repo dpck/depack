@@ -31,6 +31,7 @@ const Detect = async (src, path) => {
     return `const DEPACK$${key} = require('${key}');`
   }).join('\n')
   const data = `${requires}\n${stdout}`
+  console.log(data)
   if (path) {
     await ensurePath(path)
     await write(path, data)
