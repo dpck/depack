@@ -1,8 +1,8 @@
-const { join, relative, dirname } = require('path');
+const { join, dirname } = require('path');
 let makePromise = require('makepromise'); if (makePromise && makePromise.__esModule) makePromise = makePromise.default;
 const { lstat } = require('fs');
 
-       const NODE_EXTERNS = relative('', join(require.resolve('google-closure-compiler'), '../contrib/nodejs'))
+// export const NODE_EXTERNS = relative('', join(require.resolve('google-closure-compiler'), '../contrib/nodejs'))
 // console.log(EXTERNS) // absolute path to the contrib folder which contains externs ClosureCompiler.CONTRIB_PATH
 
 /**
@@ -50,7 +50,6 @@ const writeExterns = async (internals, temp) => {
   return d
 }
 
-module.exports.NODE_EXTERNS = NODE_EXTERNS
 module.exports.checkExists = checkExists
 module.exports.checkIfLib = checkIfLib
 module.exports.getLibRequire = getLibRequire
