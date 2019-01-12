@@ -17,10 +17,10 @@
   resolved "https://registry.yarnpkg.com/@a-la/import/-/import-1.7.0.tgz#169849ac4ac50558867f89e38f841dc2eee51ae8"
   integrity sha512-4iLDtywkxKaRupaLcc/ZNSxE0HWiag3z/9DsfWU0smdwXmgfkcqM9lGwhGM4vkB3YqXTOD3MtGRxxjrOIjDtjQ==
 
-"@a-la/jsx@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.1.0.tgz#9d5bf55da2dff8b1d3a54bd8fe0a744b3840af90"
-  integrity sha512-Wp+S/EsvSsHiwiRqABzUrBwtZspf8QZPhauhofxu5cslqWwHvrc6o8B/BU4KT1t7WHKhSPUdv5s+ZqJ6RUUtJg==
+"@a-la/jsx@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.1.1.tgz#35647051103d583c7545ce1d61f62a82e47f23cb"
+  integrity sha512-uQno+6AqBxw1scRl4Ik891QGXKsD1/FZSScNW92y6GNorvsfLcEVjSbA23YwyUeCq4qCaY0TWVmEakSJXbKl0Q==
   dependencies:
     "@a-la/detect-jsx" "1.0.0"
     restream "3.4.1"
@@ -125,6 +125,24 @@ alamode@1.6.0:
     restream "3.2.1"
     source-map "0.7.3"
     usually "1.0.0"
+    which-stream "1.0.1"
+
+alamode@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-1.6.1.tgz#9786829ee444f4537ee84e1b67b0b6a2246b2ecb"
+  integrity sha512-XEVYXHjR7zVVxextZVe4zLv7uEFgWzq6Rl1ArX8uCqBlvONcDWyFfvyYpk5NGfE6ve+88M0Lof6+5U0cRN+H1Q==
+  dependencies:
+    "@a-la/export" "1.3.0"
+    "@a-la/import" "1.7.0"
+    "@a-la/markers" "1.0.3"
+    "@wrote/ensure-path" "1.0.3"
+    "@wrote/read-dir-structure" "1.0.1"
+    argufy "1.2.1"
+    catchment "3.2.0"
+    pirates "4.0.0"
+    restream "3.4.1"
+    source-map "0.7.3"
+    usually "1.1.0"
     which-stream "1.0.1"
 
 argufy@1.2.1:
@@ -386,17 +404,17 @@ spawncommand@2.1.0:
   dependencies:
     catchment "3.1.1"
 
-temp-context@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/temp-context/-/temp-context-2.0.0.tgz#e4e9cfa7304e0b17e7c385626e374cbb33cb4b32"
-  integrity sha512-/zzzh6bxpuRZhF9s+TZL0VJa5tqsmYLV1N/r8UpZZs5JkPYx9Gx+Q3MiFKzGAXM2RyGxWH3tqIAaE7LMEtF38w==
+temp-context@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/temp-context/-/temp-context-2.1.0.tgz#0af3aeae7c7aa3bfb0c01fc11fb9963c2ce2db60"
+  integrity sha512-L45t/JINZ2JxyatJ5S+DUVIqg6wshYgLyf9xAQr8jD30i3YJMI9CUik9VJWiPHHzO1oKoTQLAPwobRuN7M8JFA==
   dependencies:
     "@wrote/clone" "1.1.0"
     "@wrote/ensure-path" "1.0.3"
     "@wrote/read" "1.0.0"
     "@wrote/rm" "1.1.0"
     "@wrote/write" "1.0.0"
-    catchment "3.1.1"
+    catchment "3.2.0"
     makepromise "3.0.1"
     pedantry "2.2.0"
 
@@ -412,6 +430,11 @@ usually@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/usually/-/usually-1.0.0.tgz#3ace5b09471ddf35cccca85971ca178b5255d4b0"
   integrity sha1-Os5bCUcd3zXMzKhZccoXi1JV1LA=
+
+usually@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/usually/-/usually-1.1.0.tgz#c79965c264596cd3ead181f84dae64dee24b60d6"
+  integrity sha512-xGl7nUfT/DifxhZg97MTwjsl795RX0UiNWPvaItg8viTSRujH2D4jSi93yeuKxLDhJyEMId6cnyiD2SdEQ2jLw==
 
 which-stream@1.0.1:
   version "1.0.1"

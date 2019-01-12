@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/artdecocode/depack#readme",
   "devDependencies": {
-    "alamode": "1.6.0",
+    "alamode": "1.6.1",
     "documentary": "1.20.1",
     "eslint-config-artdeco": "1.0.1",
     "preact": "8.4.2",
@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@a-la/import": "1.7.0",
-    "@a-la/jsx": "1.1.0",
+    "@a-la/jsx": "1.1.1",
     "@a-la/markers": "1.0.3",
     "@wrote/read": "1.0.0",
     "argufy": "1.2.1",
@@ -62,8 +62,8 @@
     "makepromise": "3.0.1",
     "mismatch": "1.0.3",
     "restream": "3.4.1",
-    "temp-context": "2.0.0",
-    "usually": "1.0.0",
+    "temp-context": "2.1.0",
+    "usually": "1.1.0",
     "which-stream": "1.0.1"
   }
 }
