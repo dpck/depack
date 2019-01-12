@@ -1,8 +1,8 @@
-import { join, relative, dirname } from 'path'
+import { join, dirname } from 'path'
 import makePromise from 'makepromise'
 import { lstat } from 'fs'
 
-export const NODE_EXTERNS = relative('', join(require.resolve('google-closure-compiler'), '../contrib/nodejs'))
+// export const NODE_EXTERNS = relative('', join(require.resolve('google-closure-compiler'), '../contrib/nodejs'))
 // console.log(EXTERNS) // absolute path to the contrib folder which contains externs ClosureCompiler.CONTRIB_PATH
 
 /**
