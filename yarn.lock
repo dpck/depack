@@ -17,10 +17,10 @@
   resolved "https://registry.yarnpkg.com/@a-la/import/-/import-1.7.0.tgz#169849ac4ac50558867f89e38f841dc2eee51ae8"
   integrity sha512-4iLDtywkxKaRupaLcc/ZNSxE0HWiag3z/9DsfWU0smdwXmgfkcqM9lGwhGM4vkB3YqXTOD3MtGRxxjrOIjDtjQ==
 
-"@a-la/jsx@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.1.1.tgz#35647051103d583c7545ce1d61f62a82e47f23cb"
-  integrity sha512-uQno+6AqBxw1scRl4Ik891QGXKsD1/FZSScNW92y6GNorvsfLcEVjSbA23YwyUeCq4qCaY0TWVmEakSJXbKl0Q==
+"@a-la/jsx@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.1.3.tgz#1938b62e646eabb915bd12b346725edd1733b421"
+  integrity sha512-+I17mtTtFWlAe9EKF38Q7pRN3fBu9kFGcq9hZ0tw59VQs4zEulFucSfeQ6dMv2n2HX2V2drjk2qN5lFLTbiOWg==
   dependencies:
     "@a-la/detect-jsx" "1.0.0"
     restream "3.4.1"
