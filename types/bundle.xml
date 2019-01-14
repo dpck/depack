@@ -1,0 +1,28 @@
+<types>
+  <type name="BundleOptions" desc="Options for the Bundle Command.">
+    <prop string name="src">
+      The source file to compile.
+    </prop>
+    <prop string name="dest">
+      The output file to write to.
+    </prop>
+    <prop string name="level" default="ADVANCED">
+      The level of the optimisation.
+    </prop>
+    <prop string name="tempDir" default="depack-temp">
+      The path to the temporary directory.
+    </prop>
+    <prop bool name="sourceMap" default="true">
+      Whether to include source maps.
+    </prop>
+    <prop opt type="Array<string>" name="externs">
+      The externs to compile with.
+    </prop>
+    <prop string name="languageIn" default="ECMASCRIPT_2018">
+      The language in flag.
+    </prop>
+    <prop bool name="noWarnings" default="false">
+      Do not print compiler's warnings.
+    </prop>
+  </type>
+</types>

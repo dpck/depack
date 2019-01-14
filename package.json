@@ -1,6 +1,6 @@
 {
   "name": "depack",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "description": "Unpackager Of Dependencies To Create \"Zero-Dependency Build\" With Closure.",
   "main": "build",
   "scripts": {
@@ -13,9 +13,10 @@
     "dev": "node src/bin",
     "doc": "NODE_DEBUG=doc doc documentary -o README.md",
     "b": "alamode src -o build -s",
-    "d": "yarn-s d1 d2",
+    "d": "yarn-s d1 d2 d3",
     "d1": "NODE_DEBUG=doc doc src/index.js -g",
     "d2": "NODE_DEBUG=doc doc src/lib/closure.js -g",
+    "d3": "NODE_DEBUG=doc doc src/bin/commands/bundle.js -g",
     "build": "yarn-s d b doc",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "node example",
@@ -66,6 +67,7 @@
     "makepromise": "3.0.1",
     "mismatch": "1.0.3",
     "restream": "3.4.1",
+    "spawncommand": "2.1.0",
     "temp-context": "2.1.0",
     "usually": "1.1.0",
     "which-stream": "1.0.1"
