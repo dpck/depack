@@ -44,6 +44,14 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch T",
+      "program": "${workspaceFolder}/t/index.js",
+      "console": "integratedTerminal",
+      "args": ["test"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Example",
       "program": "${workspaceFolder}/example/index.js",
       "env": {

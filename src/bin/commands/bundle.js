@@ -1,18 +1,11 @@
 import loading from 'indicatrix'
-import { basename, relative, join } from 'path'
-import read from '@wrote/read'
-import write from '@wrote/write'
+import { relative } from 'path'
 import rm from '@wrote/rm'
-import ensurePath from '@wrote/ensure-path'
 import compiler from 'google-closure-compiler-java'
 import spawn from 'spawncommand'
-import { c } from 'erte'
 import { generateTemp } from '../../lib'
 import { makeError } from '../../lib/closure'
-
-const makeTempDir = async (temp) => {
-  await ensurePath(temp, 't')
-}
+import { getCommand, addSourceMap, updateSourceMaps } from '../../lib/lib'
 
 /**
  * Bundle the source code.
@@ -34,8 +27,6 @@ const Bundle = async (opts) => {
   } = opts
   if (!src) throw new Error('Entry file is not given.')
   if (!path) throw new Error('Output file path is not specified.')
-  await makeTempDir(tempDir)
-  const r = relative(tempDir, '')
   const args = [
     '-jar', compiler,
     '--compilation_level', level,
@@ -44,40 +35,23 @@ const Bundle = async (opts) => {
       '--create_source_map', '%outname%.map',
       '--source_map_include_content',
     ] : []),
-    '--js_output_file', join(r, path),
-    ...externs.reduce((a, e) => [...a, '--externs', join(r, e)], []),
+    ...externs.reduce((a, e) => [...a, '--externs', e], []),
+    '--js_output_file', path,
   ]
   const deps = await generateTemp(src, { tempDir })
   const Args = [...args, ...deps.reduce((acc, d) => {
     return [...acc, '--js', d]
   }, [])]
-  const { promise } = spawn('java', Args, {
-    cwd: tempDir,
-  })
-  const a = Args.join(' ')
-    .replace(/--js (\S+)/g, (m, f) => {
-      return `\n  --js ${c(f, 'green')}`
-    })
-    .replace(/--externs (\S+)/g, (m, f) => {
-      return `\n  --externs ${c(relative(r, f), 'grey')}`
-    })
-    .replace(/--js_output_file (\S+)/g, (m, f) => {
-      return `\n  --js_output_file ${c(relative(r, f), 'red')}`
-    })
+  const { promise } = spawn('java', Args)
+  const a = getCommand(Args, js => js.startsWith(tempDir) ? relative(tempDir, js) : js)
   console.log(a)
   const { stdout, stderr, code } = await loading('Running Google Closure Compiler', promise)
   if (code) throw new Error(makeError(code, stderr))
   await addSourceMap(path)
+  await updateSourceMaps(path, tempDir)
   if (stdout) console.log(stdout)
   if (stderr && !noWarnings) console.warn(stderr)
   await rm(tempDir)
-}
-
-const addSourceMap = async (path) => {
-  const name = basename(path)
-  const r = await read(path)
-  const s = `${r}\n//# sourceMappingURL=${name}.map`
-  await write(path, s)
 }
 
 export default Bundle

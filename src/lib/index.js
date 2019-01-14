@@ -71,6 +71,7 @@ export const generateTemp = async (entry, config = {}) => {
     tempDir,
   }, cache)
   const tempFiles = Object.keys(cache.cachedFiles)
+    .map(f => join(tempDir, f))
   return [...tempFiles, ...Object.keys(cache.cachedNodeModules)]
 }
 

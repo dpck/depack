@@ -2,11 +2,18 @@ import { c } from 'erte'
 
 /**
  * Create an error with color.
+ * @param {number} exitCode
+ * @param {string} se The output of the compiler.
  */
 export const makeError = (exitCode, se) => {
-  const [command, ...rest] = se.split('\n').filter(a => a)
-  const rr = rest.map(s => c(s.trim(), 'red')).join('\n')
-  const cc = c(command, 'grey')
-  const er = `Exit code ${exitCode}\n${cc}\n${rr}`
+  let end = 0
+  const warnings = se.replace(/^.+?:\d+:(?:\nOriginally at:\n.+)? WARNING - .+\n.+\n.+\n/gm, (m, i) => {
+    end = i + m.length
+    return m
+  })
+  const errors = warnings.slice(end)
+  const e = c(errors, 'red')
+  const w = c(warnings.slice(0, end), 'grey')
+  const er = `Exit code ${exitCode}\n${w}${e}`
   return er
 }
