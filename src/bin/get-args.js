@@ -2,7 +2,7 @@ import argufy from 'argufy'
 
 const args = argufy({
   'src': { command: true },
-  'analyze': { short: 'a', boolean: true },
+  'advanced': { short: 'a', boolean: true },
   'output': { short: 'o' },
   'compile': { short: 'c', boolean: true },
   'version': { short: 'v', boolean: true },
@@ -71,17 +71,17 @@ const _externs = args['externs'] || ''
  */
 const version = args['version']
 /**
- * Whether to only print package dependencies tree.
+ * Whether to enable advanced optimisation.
  * @type {boolean}
  */
-const analyze = args['analyze']
+const _advanced = args['advanced']
 /**
  * The path where to save the built file.
  * @type {string}
  */
 const output = args['output']
 
-export { src as _src, analyze as _analyze, output as _output,
+export { src as _src, _advanced, output as _output,
   version as _version, _externs, _noWarnings, _compile, _argv, _level,
   _language_in, _language_out, _node, _temp,
 }

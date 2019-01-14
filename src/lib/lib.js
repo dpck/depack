@@ -2,8 +2,7 @@ import makePromise from 'makepromise'
 import { lstat } from 'fs'
 import { c } from 'erte'
 import { basename, relative } from 'path'
-import read from '@wrote/read'
-import write from '@wrote/write'
+import { write, read } from '@wrote/wrote'
 
 /**
  * Check whether the file exists.
@@ -23,9 +22,12 @@ export const exists = async (path) => {
  * @param {(string):string} getJs The function to get the location of the js file to print.
  */
 export const getCommand = (args, getJs = js => js) => {
+  const js = []
   const a = args.join(' ')
-    .replace(/--js (\S+)/g, (m, f) => {
-      return `\n  --js ${c(getJs(f), 'green')}`
+    .replace(/--js (\S+)\s*/g, (m, f) => {
+      const j = `  --js ${c(getJs(f), 'green')}`
+      js.push(j)
+      return ''
     })
     .replace(/--externs (\S+)/g, (m, f) => {
       return `\n  --externs ${c(f, 'grey')}`
@@ -33,7 +35,8 @@ export const getCommand = (args, getJs = js => js) => {
     .replace(/--js_output_file (\S+)/g, (m, f) => {
       return `\n  --js_output_file ${c(f, 'red')}`
     })
-  return a
+  const jss = js.join('\n')
+  return `${a}\n${jss}`
 }
 
 export const addSourceMap = async (path) => {
