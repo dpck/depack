@@ -1,5 +1,3 @@
-const punycode = require('punycode')
-
 export default punycode
 export const {
   'decode': decode,

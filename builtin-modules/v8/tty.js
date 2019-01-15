@@ -1,5 +1,3 @@
-const tty = require('tty')
-
 export default tty
 export const {
   'ReadStream': ReadStream,

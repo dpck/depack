@@ -1,5 +1,3 @@
-const crypto = require('crypto')
-
 export default crypto
 export const {
   'Certificate': Certificate,

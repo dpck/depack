@@ -1,5 +1,3 @@
-const vm = require('vm')
-
 export default vm
 export const {
   'Script': Script,

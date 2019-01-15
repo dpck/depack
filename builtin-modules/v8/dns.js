@@ -1,5 +1,3 @@
-const dns = require('dns')
-
 export default dns
 export const {
   'ADDRCONFIG': ADDRCONFIG,

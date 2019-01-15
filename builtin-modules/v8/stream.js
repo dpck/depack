@@ -1,5 +1,3 @@
-const stream = require('stream')
-
 export default stream
 export const {
   'Duplex': Duplex,

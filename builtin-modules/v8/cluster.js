@@ -1,5 +1,3 @@
-const cluster = require('cluster')
-
 export default cluster
 export const {
   'SCHED_NONE': SCHED_NONE,

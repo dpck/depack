@@ -1,5 +1,3 @@
-const v8 = require('v8')
-
 export default v8
 export const {
   'DefaultDeserializer': DefaultDeserializer,

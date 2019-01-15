@@ -1,5 +1,3 @@
-const timers = require('timers')
-
 export default timers
 export const {
   'active': active,

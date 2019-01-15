@@ -1,5 +1,3 @@
-const module = require('module')
-
 export default module
 export const {
   'Module': Module,

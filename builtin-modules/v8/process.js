@@ -1,5 +1,3 @@
-const process = require('process')
-
 export default process
 export const {
   'abort': abort,

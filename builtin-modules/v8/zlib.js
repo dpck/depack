@@ -1,5 +1,3 @@
-const zlib = require('zlib')
-
 export default zlib
 export const {
   'DEFLATE': DEFLATE,

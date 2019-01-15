@@ -1,5 +1,3 @@
-const domain = require('domain')
-
 export default domain
 export const {
   'Domain': Domain,

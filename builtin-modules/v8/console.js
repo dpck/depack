@@ -1,5 +1,3 @@
-const console = require('console')
-
 export default console
 export const {
   'Console': Console,

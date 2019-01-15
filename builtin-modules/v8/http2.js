@@ -1,5 +1,3 @@
-const http2 = require('http2')
-
 export default http2
 export const {
   'Http2ServerRequest': Http2ServerRequest,

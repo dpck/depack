@@ -1,5 +1,3 @@
-const http = require('http')
-
 export default http
 export const {
   'Agent': Agent,

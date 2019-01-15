@@ -1,5 +1,3 @@
-const url = require('url')
-
 export default url
 export const {
   'URL': URL,

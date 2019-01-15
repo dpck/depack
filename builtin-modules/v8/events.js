@@ -1,5 +1,3 @@
-const events = require('events')
-
 export default events
 export const {
   'EventEmitter': EventEmitter,

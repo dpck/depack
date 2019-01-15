@@ -1,5 +1,3 @@
-const assert = require('assert')
-
 export default assert
 export const {
   'AssertionError': AssertionError,

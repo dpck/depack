@@ -1,5 +1,3 @@
-const fs = require('fs')
-
 export default fs
 export const {
   'F_OK': F_OK,

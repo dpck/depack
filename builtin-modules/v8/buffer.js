@@ -1,5 +1,3 @@
-const buffer = require('buffer')
-
 export default buffer
 export const {
   'Buffer': Buffer,

@@ -1,5 +1,3 @@
-const net = require('net')
-
 export default net
 export const {
   'Server': Server,

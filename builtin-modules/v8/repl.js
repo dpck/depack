@@ -1,5 +1,3 @@
-const repl = require('repl')
-
 export default repl
 export const {
   'REPLServer': REPLServer,

@@ -1,5 +1,3 @@
-const inspector = require('inspector')
-
 export default inspector
 export const {
   'Session': Session,

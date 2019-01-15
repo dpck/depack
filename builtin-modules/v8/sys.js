@@ -1,5 +1,3 @@
-const sys = require('sys')
-
 export default sys
 export const {
   'TextDecoder': TextDecoder,

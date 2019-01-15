@@ -1,5 +1,3 @@
-const constants = require('constants')
-
 export default constants
 export const {
   'ALPN_ENABLED': ALPN_ENABLED,

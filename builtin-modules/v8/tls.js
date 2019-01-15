@@ -1,5 +1,3 @@
-const tls = require('tls')
-
 export default tls
 export const {
   'CLIENT_RENEG_LIMIT': CLIENT_RENEG_LIMIT,

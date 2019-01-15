@@ -1,5 +1,3 @@
-const async_hooks = require('async_hooks')
-
 export default async_hooks
 export const {
   'AsyncResource': AsyncResource,

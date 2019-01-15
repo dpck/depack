@@ -1,5 +1,3 @@
-const os = require('os')
-
 export default os
 export const {
   'EOL': EOL,
