@@ -27,6 +27,11 @@ const TS = {
     const res = await Detect('test/fixture/lib/has-main.js')
     await test('detect-hasmain.json', res)
   },
+  async '!read with dot'({ test, setDir }) {
+    setDir('test/snapshot')
+    const res = await Detect('test/fixture/dot/dot.js')
+    await test('detect-dot.json', res)
+  },
 }
 
 export default TS
