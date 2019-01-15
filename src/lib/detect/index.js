@@ -22,7 +22,18 @@ export default async (path) => {
     })
     return ei == i
   })
-  return filtered
+  const f = filtered.map((ff) => {
+    const { entry, internal } = ff
+    const froms = detected
+      .filter(({ entry: e, internal: i }) => {
+        return internal == i || entry == e
+      })
+      .map(({ from }) => from)
+      .filter((el, i, a) => a.indexOf(el) == i)
+    const newF = { ...ff, from: froms }
+    return newF
+  })
+  return f
 }
 
 /**

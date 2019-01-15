@@ -17,7 +17,7 @@ const TS = {
     //   return acc
     // }, {})
   },
-  async 'filters duplicates'({ test, setDir }) {
+  async '!filters duplicates'({ test, setDir }) {
     setDir('test/snapshot')
     const res = await Detect('test/fixture/detect.js')
     await test('detect-filtered.json', res)
