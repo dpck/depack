@@ -171,6 +171,7 @@
   {
     "entry": "test/fixture/lib/node_modules/test2/index.js",
     "packageJson": "test/fixture/lib/node_modules/test2/package.json",
+    "version": "1.0.0",
     "name": "test2",
     "hasMain": true,
     "from": [
@@ -178,11 +179,13 @@
     ]
   },
   {
-    "entry": "test/fixture/lib/node_modules/test/index.mjs",
+    "entry": "test/fixture/lib/node_modules/test/module.mjs",
     "packageJson": "test/fixture/lib/node_modules/test/package.json",
+    "version": "1.0.0",
     "name": "test",
     "from": [
-      "test/fixture/lib/index.js"
+      "test/fixture/lib/index.js",
+      "test/fixture/lib/node_modules/test2/index.js"
     ]
   },
   {
@@ -190,5 +193,12 @@
     "from": [
       "test/fixture/lib/index.js"
     ]
+  },
+  {
+    "entry": "test/fixture/lib/node_modules/test2/r.js",
+    "from": [
+      "test/fixture/lib/node_modules/test2/index.js"
+    ],
+    "hasMain": true
   }
 ]

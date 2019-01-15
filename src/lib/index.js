@@ -1,7 +1,5 @@
 import { dirname, join, relative } from 'path'
-import read from '@wrote/read'
-import write from '@wrote/write'
-import ensurePath from '@wrote/ensure-path'
+import { read, write, ensurePath } from '@wrote/wrote'
 import transpileJSX from '@a-la/jsx'
 import { Replaceable } from 'restream'
 import { collect } from 'catchment'

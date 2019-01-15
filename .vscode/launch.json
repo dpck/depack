@@ -106,7 +106,8 @@
       "program": "${workspaceFolder}/src/bin/index.js",
       "env": {"DEBUG": "1"},
       "args": [
-        "t/wrote/index.js",
+        "src/bin/depack.js",
+        // "t/wrote/index.js",
         "-c",
         "-n",
         "-I", "2018"

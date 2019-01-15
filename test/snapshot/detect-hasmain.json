@@ -1,0 +1,29 @@
+[
+  {
+    "entry": "test/fixture/lib/node_modules/test/module.mjs",
+    "packageJson": "test/fixture/lib/node_modules/test/package.json",
+    "version": "1.0.0",
+    "name": "test",
+    "from": [
+      "test/fixture/lib/has-main.js",
+      "test/fixture/lib/node_modules/test2/index.js"
+    ]
+  },
+  {
+    "entry": "test/fixture/lib/node_modules/test2/index.js",
+    "packageJson": "test/fixture/lib/node_modules/test2/package.json",
+    "version": "1.0.0",
+    "name": "test2",
+    "hasMain": true,
+    "from": [
+      "test/fixture/lib/has-main.js"
+    ]
+  },
+  {
+    "entry": "test/fixture/lib/node_modules/test2/r.js",
+    "from": [
+      "test/fixture/lib/node_modules/test2/index.js"
+    ],
+    "hasMain": true
+  }
+]

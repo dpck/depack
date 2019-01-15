@@ -4,7 +4,7 @@ import Detect, { detect } from '../../../src/lib/detect'
 /** @type {Object.<string, (c: SnapshotContext)} */
 const TS = {
   context: SnapshotContext,
-  async '!detects the matches'({ test, setDir }) {
+  async 'detects the matches'({ test, setDir }) {
     setDir('test/snapshot')
     const res = await detect('test/fixture/detect.js')
     await test('detect.json', res)
@@ -17,10 +17,15 @@ const TS = {
     //   return acc
     // }, {})
   },
-  async '!filters duplicates'({ test, setDir }) {
+  async 'filters duplicates'({ test, setDir }) {
     setDir('test/snapshot')
     const res = await Detect('test/fixture/detect.js')
     await test('detect-filtered.json', res)
+  },
+  async 'has main'({ test, setDir }) {
+    setDir('test/snapshot')
+    const res = await Detect('test/fixture/lib/has-main.js')
+    await test('detect-hasmain.json', res)
   },
 }
 

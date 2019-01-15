@@ -172,6 +172,9 @@ Process.prototype.release;
  */
 Process.prototype.uptime = function () {};
 
+Process.prototype.stdout;
+Process.prototype.stderr;
+
 /**
  * @type {string}
  * @see http://nodejs.org/api/process.html#process_process_version

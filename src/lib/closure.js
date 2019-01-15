@@ -68,3 +68,24 @@ const testDepack = async (packageJson) => {
     return depack
   } catch (err) { /* */ }
 }
+
+/**
+ * Update dependencies' package.json files to point to a file and not a directory. * https://github.com/google/closure-compiler/issues/3149
+ * @param {Array<string>} deps The paths to package.json files.
+ */
+export const fixDependencies = async (deps) => {
+  await Promise.all(deps.map(async (dep) => {
+    const f = await read(dep)
+    const p = JSON.parse(f)
+    const { main } = p
+    const j = join(dirname(dep), main)
+    const e = await exists(j)
+    if (!e) throw new Error(`The main for dependency ${dep} does not exist.`)
+    if (e.isDirectory()) {
+      const newMain = join(main, 'index.js')
+      p.main = newMain
+      console.warn('Updating %s to point to a file.', dep)
+      await write(dep, JSON.stringify(p, null, 2))
+    }
+  }))
+}

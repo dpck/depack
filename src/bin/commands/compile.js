@@ -4,7 +4,7 @@ import { c } from 'erte'
 import { relative, join, dirname } from 'path'
 import { getCommand, exists, addSourceMap, removeStrict } from '../../lib/lib'
 import detect from '../../lib/detect'
-import { makeError, prepareCoreModules } from '../../lib/closure'
+import { makeError, prepareCoreModules, fixDependencies } from '../../lib/closure'
 
 const externsDeps = {
   fs: ['events', 'stream'],
@@ -18,25 +18,46 @@ const Compile = async (opts, options) => {
     ...(node ? ['--module_resolution', 'NODE'] : []),
   ]
   const detected = await detect(src)
-  const files = detected.reduce((acc, { internal, entry, packageJson }) => {
-    if (internal) {
+  const jsFiles = detected
+    .reduce((acc, { internal, entry, packageJson, hasMain }) => {
+      if (internal) return acc
+      if (hasMain) return acc
+      const f = [...(packageJson ? [packageJson] : []), entry]
+      return [...acc, ...f]
+    }, [])
+  const {
+    entries: commonJsEntries,
+    packageJsons: commonJsPackageJsons,
+  } = detected
+    .reduce((acc, { packageJson, entry, hasMain, internal }) => {
+      if (internal || !hasMain) return acc
+      const { packageJsons, entries } = acc
+      if (packageJson) packageJsons.push(packageJson)
+      entries.push(entry)
       return acc
-    }
-    const f = [...(packageJson ? [packageJson] : []), entry]
-    return [...acc, ...f]
-  }, [])
+    },{ packageJsons: [], entries: [] })
   const internals = detected
     .filter(({ internal }) => internal)
     .map(({ internal }) => internal)
-  const deps = [...files, src].filter((e, i, a) => a.indexOf(e) == i)
+  const deps = [...jsFiles, src, ...commonJsPackageJsons]
+    .filter((e, i, a) => a.indexOf(e) == i)
   const internalDeps = await prepareCoreModules({
     internals,
   })
   const externs = await getExterns(internals)
-  const allDeps = [...deps, ...internalDeps]
-  const Args = [...args, ...allDeps.reduce((acc, d) => {
-    return [...acc, '--js', d]
-  }, externs)]
+  await fixDependencies(detected.reduce((acc, { packageJson, hasMain }) => {
+    return packageJson && hasMain ? [...acc, packageJson] : acc
+  }, []))
+  const jsDeps = [...deps, ...internalDeps]
+  const Args = [
+    ...args,
+    ...jsDeps.reduce((acc, d) => {
+      return [...acc, '--js', d]
+    }, []),
+    ...commonJsEntries.reduce((acc, d) => {
+      return [...acc, d]
+    }, ['--process_common_js_modules']),
+    ...externs]
   const a = getCommand(Args)
   console.log(a)
   const { promise } = spawn('java', Args)

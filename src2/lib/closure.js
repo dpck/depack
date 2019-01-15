@@ -1,9 +1,6 @@
 import { compiler as ClosureCompiler } from 'google-closure-compiler'
-import { join, relative, dirname } from 'path'
+import { join, relative } from 'path'
 import { run, prepareCoreModules } from './closure/lib'
-import read from '@wrote/read'
-import write from '@wrote/write'
-import { checkExists } from '.'
 import { c } from 'erte'
 
 //  * @param {ClosureOptions} options
@@ -11,26 +8,6 @@ import { c } from 'erte'
 const EXTERNS_PATH = relative('', join(__dirname, '../../externs'))
 // const INTERNS = join(__dirname, '../../interns')
 // const NODE_MODULES = relative('', join(__dirname, '../../interns'))
-
-/**
- * Update dependencies' package.json files to point to a file and not a directory. * https://github.com/google/closure-compiler/issues/3149
- */
-const fixDependencies = async (deps) => {
-  await Promise.all(deps.map(async (dep) => {
-    const f = await read(dep)
-    const p = JSON.parse(f)
-    const { main } = p
-    const j = join(dirname(dep), main)
-    const e = await checkExists(j)
-    if (!e) throw new Error(`The main for dependency ${dep} does not exist.`)
-    if (e.isDirectory()) {
-      const newMain = join(main, 'index.js')
-      p.main = newMain
-      console.warn('Updating %s to point to a file.', dep)
-      await write(dep, JSON.stringify(p, null, 2))
-    }
-  }))
-}
 
 /**
  * Execute the closure compiler, and throw an error if the error code is positive.
