@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _node, _temp, _advanced } from './get-args'
+import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _node, _temp, _advanced, _noStrict } from './get-args'
 import Bundle from './commands/bundle'
 import { version } from '../../package.json'
 import Compile from './commands/compile'
@@ -55,6 +55,8 @@ const getCompilerOptions = ({
         src: _src,
         node: _node,
         noWarnings: _noWarnings,
+        output: _output,
+        noStrict: _noStrict,
       }, options)
     }
     await Bundle({

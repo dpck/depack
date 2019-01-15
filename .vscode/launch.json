@@ -44,10 +44,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch T",
-      "program": "${workspaceFolder}/t/index.js",
+      "name": "Launch Testt",
+      "program": "${workspaceFolder}/testt.js",
       "console": "integratedTerminal",
-      "args": ["test"]
     },
     {
       "type": "node",
@@ -103,11 +102,15 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Analyze",
-      "program": "${workspaceFolder}/s.js",
-      "env": {
-        "NODE_DEBUG": "depack",
-      },
+      "name": "Launch Compile",
+      "program": "${workspaceFolder}/src/bin/index.js",
+      "env": {"DEBUG": "1"},
+      "args": [
+        "t/wrote/index.js",
+        "-c",
+        "-n",
+        "-I", "2018"
+      ],
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"

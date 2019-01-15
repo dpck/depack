@@ -23,7 +23,9 @@
     "example/": "yarn e example/example.js"
   },
   "files": [
-    "build"
+    "build",
+    "builtin-modules",
+    "externs"
   ],
   "bin": {
     "depack": "src/bin/index.js"

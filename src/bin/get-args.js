@@ -6,13 +6,13 @@ const args = argufy({
   'output': { short: 'o' },
   'compile': { short: 'c', boolean: true },
   'version': { short: 'v', boolean: true },
-  'externs': { short: 'e' },
   'no-warnings': { short: 'w', boolean: true },
   'level': { short: 'l' },
   'language_in': { short: 'I' },
   'language_out': { short: 'O' },
   'node': { short: 'n', boolean: true },
   'temp': { },
+  'no-strict': { short: 's', boolean: true },
 })
 
 /**
@@ -20,6 +20,11 @@ const args = argufy({
  * @type {string}
  */
 const src = args['src']
+/**
+ * Whether to remove the `'use strict'` from the output.
+ * @type {boolean}
+ */
+const _noStrict = args['no-strict']
 /**
  * The path to the temp directory that will be created to make bundles.
  * @type {string}
@@ -83,5 +88,5 @@ const output = args['output']
 
 export { src as _src, _advanced, output as _output,
   version as _version, _externs, _noWarnings, _compile, _argv, _level,
-  _language_in, _language_out, _node, _temp,
+  _language_in, _language_out, _node, _temp, _noStrict,
 }

@@ -15,97 +15,81 @@
  */
 
 /**
- * @fileoverview Definitions for node's os module.
- * @see http://nodejs.org/api/os.html
+ * @fileoverview Definitions for node's path module.
  * @externs
+ * @see http://nodejs.org/api/path.html
  */
 
-/** @const */
-var os = {};
+/**
+ * @const
+ */
+var path = {};
 
 /**
+ * @param {string} p
  * @return {string}
  * @nosideeffects
  */
-os.tmpdir;
+path.normalize;
 
 /**
+ * @param {...string} var_args
  * @return {string}
  * @nosideeffects
  */
-os.hostname;
+path.join;
 
 /**
+ * @param {string} from
+ * @param {string=} to
  * @return {string}
  * @nosideeffects
  */
-os.type;
+path.resolve;
 
 /**
+ * @param {string} from
+ * @param {string} to
  * @return {string}
  * @nosideeffects
  */
-os.platform;
+path.relative;
 
 /**
+ * @param {string} p
  * @return {string}
  * @nosideeffects
  */
-os.arch;
+path.dirname;
 
 /**
+ * @param {string} p
+ * @param {string=} ext
  * @return {string}
  * @nosideeffects
  */
-os.release;
+path.basename;
 
 /**
- * @return {number}
+ * @param {string} p
+ * @return {string}
  * @nosideeffects
  */
-os.uptime;
+path.extname;
 
 /**
- * @return {Array.<number>}
+ * @param {string} p
+ * @return {boolean}
  * @nosideeffects
  */
-os.loadavg;
-
-/**
- * @return {number}
- * @nosideeffects
- */
-os.totalmem;
-
-/**
- * @return {number}
- * @nosideeffects
- */
-os.freemem;
-
-/**
- * @typedef {{model: string, speed: number, times: {user: number, nice: number, sys: number, idle: number, irg: number}}}
- */
-var osCpusInfo;
-
-/**
- * @return {Array.<osCpusInfo>}
- * @nosideeffects
- */
-os.cpus;
-
-/**
- * @typedef {{address: string, family: string, internal: boolean}}
- */
-var osNetworkInterfacesInfo;
-
-/**
- * @return {Object.<string,osNetworkInterfacesInfo>}
- * @nosideeffects
- */
-os.networkInterfaces;
+path.isAbsolute;
 
 /**
  * @type {string}
  */
-os.EOL;
+path.sep;
+
+/**
+ * @type {string}
+ */
+path.delimiter;

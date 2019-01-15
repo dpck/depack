@@ -24,22 +24,26 @@ const ignore = [
     const keys = Object.keys(mod).filter(notPrivate).sort()
     const data = temp(name, keys)
     // const data = `// Generated with Node ${process.version}. \n${t}`
-    const main = join(DEST, `${name}/index.js`)
-    const packageJson = join(DEST, `${name}/package.json`)
-    const pac = {
-      name,
-      module: 'index.js',
-    }
+    const main = join(DEST, `${name}.js`)
+    // const packageJson = join(DEST, `${name}/package.json`)
+    // const pac = {
+    //   name,
+    //   module: 'index.js',
+    // }
     await ensurePath(main)
     await write(main, data)
-    await write(packageJson, JSON.stringify(pac, null, 2))
+    // await write(packageJson, JSON.stringify(pac, null, 2))
   }, {})
 })()
 
 const temp = (mod, keys) => {
   return `
-export default DEPACK$${mod}
+const ${mod} = require('${mod}')
+
+export default ${mod}
 export const {
-  ${keys.join(',\n  ')},
-} = DEPACK$${mod}`.trim()
+  ${keys
+    .map(k => `'${k}': ${k}`)
+    .join(',\n  ')},
+} = ${mod}`.trim()
 }

@@ -126,11 +126,12 @@ export const findPackageJson = async (dir, name) => {
   const path = join(fold, 'package.json')
   const e = await exists(path)
   if (e) {
-    const { entry, version, packageName } = await findEntry(path)
-    if (entry === undefined)
-      throw new Error(`The package ${name} does export the module.`)
-    else if (entry === null)
+    const res = await findEntry(path)
+    if (res === undefined)
+      throw new Error(`The package ${relative('', path)} does export the module.`)
+    else if (res === null)
       throw new Error(`The exported module in package ${name} does not exist.`)
+    const { entry, version, packageName } = res
     return { entry: relative('', entry), packageJson: relative('', path), version, packageName }
   }
   if (dir == '/' && !e)

@@ -15,4 +15,4 @@ import { rm, write, read, ensurePath, readDirStructure } from '@wrote/wrote'
   } catch (err) {
     console.log(err.message)
   }
-})
+})()
