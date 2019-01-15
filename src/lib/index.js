@@ -5,7 +5,7 @@ import ensurePath from '@wrote/ensure-path'
 import transpileJSX from '@a-la/jsx'
 import { Replaceable } from 'restream'
 import { collect } from 'catchment'
-import { exists } from './lib'
+import { exists, checkIfLib } from './lib'
 
 const processFile = async (entry, config, cache) => {
   const { cachedNodeModules, cachedFiles } = cache
@@ -79,7 +79,7 @@ export const generateTemp = async (entry, config = {}) => {
  * The replacement function that adds extensions to required modules and resolves paths to packages from node_modules.
  */
 async function replacement(m, pre, from) {
-  if (/[/.]/.test(from)) {
+  if (checkIfLib(from)) {
     const dep = await resolveDependency(this.path, from)
     this.deps.push(dep)
     return `${pre}'${dep}'`

@@ -1,5 +1,6 @@
 import loading from 'indicatrix'
 import spawn from 'spawncommand'
+import { detect } from '../../lib/detect'
 import { makeError } from '../../lib/closure'
 import { getCommand } from '../../lib/lib'
 
@@ -9,7 +10,10 @@ const Compile = async (opts, options) => {
     ...options,
     ...(node ? ['--module_resolution', 'NODE'] : []),
   ]
+  const res = await detect(src)
   const deps = [src]
+  console.log(res)
+  return
   const Args = [...args, ...deps.reduce((acc, d) => {
     return [...acc, '--js', d]
   }, [])]

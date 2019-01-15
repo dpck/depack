@@ -6,13 +6,15 @@ import { write, read } from '@wrote/wrote'
 
 /**
  * Check whether the file exists.
+ * @param {string} path The path to check.
+ * @returns {import('fs').Stats|null}
  */
 export const exists = async (path) => {
   try {
-    await makePromise(lstat, path)
-    return true
+    const ls = await makePromise(lstat, path)
+    return ls
   } catch (err) {
-    return false
+    return null
   }
 }
 
@@ -56,3 +58,12 @@ export const updateSourceMaps = async (path, tempDir) => {
   const jj = JSON.stringify(j, null, 2)
   await write(map, jj)
 }
+
+/**
+ * Returns whether the dependency is a library from the package.
+ * @param {string} modName
+ * @example
+ * checkIfLib('./lib') // true
+ * checkIfLib('preact') // false
+ */
+export const checkIfLib = modName => /^[./]/.test(modName)

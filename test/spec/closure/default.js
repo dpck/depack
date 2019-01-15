@@ -1,5 +1,5 @@
 import { equal } from 'zoroaster'
-import { makeError } from '../../src/lib/closure'
+import { makeError } from '../../../src/lib/closure'
 
 const error = `
 node_modules/argufy/src/index.js:2: WARNING - Bad type annotation.

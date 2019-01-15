@@ -1,0 +1,158 @@
+import { read } from '@wrote/wrote'
+import mismatch from 'mismatch'
+import { checkIfLib, exists } from '../lib'
+import { dirname, join, relative, resolve } from 'path'
+import { builtinModules } from 'module'
+
+const RE = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm
+const RE2 = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm
+const RE3 = /^ *export\s+{(?:[^}]+?)}\s+from\s+(['"])(.+?)\1/gm
+
+export default async (path) => {
+  const detected = await detect(path)
+  const filtered = detected.filter(({ internal, entry }, i) => {
+    if (internal) {
+      const fi = detected.findIndex(({ internal: ii }) => {
+        return ii == internal
+      })
+      return fi == i
+    }
+    const ei = detected.findIndex(({ entry: e }) => {
+      return entry == e
+    })
+    return ei == i
+  })
+  return filtered
+}
+
+/**
+ * Detects the imports.
+ * @param {string} path
+ * @param {Object} cache
+ * @returns {Array<Detection>}
+ */
+export const detect = async (path, cache = {}) => {
+  if (path in cache) return []
+  cache[path] = 1
+  const source = await read(path)
+  const matches = getMatches(source)
+
+  const deps = await calculateDependencies(path, matches)
+  const d = deps.map(o => ({ ...o, from: path }))
+  const entries = deps
+    .filter(({ entry }) => entry && !(entry in cache))
+    .map(({ entry }) => entry)
+  const discovered = await entries.reduce(async (acc, entry) => {
+    const accRes = await acc
+    const res = await detect(entry, cache)
+    const r = res.map(o => ({ ...o, from: o.from ? o.from : entry }))
+    return [...accRes, ...r]
+  }, d)
+  return discovered
+}
+
+/**
+ * Expands the dependency match to include information include `package.json` and entry paths.
+ * @returns {Array<Promise<{internal: boolean, packageJson?: string, entry?: string}>}
+ */
+const calculateDependencies = async (path, matches) => {
+  const dir = dirname(path)
+  const proms = matches.map(async (name) => {
+    const internal = builtinModules.includes(name)
+    if (internal) return { internal: name }
+    const isLib = checkIfLib(name)
+    if (!isLib) {
+      const {
+        entry, packageJson, version, packageName,
+      } = await findPackageJson(dir, name)
+      return { entry, packageJson, version, name: packageName }
+    }
+    const entry = await getLibRequire(path, name)
+    return { entry }
+  })
+  return await Promise.all(proms)
+}
+
+/**
+ * Returns the path of a library file (`./lib`) that can be required by Node.js.
+ * @param {string} source The path where the module was required.
+ * @param {string} mod The name of the required module.
+ */
+export const getLibRequire = async (source, mod) => {
+  let d = join(dirname(source), mod)
+  if (mod.endsWith('/')) {
+    d = join(d, 'index.js')
+  } else {
+    const stat = await exists(d)
+    if (!stat) {
+      d = `${d}.js`
+    } else if (stat.isDirectory()) {
+      d = join(d, 'index.js')
+    }
+  }
+  return d
+}
+
+/**
+ * Returns the names of the modules imported with `import` statements.
+ */
+export const getMatches = (source) => {
+  const r = mismatch(RE, source, ['q', 'from'])
+  const r2 = mismatch(RE2, source, ['q', 'from'])
+  const r3 = mismatch(RE3, source, ['q', 'from'])
+  const res = [...r, ...r2, ...r3].map(({ from }) => from)
+  return res
+}
+
+
+/**
+ * Finds the location of the `package.json` for the given dependency in the directory, and its module file.
+ * @param {string} dir The path to the directory.
+ */
+export const findPackageJson = async (dir, name) => {
+  const fold = join(dir, 'node_modules', name)
+  const path = join(fold, 'package.json')
+  const e = await exists(path)
+  if (e) {
+    const { entry, version, packageName } = await findEntry(path)
+    if (entry === undefined)
+      throw new Error(`The package ${name} does export the module.`)
+    else if (entry === null)
+      throw new Error(`The exported module in package ${name} does not exist.`)
+    return { entry: relative('', entry), packageJson: relative('', path), version, packageName }
+  }
+  if (dir == '/' && !e)
+    throw new Error(`Package.json for module ${name} not found.`)
+  return findPackageJson(join(resolve(dir), '..'), name)
+}
+
+/** Finds the path to the entry based on package.json file. */
+export const findEntry = async (path) => {
+  const f = await read(path)
+  let mod, version, packageName
+  try {
+    ({ module: mod, version, name: packageName } = JSON.parse(f))
+  } catch (err) {
+    throw new Error(`Could not parse ${path}.`)
+  }
+  if (!mod) return undefined
+  let entry = join(dirname(path), mod)
+  const stat = await exists(entry)
+  if (!stat) return null
+  if (stat.isDirectory()) {
+    const tt = join(entry, 'index.js')
+    const e2 = await exists(tt)
+    if (!e2) return null
+    entry = tt
+  }
+  return { entry, version, packageName }
+}
+
+/**
+ * @typedef {Object} Detection
+ * @prop {string} entry The JS file to be required.
+ * @prop {string} from In which file it was required.
+ * @prop {string} packageJson The package.json file path.
+ * @prop {string} name The name of the package.
+ * @prop {boolean} internal Whether it is an internal module.
+ */

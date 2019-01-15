@@ -2,8 +2,8 @@
 import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _node, _temp, _advanced } from './get-args'
 import Bundle from './commands/bundle'
 import { version } from '../../package.json'
-import { basename, join } from 'path'
 import Compile from './commands/compile'
+import { basename, join } from 'path'
 import compiler from 'google-closure-compiler-java'
 
 if (_version) {
