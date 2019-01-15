@@ -26,7 +26,8 @@ export default async (path) => {
     const { entry, internal } = ff
     const froms = detected
       .filter(({ entry: e, internal: i }) => {
-        return internal == i || entry == e
+        if (internal) return internal == i
+        if (entry) return entry == e
       })
       .map(({ from }) => from)
       .filter((el, i, a) => a.indexOf(el) == i)

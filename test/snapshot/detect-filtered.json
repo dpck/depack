@@ -73,9 +73,6 @@
     "internal": "fs",
     "from": [
       "node_modules/@wrote/wrote/node_modules/@wrote/read/src/index.js",
-      "node_modules/catchment/src/index.js",
-      "node_modules/erotic/node_modules/@artdeco/clean-stack/src/index.js",
-      "node_modules/catchment/node_modules/@artdeco/clean-stack/src/index.js",
       "node_modules/@wrote/wrote/node_modules/@wrote/write/src/index.js",
       "node_modules/@wrote/wrote/node_modules/@wrote/ensure-path/src/index.js",
       "node_modules/@wrote/wrote/node_modules/@wrote/rm/src/index.js",
@@ -94,14 +91,7 @@
   {
     "internal": "stream",
     "from": [
-      "node_modules/@wrote/wrote/node_modules/@wrote/read/src/index.js",
-      "node_modules/catchment/src/index.js",
-      "node_modules/erotic/node_modules/@artdeco/clean-stack/src/index.js",
-      "node_modules/catchment/node_modules/@artdeco/clean-stack/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/write/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/ensure-path/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/rm/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/read-dir-structure/src/index.js"
+      "node_modules/catchment/src/index.js"
     ]
   },
   {
@@ -155,14 +145,8 @@
   {
     "internal": "os",
     "from": [
-      "node_modules/@wrote/wrote/node_modules/@wrote/read/src/index.js",
-      "node_modules/catchment/src/index.js",
       "node_modules/erotic/node_modules/@artdeco/clean-stack/src/index.js",
-      "node_modules/catchment/node_modules/@artdeco/clean-stack/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/write/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/ensure-path/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/rm/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/read-dir-structure/src/index.js"
+      "node_modules/catchment/node_modules/@artdeco/clean-stack/src/index.js"
     ]
   },
   {
@@ -179,11 +163,6 @@
   {
     "internal": "path",
     "from": [
-      "node_modules/@wrote/wrote/node_modules/@wrote/read/src/index.js",
-      "node_modules/catchment/src/index.js",
-      "node_modules/erotic/node_modules/@artdeco/clean-stack/src/index.js",
-      "node_modules/catchment/node_modules/@artdeco/clean-stack/src/index.js",
-      "node_modules/@wrote/wrote/node_modules/@wrote/write/src/index.js",
       "node_modules/@wrote/wrote/node_modules/@wrote/ensure-path/src/index.js",
       "node_modules/@wrote/wrote/node_modules/@wrote/rm/src/index.js",
       "node_modules/@wrote/wrote/node_modules/@wrote/read-dir-structure/src/index.js"
