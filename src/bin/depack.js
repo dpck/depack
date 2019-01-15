@@ -4,7 +4,8 @@ import Bundle from './commands/bundle'
 import { version } from '../../package.json'
 import Compile from './commands/compile'
 import { basename, join } from 'path'
-import compiler from 'google-closure-compiler-java'
+
+const compiler = require.resolve('google-closure-compiler-java/compiler.jar')
 
 if (_version) {
   console.log(version)

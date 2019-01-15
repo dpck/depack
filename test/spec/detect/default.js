@@ -4,7 +4,7 @@ import Detect, { detect } from '../../../src/lib/detect'
 /** @type {Object.<string, (c: SnapshotContext)} */
 const TS = {
   context: SnapshotContext,
-  async 'detects the matches'({ test, setDir }) {
+  async '!detects the matches'({ test, setDir }) {
     setDir('test/snapshot')
     const res = await detect('test/fixture/detect.js')
     await test('detect.json', res)

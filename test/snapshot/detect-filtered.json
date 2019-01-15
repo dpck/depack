@@ -169,6 +169,23 @@
     ]
   },
   {
+    "entry": "test/fixture/lib/node_modules/test2/index.js",
+    "packageJson": "test/fixture/lib/node_modules/test2/package.json",
+    "name": "test2",
+    "hasMain": true,
+    "from": [
+      "test/fixture/lib/index.js"
+    ]
+  },
+  {
+    "entry": "test/fixture/lib/node_modules/test/index.mjs",
+    "packageJson": "test/fixture/lib/node_modules/test/package.json",
+    "name": "test",
+    "from": [
+      "test/fixture/lib/index.js"
+    ]
+  },
+  {
     "entry": "test/fixture/lib/lib.js",
     "from": [
       "test/fixture/lib/index.js"

@@ -75,9 +75,9 @@ const calculateDependencies = async (path, matches) => {
     const isLib = checkIfLib(name)
     if (!isLib) {
       const {
-        entry, packageJson, version, packageName,
+        entry, packageJson, version, packageName, hasMain,
       } = await findPackageJson(dir, name)
-      return { entry, packageJson, version, name: packageName }
+      return { entry, packageJson, version, name: packageName, ...(hasMain ? { hasMain } : {}) }
     }
     const entry = await getLibRequire(path, name)
     return { entry }
@@ -131,8 +131,10 @@ export const findPackageJson = async (dir, name) => {
       throw new Error(`The package ${relative('', path)} does export the module.`)
     else if (res === null)
       throw new Error(`The exported module in package ${name} does not exist.`)
-    const { entry, version, packageName } = res
-    return { entry: relative('', entry), packageJson: relative('', path), version, packageName }
+    const { entry, version, packageName, main } = res
+    return {
+      entry: relative('', entry), packageJson: relative('', path), version, packageName, ...(main ? { hasMain: true } : {}),
+    }
   }
   if (dir == '/' && !e)
     throw new Error(`Package.json for module ${name} not found.`)
@@ -142,14 +144,15 @@ export const findPackageJson = async (dir, name) => {
 /** Finds the path to the entry based on package.json file. */
 export const findEntry = async (path) => {
   const f = await read(path)
-  let mod, version, packageName
+  let mod, version, packageName, main
   try {
-    ({ module: mod, version, name: packageName } = JSON.parse(f))
+    ({ module: mod, version, name: packageName, main } = JSON.parse(f))
   } catch (err) {
     throw new Error(`Could not parse ${path}.`)
   }
-  if (!mod) return undefined
-  let entry = join(dirname(path), mod)
+  const resolved = mod || main
+  if (!resolved) return undefined
+  let entry = join(dirname(path), resolved)
   const stat = await exists(entry)
   if (!stat) return null
   if (stat.isDirectory()) {
@@ -158,7 +161,7 @@ export const findEntry = async (path) => {
     if (!e2) return null
     entry = tt
   }
-  return { entry, version, packageName }
+  return { entry, version, packageName, main: !mod && main }
 }
 
 /**
@@ -168,4 +171,5 @@ export const findEntry = async (path) => {
  * @prop {string} packageJson The package.json file path.
  * @prop {string} name The name of the package.
  * @prop {boolean} internal Whether it is an internal module.
+ * @prop {boolean} hasMain Whether the package exports the `main` and not the `module`.
  */
