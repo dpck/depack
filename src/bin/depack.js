@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import { basename, join } from 'path'
 import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _node, _temp, _advanced, _noStrict, _verbose } from './get-args'
+import { read } from '@wrote/wrote'
 import Bundle from './commands/bundle'
 import { version } from '../../package.json'
 import Compile from './commands/compile'
 
 const compiler = require.resolve('google-closure-compiler-java/compiler.jar')
+const compilerPackage = require.resolve('google-closure-compiler-java/package.json')
 
 if (_version) {
   console.log(version)
@@ -50,6 +52,9 @@ const getCompilerOptions = ({
 
 (async () => {
   try {
+    const compilerPackageJson = await read(compilerPackage)
+    const { 'version': cv } = JSON.parse(compilerPackageJson)
+    const [compilerVersion] = cv.split('.')
     const options = getCompilerOptions({
       src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output,
     })
@@ -61,6 +66,7 @@ const getCompilerOptions = ({
         output: _output,
         noStrict: _noStrict,
         verbose: _verbose,
+        compilerVersion,
       }, options)
     }
     await Bundle({
@@ -68,6 +74,7 @@ const getCompilerOptions = ({
       output: _output,
       tempDir: _temp,
       noWarnings: _noWarnings,
+      compilerVersion,
     }, options)
   } catch (error) {
     process.env['DEBUG'] ? console.log(error.stack) : console.log(error.message)

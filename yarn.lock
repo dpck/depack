@@ -284,6 +284,11 @@ diff@3.5.0:
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
   integrity sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==
 
+diff@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.1.tgz#0c667cb467ebbb5cea7f14f135cc2dba7780a8ff"
+  integrity sha512-s2+XdvhPCOF01LRQBC8hf4vhbVmI2CGS5aZnxLJlT5FtdhPCDFq80q++zK2KlrVorVDdL5BOGZ/VfLrVtYNF+Q==
+
 difflib@~0.2.1:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/difflib/-/difflib-0.2.4.tgz#b5e30361a6db023176d562892db85940a718f47e"
@@ -357,6 +362,13 @@ erte@1.1.4:
   integrity sha1-FACokWIsWhKXC3ELLyJ6cYLA3Jw=
   dependencies:
     diff "3.5.0"
+
+erte@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/erte/-/erte-1.1.5.tgz#df13ceaf3f8f33999f03bd4da1ca3ff46b885b00"
+  integrity sha512-iU6DxSZL8GELIDdirFPxJ0jktZb7DsUoO1+liXCcXho8pNryLs3py0JxPnJ/Q3idBV3/twSXM2npnJaeF5bbrw==
+  dependencies:
+    diff "4.0.1"
 
 es5-ext@0.8.x:
   version "0.8.2"

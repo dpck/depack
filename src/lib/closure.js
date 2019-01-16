@@ -63,7 +63,7 @@ export const prepareCoreModules = async ({
 const testDepack = async (packageJson) => {
   try {
     const testPackage = await read(packageJson)
-    const { depack } = JSON.parse(testPackage)
+    const { 'depack': depack } = JSON.parse(testPackage)
     return depack
   } catch (err) { /* */ }
 }
@@ -76,7 +76,7 @@ export const fixDependencies = async (deps) => {
   await Promise.all(deps.map(async (dep) => {
     const f = await read(dep)
     const p = JSON.parse(f)
-    const { main } = p
+    const { 'main': main } = p
     const j = join(dirname(dep), main)
     const e = await exists(j)
     if (!e) throw new Error(`The main for dependency ${dep} does not exist.`)

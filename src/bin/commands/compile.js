@@ -2,8 +2,8 @@ import loading from 'indicatrix'
 import spawn from 'spawncommand'
 import { c } from 'erte'
 import { relative, join, dirname } from 'path'
-import { getCommand, exists, addSourceMap, removeStrict } from '../../lib/lib'
-import detect from '../../lib/detect'
+import { exists, addSourceMap, removeStrict } from '../../lib/lib'
+import detect, { sort, getWrapper } from '../../lib/detect'
 import { makeError, prepareCoreModules, fixDependencies } from '../../lib/closure'
 
 const externsDeps = {
@@ -13,7 +13,9 @@ const externsDeps = {
 }
 
 const Compile = async (opts, options) => {
-  const { src, noWarnings = false, node, output, noStrict, verbose } = opts
+  const { src, noWarnings = false, node, output, noStrict, verbose,
+    compilerVersion,
+  } = opts
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...options,
@@ -21,55 +23,36 @@ const Compile = async (opts, options) => {
     '--package_json_entry_names', 'module,main',
   ]
   const detected = await detect(src)
-  const jsFiles = detected
-    .reduce((acc, { internal, entry, packageJson, hasMain }) => {
-      if (internal) return acc
-      if (hasMain) return acc
-      const f = [...(packageJson ? [packageJson] : []), entry]
-      return [...acc, ...f]
-    }, [])
+  const sorted = sort(detected)
   const {
-    entries: commonJsEntries,
-    packageJsons: commonJsPackageJsons,
-  } = detected
-    .reduce((acc, { packageJson, entry, hasMain, internal }) => {
-      if (internal || !hasMain) return acc
-      const { packageJsons, entries } = acc
-      if (packageJson) packageJsons.push(packageJson)
-      entries.push(entry)
-      return acc
-    },{ packageJsons: [], entries: [] })
-  const internals = detected
-    .filter(({ internal }) => internal)
-    .map(({ internal }) => internal)
-  const deps = [...jsFiles, src, ...commonJsPackageJsons]
-    .filter((e, i, a) => a.indexOf(e) == i)
+    commonJs, commonJsPackageJsons, internals, js, packageJsons,
+  } = sorted
   const internalDeps = await prepareCoreModules({ internals })
   const externs = await getExterns(internals)
-  await fixDependencies(detected.reduce((acc, { packageJson, hasMain }) => {
-    return packageJson && hasMain ? [...acc, packageJson] : acc
-  }, []))
-  const jsDeps = [...deps, ...internalDeps]
-  const wrapper = internals
-    .map(i => {
-      const m = i == 'module' ? '_module' : i
-      return `const ${m} = r` + `equire('${i}');`
-    })
-    .join('\n') + '\n%output%'
+  await fixDependencies(commonJsPackageJsons)
+
+  const files = [src,
+    ...commonJsPackageJsons,
+    ...packageJsons,
+    ...js,
+    ...commonJs,
+    ...internalDeps,
+  ].sort((a, b) => {
+    if (a.startsWith('node_modules')) return -1
+    if (b.startsWith('node_modules')) return 1
+  })
+  const wrapper = getWrapper(internals)
+
   const Args = [
     ...args,
-    ...jsDeps.reduce((acc, d) => {
-      return [...acc, ...(verbose ? ['--js', d] : [d])]
-    }, verbose ? [] : ['--js']),
-    ...commonJsEntries.reduce((acc, d) => {
-      return [...acc, d]
-    }, commonJsEntries.length ? ['--process_common_js_modules']: []),
     ...externs,
-    ...(internals.length ? ['--output_wrapper', wrapper] : []),
+    ...(commonJs.length ? ['--process_common_js_modules'] : []),
+    ...(wrapper ? ['--output_wrapper', wrapper] : []),
+    '--js', ...files,
   ]
-  verbose ? console.log(getCommand(Args)) : printCommand(args, detected)
+  verbose ? console.log(Args.join(' ')) : printCommand(args, externs, sorted)
   const { promise } = spawn('java', Args)
-  const { stdout, stderr, code } = await loading('Running Google Closure Compiler', promise)
+  const { stdout, stderr, code } = await loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise)
   if (code) throw new Error(makeError(code, stderr))
   if (stdout) console.log(stdout)
   if (output) await addSourceMap(output)
@@ -77,22 +60,35 @@ const Compile = async (opts, options) => {
   if (stderr && !noWarnings) console.warn(c(stderr, 'grey'))
 }
 
-const printCommand = (args, deps) => {
-  const s = args.join(' ')
+const printCommand = (args, externs, sorted) => {
+  const s = [...args, ...externs].join(' ')
+    .replace(/--js_output_file (\S+)/g, (m, f) => {
+      return `--js_output_file ${c(f, 'red')}`
+    })
+    .replace(/--externs (\S+)/g, (m, f) => {
+      return `--externs ${c(f, 'grey')}`
+    })
+    .replace(/--compilation_level (\S+)/g, (m, f) => {
+      return `--compilation_level ${c(f, 'green')}`
+    })
   console.log(s)
-  const ddeps = deps.filter(({ name }) => name)
-  const bi = deps.filter(({ internal }) => internal)
-  console.log('Module Dependencies: %s',
-    ddeps.filter(({ hasMain }) => !hasMain)
-      .map(({ name }) => name).join(', '))
-  console.log('CommonJS Dependencies: %s',
-    ddeps.filter(({ hasMain }) => hasMain)
-      .map(({ name }) => name).join(', '))
-  console.log('Built-ins: %s', bi.map(({ internal }) => internal).join(', '))
-  console.log('Files: %s', deps
-    .filter(({ packageJson, entry }) => !packageJson && entry)
-    .filter(({ entry }) => !entry.startsWith('node_modules'))
-    .map(({ entry }) => entry).join(' '))
+  const {
+    commonJs, internals, js, deps,
+  } = sorted
+  const fjs = js.filter(filterNodeModule)
+  const cjs = commonJs.filter(filterNodeModule)
+  if (deps.length) console.log('%s: %s',
+    c('Dependencies', 'yellow'), deps.join(' '))
+  if (fjs.length) console.log('%s: %s',
+    c('Modules', 'yellow'), fjs.join(' '))
+  if (cjs.length) console.log('%s: %s',
+    c('CommonJS', 'yellow'), cjs.join(' '))
+  if (internals.length) console.log('%s: %s',
+    c('Built-ins', 'yellow'), internals.join(', '))
+}
+
+const filterNodeModule = (entry) => {
+  return !entry.startsWith('node_modules')
 }
 
 /**

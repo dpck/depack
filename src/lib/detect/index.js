@@ -10,28 +10,28 @@ const RE3 = /^ *export\s+{(?:[^}]+?)}\s+from\s+(['"])(.+?)\1/gm
 
 export default async (path) => {
   const detected = await detect(path)
-  const filtered = detected.filter(({ internal, entry }, i) => {
-    if (internal) {
-      const fi = detected.findIndex(({ internal: ii }) => {
-        return ii == internal
+  const filtered = detected.filter((Item, i) => {
+    if (Item.internal) {
+      const fi = detected.findIndex(IItem => {
+        return IItem.internal == Item.internal
       })
       return fi == i
     }
-    const ei = detected.findIndex(({ entry: e }) => {
-      return entry == e
+    const ei = detected.findIndex(IItem => {
+      return Item.entry == IItem.entry
     })
     return ei == i
   })
   const f = filtered.map((ff) => {
     const { entry, internal } = ff
     const froms = detected
-      .filter(({ entry: e, internal: i }) => {
-        if (internal) return internal == i
-        if (entry) return entry == e
+      .filter(Item => {
+        if (internal) return internal == Item.internal
+        if (entry) return entry == Item.entry
       })
-      .map(({ from }) => from)
+      .map(Item => Item.from)
       .filter((el, i, a) => a.indexOf(el) == i)
-    const newF = { ...ff, from: froms }
+    const newF =  { ...ff, from: froms }
     return newF
   })
   return f
@@ -54,7 +54,7 @@ export const detect = async (path, cache = {}) => {
   const deps = await calculateDependencies(path, allMatches)
   const d = deps.map(o => ({ ...o, from: path }))
   const entries = deps
-    .filter(({ entry }) => entry && !(entry in cache))
+    .filter(Item => Item.entry && !(Item.entry in cache))
   const discovered = await entries
     .reduce(async (acc, { entry, hasMain }) => {
       const accRes = await acc
@@ -122,19 +122,21 @@ export const getMatches = (source) => {
   const r = mismatch(RE, source, ['q', 'from'])
   const r2 = mismatch(RE2, source, ['q', 'from'])
   const r3 = mismatch(RE3, source, ['q', 'from'])
-  const res = [...r, ...r2, ...r3].map(({ 'from': from }) => from)
+  // destructuring in .map bug: https://github.com/google/closure-compiler/issues/3198
+  const res = [...r, ...r2, ...r3].map(a => a['from'])
   return res
 }
 
 export const getRequireMatches = (source) => {
   const m = mismatch(/(?:^|\s+)require\((['"])(.+?)\1\)/gm, source, ['q', 'from'])
-  const res = m.map(({ 'from': from }) => from)
+  const res = m.map(a => a['from'])
   return res
 }
 
 /**
  * Finds the location of the `package.json` for the given dependency in the directory, and its module file.
  * @param {string} dir The path to the directory.
+ * @param {string} name
  */
 export const findPackageJson = async (dir, name) => {
   const fold = join(dir, 'node_modules', name)
@@ -161,7 +163,7 @@ export const findEntry = async (path) => {
   const f = await read(path)
   let mod, version, packageName, main
   try {
-    ({ module: mod, version, name: packageName, main } = JSON.parse(f))
+    ({ 'module': mod, 'version': version, 'name': packageName, 'main': main } = JSON.parse(f))
   } catch (err) {
     throw new Error(`Could not parse ${path}.`)
   }
@@ -177,6 +179,50 @@ export const findEntry = async (path) => {
     entry = tt
   }
   return { entry, version, packageName, main: !mod && main }
+}
+
+/**
+ * Sorts the detected dependencies into commonJS modules, packageJsons and internals.
+ * @param {Array<Detection>} detected The detected matches
+ */
+export const sort = (detected) => {
+  const packageJsons = []
+  const commonJsPackageJsons = []
+  const commonJs = []
+  const js = []
+  const internals = []
+  const deps = []
+  detected
+    .forEach(({ packageJson, hasMain, name, entry, internal }) => {
+      if (internal) return internals.push(internal)
+
+      if (packageJson && hasMain)
+        commonJsPackageJsons.push(packageJson)
+      else if (packageJson) packageJsons.push(packageJson)
+      if (entry && hasMain) commonJs.push(entry)
+      else if (entry) js.push(entry)
+      if (name) deps.push(name)
+    })
+  return { commonJsPackageJsons,
+    packageJsons, commonJs, js, internals, deps }
+}
+
+/**
+ * Gets the wrapper to for the output to enable requiring Node.js modules.
+ * @param {Array<string>} internals The list of internal modules used in the program.
+ * @example
+ * const fs = require('fs');
+ * const _module = require('module');
+ */
+export const getWrapper = (internals) => {
+  if (!internals.length) return
+  const wrapper = internals
+    .map(i => {
+      const m = i == 'module' ? '_module' : i
+      return `const ${m} = r` + `equire('${i}');` // prevent
+    })
+    .join('\n') + '\n%output%'
+  return wrapper
 }
 
 /**
