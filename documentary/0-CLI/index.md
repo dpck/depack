@@ -8,12 +8,10 @@ depack -h
 
 %FORK src/bin --help%
 
-### The Common Flags
-
 _Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
 
 %TABLE-MACRO Usage
-  --[$1](t)\, `-$2`, $3
+  `--$1`\, `-$2`, $3
 %
 
 ```table Usage

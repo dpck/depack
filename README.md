@@ -12,15 +12,6 @@ yarn add -E depack
 
 - [Table Of Contents](#table-of-contents)
 - [**CLI**](#cli)
-  * [output](#output)
-  * [language_in](#language_in)
-  * [language_out](#language_out)
-  * [level](#level)
-  * [advanced](#advanced)
-  * [no-warnings](#no-warnings)
-  * [verbose](#verbose)
-  * [version](#version)
-  * [help](#help)
 - [Bundle Mode](#bundle-mode)
 - [Compile Mode](#compile-mode)
   * [Usage](#usage)
@@ -68,22 +59,20 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
     depack source.js -c -o bundle.js -I 2018 -O 2018
 ```
 
-### The Common Flags
-
 _Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
 
 
-|           Flag            |                                                                                    Description                                                                                    |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| --<a name="output">output</a>, `-o`       | The output path. Will print to `STDOUT` when not specified.                                                                                         |
-| --<a name="language_in">language_in</a>, `-I`  | The version of the language of the input file. Analogues to the original Closure flag, but supports passing just the year to set the ECMA version, e.g., `-I 2018` is acceptable. |
-| --<a name="language_out">language_out</a>, `-O` | The version of the language of the output file. The year can also be passed.                                                                                                      |
-| --<a name="level">level</a>, `-l`        | The optimisation level, which is the same as passing the Closure's `-O` flag. Can be `WHITESPACE`, `SIMPLE` and `ADVANCED`. |
-| --<a name="advanced">advanced</a>, `-a`     | Sets the optimisation level to `ADVANCED`, i.e., the shortcut for `--level ADVANCED`                                             |
-| --<a name="no-warnings">no-warnings</a>, `-w`  | Suppresses the warnings.                                                                                                                                                          |
-| --<a name="verbose">verbose</a>, `-V`      | Prints the raw command line arguments passed to the compiler.                                                                                                                     |
-| --<a name="version">version</a>, `-v`      | Displays the _Depack_ version.                                                                                                                                                    |
-| --<a name="help">help</a>, `-h`         | Show the help information about the usage.                                                                                                                                        |
+|          Flag          |                                                                                    Description                                                                                    |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--output`, `-o`       | The output path. Will print to `STDOUT` when not specified.                                                                                         |
+| `--language_in`, `-I`  | The version of the language of the input file. Analogues to the original Closure flag, but supports passing just the year to set the ECMA version, e.g., `-I 2018` is acceptable. |
+| `--language_out`, `-O` | The version of the language of the output file. The year can also be passed.                                                                                                      |
+| `--level`, `-l`        | The optimisation level, which is the same as passing the Closure's `-O` flag. Can be `WHITESPACE`, `SIMPLE` and `ADVANCED`. |
+| `--advanced`, `-a`     | Sets the optimisation level to `ADVANCED`, i.e., the shortcut for `--level ADVANCED`                                            |
+| `--no-warnings`, `-w`  | Suppresses the warnings.                                                                                                                                                          |
+| `--verbose`, `-V`      | Prints the raw command line arguments passed to the compiler.                                                                                                                     |
+| `--version`, `-v`      | Displays the _Depack_ version.                                                                                                                                                    |
+| `--help`, `-h`         | Show the help information about the usage.                                                                                                                                        |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
