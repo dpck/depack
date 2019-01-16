@@ -15,7 +15,6 @@ yarn add -E depack
 - [Bundle Mode](#bundle-mode)
 - [Compile Mode](#compile-mode)
   * [Usage](#usage)
-    * [no-strict](#no-strict)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -203,9 +202,10 @@ const l = async() => {
 There are _Depack_ specific flags that can be passed when compiling a Node.JS executable. These are:
 
 
-|        compile         |                           c                            | Enables the compilation mode. |
-| ---------------------- | ------------------------------------------------------ |
-| --<a name="no-strict">no-strict</a>, `-s` | Removes the `'use strict';` statement from the output. |
+|        Flag         |                      Description                       |
+| ------------------- | ------------------------------------------------------ |
+| `--compile`, `-c`   | Enables the compilation mode.                          |
+| `--no-strict`, `-s` | Removes the `'use strict';` statement from the output. |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
 

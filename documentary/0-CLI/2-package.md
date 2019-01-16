@@ -50,12 +50,13 @@ depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
 
 There are _Depack_ specific flags that can be passed when compiling a Node.JS executable. These are:
 
-%TABLE-MACRO Usage
-  --[$1](t)\, `-$2`, $3
+%TABLE-MACRO Usage2
+  `--$1`\, `-$2`, $3
 %
 
-```table Usage
+```table Usage2
 [
+  ["Flag", "Description"],
   ["compile", "c", "Enables the compilation mode."],
   ["no-strict", "s", "Removes the `'use strict';` statement from the output."]
 ]
