@@ -1,7 +1,7 @@
 {
   "name": "depack",
   "version": "0.0.1-alpha",
-  "description": "Unpackager Of Dependencies To Create \"Zero-Dependency Build\" With Closure.",
+  "description": "Front-End Code and Node.js Package Bundler With Google Closure Compiler.",
   "main": "build",
   "scripts": {
     "t": "zoroaster -a -t 60000",
@@ -30,14 +30,21 @@
     "externs"
   ],
   "bin": {
-    "depack": "src/bin/index.js"
+    "depack": "build/depack.js",
+    "depack-dev": "src/bin/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/artdecocode/depack.git"
   },
   "keywords": [
-    "depack"
+    "depack",
+    "packager",
+    "bundler",
+    "frontend",
+    "webpack",
+    "rollup",
+    "browserify"
   ],
   "author": "Anton <anton@adc.sh>",
   "license": "MIT",

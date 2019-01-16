@@ -50,7 +50,7 @@ export const addSourceMap = async (path) => {
 
 export const removeStrict = async (path) => {
   const r = await read(path)
-  const s = r.replace(/^'use strict';/, ' '.repeat(13))
+  const s = r.replace(/^'use strict';/m, ' '.repeat(13))
   await write(path, s)
 }
 

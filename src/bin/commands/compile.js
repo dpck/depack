@@ -13,13 +13,13 @@ const externsDeps = {
 }
 
 const Compile = async (opts, options) => {
-  const { src, noWarnings = false, node, output, noStrict, verbose,
+  const { src, noWarnings = false, output, noStrict, verbose,
     compilerVersion,
   } = opts
   if (!src) throw new Error('Source is not given.')
   const args = [
     ...options,
-    ...(node ? ['--module_resolution', 'NODE'] : []),
+    '--module_resolution', 'NODE',
     '--package_json_entry_names', 'module,main',
   ]
   const detected = await detect(src)
@@ -52,7 +52,9 @@ const Compile = async (opts, options) => {
   ]
   verbose ? console.log(Args.join(' ')) : printCommand(args, externs, sorted)
   const { promise } = spawn('java', Args)
-  const { stdout, stderr, code } = await loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise)
+  const { stdout, stderr, code } = await loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise, {
+    writable: process.stderr,
+  })
   if (code) throw new Error(makeError(code, stderr))
   if (stdout) console.log(stdout)
   if (output) await addSourceMap(output)

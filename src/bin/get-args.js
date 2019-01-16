@@ -3,6 +3,7 @@ import argufy from 'argufy'
 const args = argufy({
   'src': { command: true },
   'advanced': { short: 'a', boolean: true },
+  'help': { short: 'h', boolean: true },
   'output': { short: 'o' },
   'compile': { short: 'c', boolean: true },
   'version': { short: 'v', boolean: true },
@@ -21,6 +22,11 @@ const args = argufy({
  * @type {string}
  */
 const src = args['src']
+/**
+ * Whether to print help and exit.
+ * @type {boolean}
+ */
+const _help = args['help']
 /**
  * Whether to remove the `'use strict'` from the output.
  * @type {boolean}
@@ -71,11 +77,7 @@ const _compile = args['compile']
  * @type {boolean}
  */
 const _noWarnings = args['no-warnings']
-/**
- * The comma-separated list of extern paths.
- * @type {string}
- */
-const _externs = args['externs'] || ''
+
 /**
  * The version.
  * @type {boolean}
@@ -93,6 +95,6 @@ const _advanced = args['advanced']
 const output = args['output']
 
 export { src as _src, _advanced, output as _output,
-  version as _version, _externs, _noWarnings, _compile, _argv, _level,
-  _language_in, _language_out, _node, _temp, _noStrict, _verbose,
+  version as _version, _noWarnings, _compile, _argv, _level,
+  _language_in, _language_out, _node, _temp, _noStrict, _verbose, _help,
 }

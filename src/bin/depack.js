@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import { basename, join } from 'path'
-import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _node, _temp, _advanced, _noStrict, _verbose } from './get-args'
+import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _help } from './get-args'
 import { read } from '@wrote/wrote'
 import Bundle from './commands/bundle'
+import getUsage from './usage'
 import { version } from '../../package.json'
 import Compile from './commands/compile'
 
@@ -11,6 +12,10 @@ const compilerPackage = require.resolve('google-closure-compiler-java/package.js
 
 if (_version) {
   console.log(version)
+  process.exit(0)
+}
+if (_help) {
+  console.log(getUsage())
   process.exit(0)
 }
 
@@ -61,7 +66,6 @@ const getCompilerOptions = ({
     if (_compile) {
       return await Compile({
         src: _src,
-        node: _node,
         noWarnings: _noWarnings,
         output: _output,
         noStrict: _noStrict,
