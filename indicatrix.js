@@ -1,3 +1,0 @@
-'use strict';(async function(a,b,e={}){const {interval:h=250,writable:g=process.stdout}=e;b="function"==typeof b?b():b;const c=g.write.bind(g);let d=1,f=`${a}${".".repeat(d)}`;c(f);e=setInterval(()=>{d=(d+1)%4;f=`${a}${".".repeat(d)}`;c(`\r${" ".repeat(a.length+3)}\r`);c(f)},h);try{return await b}finally{clearInterval(e),c(`\r${" ".repeat(a.length+3)}\r`)}})("Code is loading",new Promise((a)=>setTimeout(a,1E4)));
-
-//# sourceMappingURL=indicatrix.js.map
