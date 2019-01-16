@@ -1,27 +1,27 @@
 /** @const */
-var module = {}
+var _module = {}
 
 /** @type {Array<string>} */
-module.builtinModules
+_module.builtinModules
 
 /** @type {Array<string>} */
-module.globalPaths
+_module.globalPaths
 
 /** @type {string} */
-module.wrapper
+_module.wrapper
 
 /** @type {string} */
-module.wrapper
+_module.wrapper
 
 /**
  * @return {void}
  */
-module.runMain
+_module.runMain
 
-module.Module
+_module.Module
 
 /**
  * @param {string} script
  * @return {string}
  */
-module.wrap
+_module.wrap

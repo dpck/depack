@@ -45,8 +45,16 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Testt",
-      "program": "${workspaceFolder}/testt.js",
+      "program": "${workspaceFolder}/depack.js",
+      "args": [
+        "src/bin/depack.js",
+        "-c", "-n", "-I", "2018", "O", "2017", "-V", "-a", "-o",
+        "depack1.js", "-w"
+      ],
       "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     },
     {
       "type": "node",
@@ -110,7 +118,10 @@
         // "t/wrote/index.js",
         "-c",
         "-n",
-        "-I", "2018"
+        "-I", "2018",
+        "-o", "depack.js",
+        "--package_json_entry_names", "module,main",
+        "-O", "2017"
       ],
       "console": "integratedTerminal",
       "skipFiles": [

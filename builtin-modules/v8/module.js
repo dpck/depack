@@ -1,4 +1,4 @@
-export default module
+export default _module
 export const {
   'Module': Module,
   'builtinModules': builtinModules,
@@ -6,4 +6,4 @@ export const {
   'runMain': runMain,
   'wrap': wrap,
   'wrapper': wrapper,
-} = module
+} = _module

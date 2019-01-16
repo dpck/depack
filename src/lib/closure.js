@@ -9,15 +9,14 @@ import { exists } from './lib'
  * @param {string} se The output of the compiler.
  */
 export const makeError = (exitCode, se) => {
-  let end = 0
-  const warnings = se.replace(/^.+?:\d+:(?:\nOriginally at:\n.+)? WARNING - .+\n.+\n.+\n/gm, (m, i) => {
-    end = i + m.length
-    return m
-  })
-  const errors = warnings.slice(end)
-  const e = c(errors, 'red')
-  const w = c(warnings.slice(0, end), 'grey')
-  const er = `Exit code ${exitCode}\n${w}${e}`
+  const r = se.split('\n\n')
+  const s = r.map((t) => {
+    const warn = /^.+?:\d+:(?:\s*Originally at:\s*.+?)? WARNING -/.test(t)
+    if (warn) return c(t, 'grey')
+    return c(t, 'red')
+  }).join('\n\n')
+
+  const er = `Exit code ${exitCode}\n${s}`
   return er
 }
 

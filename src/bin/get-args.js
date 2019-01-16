@@ -13,6 +13,7 @@ const args = argufy({
   'node': { short: 'n', boolean: true },
   'temp': { },
   'no-strict': { short: 's', boolean: true },
+  'verbose': { short: 'V', boolean: true },
 })
 
 /**
@@ -25,6 +26,11 @@ const src = args['src']
  * @type {boolean}
  */
 const _noStrict = args['no-strict']
+/**
+ * Print the exact command.
+ * @type {boolean}
+ */
+const _verbose = args['verbose']
 /**
  * The path to the temp directory that will be created to make bundles.
  * @type {string}
@@ -54,7 +60,7 @@ const _level = args['level']
  * Any additional arguments.
  * @type {Array<string>}
  */
-const _argv = args['_argv']
+const _argv = args._argv
 /**
  * Run the compiler with the manually passed arguments
  * @type {boolean}
@@ -88,5 +94,5 @@ const output = args['output']
 
 export { src as _src, _advanced, output as _output,
   version as _version, _externs, _noWarnings, _compile, _argv, _level,
-  _language_in, _language_out, _node, _temp, _noStrict,
+  _language_in, _language_out, _node, _temp, _noStrict, _verbose,
 }

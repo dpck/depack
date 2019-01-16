@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { basename, join } from 'path'
-import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _node, _temp, _advanced, _noStrict } from './get-args'
+import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _node, _temp, _advanced, _noStrict, _verbose } from './get-args'
 import Bundle from './commands/bundle'
 import { version } from '../../package.json'
 import Compile from './commands/compile'
@@ -36,7 +36,9 @@ const getCompilerOptions = ({
     options.push('--language_out', lang)
   }
   if (sourceMap) {
-    options.push('--create_source_map', '%outname%.map', '--source_map_include_content')
+    options.push('--create_source_map', '%outname%.map',
+      // '--source_map_include_content'
+    )
   }
   options.push(...argv)
   if (_output) {
@@ -49,7 +51,7 @@ const getCompilerOptions = ({
 (async () => {
   try {
     const options = getCompilerOptions({
-      src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced,
+      src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output,
     })
     if (_compile) {
       return await Compile({
@@ -58,6 +60,7 @@ const getCompilerOptions = ({
         noWarnings: _noWarnings,
         output: _output,
         noStrict: _noStrict,
+        verbose: _verbose,
       }, options)
     }
     await Bundle({
@@ -66,7 +69,7 @@ const getCompilerOptions = ({
       tempDir: _temp,
       noWarnings: _noWarnings,
     }, options)
-  } catch ({ message, stack }) {
-    process.env.DEBUG ? console.log(stack) : console.log(message)
+  } catch (error) {
+    process.env['DEBUG'] ? console.log(error.stack) : console.log(error.message)
   }
 })()

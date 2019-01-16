@@ -1,4 +1,3 @@
-// import { ForkOptions } from 'child_process'
 /*
  * Copyright 2012 The Closure Compiler Authors.
  *
@@ -23,70 +22,60 @@
  * @see https://github.com/joyent/node/blob/master/lib/child_process.js
  */
 
-// those need require programmatically
-// var events = require('events')
-// var stream = require('stream')
-
 /**
  * @const
  */
-var DEPACK$child_process = {}
+var child_process = {}
 
 /**
  * @constructor
  * @param {...*} var_args
  * @extends events.EventEmitter
  */
-DEPACK$child_process.ChildProcess = function(var_args) {} // eslint-disable-line
-// Private?
+child_process.ChildProcess = function(var_args) {} // Private?
 
 /**
  * @type {stream.ReadableStream}
  */
-DEPACK$child_process.ChildProcess.prototype.stdin
+child_process.ChildProcess.prototype.stdin
 
 /**
  * @type {stream.WritableStream}
  */
-DEPACK$child_process.ChildProcess.prototype.stdout
+child_process.ChildProcess.prototype.stdout
 
 /**
  * @type {stream.WritableStream}
  */
-DEPACK$child_process.ChildProcess.prototype.stderr
+child_process.ChildProcess.prototype.stderr
 
 /**
  * @type {number}
  */
-DEPACK$child_process.ChildProcess.prototype.pid
+child_process.ChildProcess.prototype.pid
 
 /**
  * @param {string=} signal
  * @return {void}
  */
-DEPACK$child_process.ChildProcess.prototype.kill
+child_process.ChildProcess.prototype.kill
 
 /**
  * @param {Object.<string,*>} message
  * @param {*} sendHandle
  * @return {void}
  */
-DEPACK$child_process.ChildProcess.prototype.send
+child_process.ChildProcess.prototype.send
 
 /**
  * @return {void}
  */
-DEPACK$child_process.ChildProcess.prototype.disconnect
+child_process.ChildProcess.prototype.disconnect
 
 /**
  * @typedef {{cwd: string, stdio: (Array|string), customFds: Array, env: Object.<string,*>, detached: boolean, uid: number, gid: number, encoding: string, timeout: number, maxBuffer: number, killSignal: string}}
  */
-DEPACK$child_process.Options
-
-/**
- * @typedef {{cwd: string, env: Object.<string,*>, execPath: string, execArgv: Array<string>, silent: boolean, stdio: (Array|string), windowsVerbatimArguments: boolean, uid: number, gid: number}}
- */
-DEPACK$child_process.ForkOptions
+child_process.Options
 
 /**
  * @param {string} command
@@ -94,7 +83,7 @@ DEPACK$child_process.ForkOptions
  * @param {child_process.Options=} options
  * @return {child_process.ChildProcess}
  */
-DEPACK$child_process.ChildProcess.spawn
+child_process.ChildProcess.spawn
 
 /**
  * @param {string} command
@@ -102,14 +91,14 @@ DEPACK$child_process.ChildProcess.spawn
  * @param {function(Error, Buffer, Buffer)=} callback
  * @return {child_process.ChildProcess}
  */
-DEPACK$child_process.exec
+child_process.exec
 
 /**
  * @param {string} command
  * @param {child_process.Options} options
  * @return {!Buffer|string}
  */
-DEPACK$child_process.execSync
+child_process.execSync
 
 /**
  * @param {string} file
@@ -118,7 +107,7 @@ DEPACK$child_process.execSync
  * @param {function(Error, Buffer, Buffer)} callback
  * @return {child_process.ChildProcess}
  */
-DEPACK$child_process.execFile
+child_process.execFile
 
 /**
  * @param {string} file
@@ -126,12 +115,12 @@ DEPACK$child_process.execFile
  * @param {child_process.Options} options
  * @return {!Buffer|string}
  */
-DEPACK$child_process.execFileSync
+child_process.execFileSync
 
 /**
  * @param {string} modulePath
  * @param {Array.<string>=} args
- * @param {child_process.ForkOptions=} options
+ * @param {child_process.Options=} options
  * @return {child_process.ChildProcess}
  */
-DEPACK$child_process.fork
+child_process.fork

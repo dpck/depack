@@ -37,13 +37,12 @@ const ignore = [
 })()
 
 const temp = (mod, keys) => {
+  const m = mod != 'module' ? mod : `_${mod}`
   return `
-const ${mod} = require('${mod}')
-
-export default ${mod}
+export default ${m}
 export const {
   ${keys
     .map(k => `'${k}': ${k}`)
     .join(',\n  ')},
-} = ${mod}`.trim()
+} = ${m}`.trim()
 }

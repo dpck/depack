@@ -72,7 +72,9 @@ export const detect = async (path, cache = {}) => {
 
 /**
  * Expands the dependency match to include information include `package.json` and entry paths.
- * @returns {Array<Promise<{internal: boolean, packageJson?: string, entry?: string}>}
+ * @param {string} path The path to the file.
+ * @param {Array<string>} matches The matches.
+ * @returns {Array<Promise<{internal?: string, packageJson?: string, entry?: string}>}
  */
 const calculateDependencies = async (path, matches) => {
   const dir = dirname(path)
@@ -120,13 +122,13 @@ export const getMatches = (source) => {
   const r = mismatch(RE, source, ['q', 'from'])
   const r2 = mismatch(RE2, source, ['q', 'from'])
   const r3 = mismatch(RE3, source, ['q', 'from'])
-  const res = [...r, ...r2, ...r3].map(({ from }) => from)
+  const res = [...r, ...r2, ...r3].map(({ 'from': from }) => from)
   return res
 }
 
 export const getRequireMatches = (source) => {
   const m = mismatch(/(?:^|\s+)require\((['"])(.+?)\1\)/gm, source, ['q', 'from'])
-  const res = m.map(({ from }) => from)
+  const res = m.map(({ 'from': from }) => from)
   return res
 }
 
@@ -183,6 +185,6 @@ export const findEntry = async (path) => {
  * @prop {string} from In which file it was required.
  * @prop {string} packageJson The package.json file path.
  * @prop {string} name The name of the package.
- * @prop {boolean} internal Whether it is an internal module.
+ * @prop {string} internal If it is an internal NodeJS module, contains its name.
  * @prop {boolean} hasMain Whether the package exports the `main` and not the `module`.
  */

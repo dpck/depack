@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@a-la/import": "1.7.0",
-    "@a-la/jsx": "1.1.3",
+    "@a-la/jsx": "1.1.4",
     "@a-la/markers": "1.0.3",
     "@wrote/wrote": "1.1.0",
     "argufy": "1.3.2",

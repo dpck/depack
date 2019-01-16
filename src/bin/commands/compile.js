@@ -9,13 +9,16 @@ import { makeError, prepareCoreModules, fixDependencies } from '../../lib/closur
 const externsDeps = {
   fs: ['events', 'stream'],
   stream: ['events'],
+  child_process: ['events', 'stream'],
 }
 
 const Compile = async (opts, options) => {
-  const { src, noWarnings = false, node, output, noStrict } = opts
+  const { src, noWarnings = false, node, output, noStrict, verbose } = opts
+  if (!src) throw new Error('Source is not given.')
   const args = [
     ...options,
     ...(node ? ['--module_resolution', 'NODE'] : []),
+    '--package_json_entry_names', 'module,main',
   ]
   const detected = await detect(src)
   const jsFiles = detected
@@ -41,32 +44,55 @@ const Compile = async (opts, options) => {
     .map(({ internal }) => internal)
   const deps = [...jsFiles, src, ...commonJsPackageJsons]
     .filter((e, i, a) => a.indexOf(e) == i)
-  const internalDeps = await prepareCoreModules({
-    internals,
-  })
+  const internalDeps = await prepareCoreModules({ internals })
   const externs = await getExterns(internals)
   await fixDependencies(detected.reduce((acc, { packageJson, hasMain }) => {
     return packageJson && hasMain ? [...acc, packageJson] : acc
   }, []))
   const jsDeps = [...deps, ...internalDeps]
+  const wrapper = internals
+    .map(i => {
+      const m = i == 'module' ? '_module' : i
+      return `const ${m} = r` + `equire('${i}');`
+    })
+    .join('\n') + '\n%output%'
   const Args = [
     ...args,
     ...jsDeps.reduce((acc, d) => {
-      return [...acc, '--js', d]
-    }, []),
+      return [...acc, ...(verbose ? ['--js', d] : [d])]
+    }, verbose ? [] : ['--js']),
     ...commonJsEntries.reduce((acc, d) => {
       return [...acc, d]
-    }, ['--process_common_js_modules']),
-    ...externs]
-  const a = getCommand(Args)
-  console.log(a)
+    }, commonJsEntries.length ? ['--process_common_js_modules']: []),
+    ...externs,
+    ...(internals.length ? ['--output_wrapper', wrapper] : []),
+  ]
+  verbose ? console.log(getCommand(Args)) : printCommand(args, detected)
   const { promise } = spawn('java', Args)
   const { stdout, stderr, code } = await loading('Running Google Closure Compiler', promise)
   if (code) throw new Error(makeError(code, stderr))
   if (stdout) console.log(stdout)
-  await addSourceMap(output)
+  if (output) await addSourceMap(output)
   if (noStrict) await removeStrict(output)
   if (stderr && !noWarnings) console.warn(c(stderr, 'grey'))
+}
+
+const printCommand = (args, deps) => {
+  const s = args.join(' ')
+  console.log(s)
+  const ddeps = deps.filter(({ name }) => name)
+  const bi = deps.filter(({ internal }) => internal)
+  console.log('Module Dependencies: %s',
+    ddeps.filter(({ hasMain }) => !hasMain)
+      .map(({ name }) => name).join(', '))
+  console.log('CommonJS Dependencies: %s',
+    ddeps.filter(({ hasMain }) => hasMain)
+      .map(({ name }) => name).join(', '))
+  console.log('Built-ins: %s', bi.map(({ internal }) => internal).join(', '))
+  console.log('Files: %s', deps
+    .filter(({ packageJson, entry }) => !packageJson && entry)
+    .filter(({ entry }) => !entry.startsWith('node_modules'))
+    .map(({ entry }) => entry).join(' '))
 }
 
 /**
