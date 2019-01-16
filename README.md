@@ -11,14 +11,25 @@ yarn add -E depack
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
-- [CLI](#cli)
+- [**CLI**](#cli)
+  * [output](#output)
+  * [language_in](#language_in)
+  * [language_out](#language_out)
+  * [level](#level)
+  * [advanced](#advanced)
+  * [no-warnings](#no-warnings)
+  * [verbose](#verbose)
+  * [version](#version)
+  * [help](#help)
 - [Bundle Mode](#bundle-mode)
 - [Compile Mode](#compile-mode)
+  * [Usage](#usage)
+    * [no-strict](#no-strict)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
 
-## CLI
+## **CLI**
 
 The package `depack` can be used from the command line interface to create bundles or compiled packages for the given entry file.
 
@@ -54,8 +65,25 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
   Example:
 
-    depack source.js -c -o bundle.js -n -I 2018 -O 2018
+    depack source.js -c -o bundle.js -I 2018 -O 2018
 ```
+
+### The Common Flags
+
+_Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
+
+
+|           Flag            |                                                                                    Description                                                                                    |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| --<a name="output">output</a>, `-o`       | The output path. Will print to `STDOUT` when not specified.                                                                                         |
+| --<a name="language_in">language_in</a>, `-I`  | The version of the language of the input file. Analogues to the original Closure flag, but supports passing just the year to set the ECMA version, e.g., `-I 2018` is acceptable. |
+| --<a name="language_out">language_out</a>, `-O` | The version of the language of the output file. The year can also be passed.                                                                                                      |
+| --<a name="level">level</a>, `-l`        | The optimisation level, which is the same as passing the Closure's `-O` flag. Can be `WHITESPACE`, `SIMPLE` and `ADVANCED`. |
+| --<a name="advanced">advanced</a>, `-a`     | Sets the optimisation level to `ADVANCED`, i.e., the shortcut for `--level ADVANCED`                                             |
+| --<a name="no-warnings">no-warnings</a>, `-w`  | Suppresses the warnings.                                                                                                                                                          |
+| --<a name="verbose">verbose</a>, `-V`      | Prints the raw command line arguments passed to the compiler.                                                                                                                     |
+| --<a name="version">version</a>, `-v`      | Displays the _Depack_ version.                                                                                                                                                    |
+| --<a name="help">help</a>, `-h`         | Show the help information about the usage.                                                                                                                                        |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
@@ -67,11 +95,11 @@ The bundle mode is used to create front-end bundles. It discovers all imported d
 
 ## Compile Mode
 
-The **compile** mode is used to create Node.JS executable binaries. This is useful when a program might have many dependencies and it is desirable to publish the package without specifying any of them in the `"dependencies"` field of `package.json` to speed up the install time and reduce the overall linking time in the package.
+The **compile** mode is used to create Node.JS executable binaries. This is useful when a program might have many dependencies and it is desirable to publish the package without specifying any of them in the `"dependencies"` field of the `package.json` to speed up the install time and reduce the overall linking time in the package.
 
 _Depack_ will recursively scan the files to detect `import from` and `export from` statements to construct the dependency list since the Google Closure Compile requires to pass all files (both source and paths to `package.json`s) used in compilation as arguments. Whenever an external dependency is detected, its `package.json` is inspected to find out either the `module` or `main` fields. In case when the `main` is found, the additional `--process_common_js_modules` will be set.
 
-The main problem which _Depack_ solves is allowing to require internal Node.JS modules, e.g., `import { createReadStream } from fs`. Traditionally, this was impossible because the compiler does not know about this modules and there is no way to pass the location of their `package.json` files. The strategy adopted by this software is to create proxies for internal packages in `node_modules` folder, for example:
+The main problem which _Depack_ solves is allowing to require internal Node.JS modules, e.g., `import { createReadStream } from 'fs'`. Traditionally, this was impossible because the compiler does not know about these modules and there is no way to pass the location of their `package.json` files. The strategy adopted by this software is to create proxies for internal packages in `node_modules` folder, for example:
 
 ```js
 export default child_process
@@ -97,7 +125,7 @@ const _module = require('module'); // special case
 %output%
 ```
 
-There is another step which involves patching the dependencies which specify their `main` field as the path to the directory rather than the file, which [GCL does not understand](https://github.com/google/closure-compiler/issues/3149).
+There is another step which involves patching the dependencies which specify their `main` and `module` fields as the path to the directory rather than the file, which [GCL does not understand](https://github.com/google/closure-compiler/issues/3149).
 
 Put all together, to compile the following file that contains different kinds of modules:
 
@@ -180,6 +208,15 @@ const l = async() => {
   await m();
 })();
 ```
+
+### Usage
+
+There are _Depack_ specific flags that can be passed when compiling a Node.JS executable. These are:
+
+
+|        compile         |                           c                            | Enables the compilation mode. |
+| ---------------------- | ------------------------------------------------------ |
+| --<a name="no-strict">no-strict</a>, `-s` | Removes the `'use strict';` statement from the output. |
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
 
