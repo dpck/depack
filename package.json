@@ -74,5 +74,8 @@
     "usually": "1.1.0",
     "yarn-s": "1.1.0",
     "zoroaster": "3.6.6"
+  },
+  "peerDependencies": {
+    "google-closure-compiler-java": "*"
   }
 }
