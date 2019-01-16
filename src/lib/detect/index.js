@@ -51,7 +51,13 @@ export const detect = async (path, cache = {}) => {
   const requireMatches = getRequireMatches(source)
   const allMatches = [...matches, ...requireMatches]
 
-  const deps = await calculateDependencies(path, allMatches)
+  let deps
+  try {
+    deps = await calculateDependencies(path, allMatches)
+  } catch (err) {
+    err.message = `${path}\n [!] ${err.message}`
+    throw err
+  }
   const d = deps.map(o => ({ ...o, from: path }))
   const entries = deps
     .filter(Item => Item.entry && !(Item.entry in cache))
@@ -138,7 +144,7 @@ export const getRequireMatches = (source) => {
  * @param {string} dir The path to the directory.
  * @param {string} name
  */
-export const findPackageJson = async (dir, name) => {
+export const findPackageJson = async (dir, name, parent) => {
   const fold = join(dir, 'node_modules', name)
   const path = join(fold, 'package.json')
   const e = await exists(path)
@@ -222,7 +228,7 @@ export const getWrapper = (internals) => {
       return `const ${m} = r` + `equire('${i}');` // prevent
     })
     .join('\n') + '\n%output%'
-  return wrapper
+  return `#!/usr/bin/env node\n${wrapper}`
 }
 
 /**

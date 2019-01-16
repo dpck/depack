@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { basename, join } from 'path'
-import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _help } from './get-args'
+import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _suppressLoading, _help } from './get-args'
 import { read } from '@wrote/wrote'
 import Bundle from './commands/bundle'
 import getUsage from './usage'
@@ -71,6 +71,7 @@ const getCompilerOptions = ({
         noStrict: _noStrict,
         verbose: _verbose,
         compilerVersion,
+        suppressLoading: _suppressLoading,
       }, options)
     }
     await Bundle({

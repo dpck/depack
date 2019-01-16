@@ -2,6 +2,8 @@ import loading from 'indicatrix'
 import spawn from 'spawncommand'
 import { c } from 'erte'
 import { relative, join, dirname } from 'path'
+import makePromise from 'makepromise'
+import { chmod } from 'fs'
 import { exists, addSourceMap, removeStrict } from '../../lib/lib'
 import detect, { sort, getWrapper } from '../../lib/detect'
 import { makeError, prepareCoreModules, fixDependencies } from '../../lib/closure'
@@ -14,7 +16,7 @@ const externsDeps = {
 
 const Compile = async (opts, options) => {
   const { src, noWarnings = false, output, noStrict, verbose,
-    compilerVersion,
+    compilerVersion, suppressLoading,
   } = opts
   if (!src) throw new Error('Source is not given.')
   const args = [
@@ -50,15 +52,19 @@ const Compile = async (opts, options) => {
     ...(wrapper ? ['--output_wrapper', wrapper] : []),
     '--js', ...files,
   ]
-  verbose ? console.log(Args.join(' ')) : printCommand(args, externs, sorted)
-  const { promise } = spawn('java', Args)
-  const { stdout, stderr, code } = await loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise, {
-    writable: process.stderr,
-  })
+  verbose ? console.error(Args.join(' ')) : printCommand(args, externs, sorted)
+  let { promise } = spawn('java', Args)
+  if (!suppressLoading) { // is here until documentary is fixed for \r
+    promise =  loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise, {
+      writable: process.stderr,
+    })
+  }
+  const { stdout, stderr, code } = await promise
   if (code) throw new Error(makeError(code, stderr))
   if (stdout) console.log(stdout)
   if (output) await addSourceMap(output)
   if (noStrict) await removeStrict(output)
+  if (output) await makePromise(chmod, [output, '755'])
   if (stderr && !noWarnings) console.warn(c(stderr, 'grey'))
 }
 
@@ -73,7 +79,7 @@ const printCommand = (args, externs, sorted) => {
     .replace(/--compilation_level (\S+)/g, (m, f) => {
       return `--compilation_level ${c(f, 'green')}`
     })
-  console.log(s)
+  console.error(s)
   const {
     commonJs, internals, js, deps,
   } = sorted

@@ -15,6 +15,7 @@ const args = argufy({
   'temp': { },
   'no-strict': { short: 's', boolean: true },
   'verbose': { short: 'V', boolean: true },
+  '_suppress-loading': { boolean: true }, // dev
 })
 
 /**
@@ -22,6 +23,11 @@ const args = argufy({
  * @type {string}
  */
 const src = args['src']
+/**
+ * Don't print loading indicator (used to compile documentation)
+ * @type {boolean}
+ */
+const _suppressLoading = args['_suppress-loading']
 /**
  * Whether to print help and exit.
  * @type {boolean}
@@ -97,4 +103,5 @@ const output = args['output']
 export { src as _src, _advanced, output as _output,
   version as _version, _noWarnings, _compile, _argv, _level,
   _language_in, _language_out, _node, _temp, _noStrict, _verbose, _help,
+  _suppressLoading,
 }
