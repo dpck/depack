@@ -70,19 +70,24 @@ const testDepack = async (packageJson) => {
 
 /**
  * Update dependencies' package.json files to point to a file and not a directory. * https://github.com/google/closure-compiler/issues/3149
- * @param {Array<string>} deps The paths to package.json files.
+ * @param {Array<string>} commonJS The paths to CommonJS package.json files.
+ * @param {Array<string>} modules The paths to package.json files.
  */
-export const fixDependencies = async (deps) => {
-  await Promise.all(deps.map(async (dep) => {
+export const fixDependencies = async (commonJS, modules) => {
+  const all = [...commonJS, ...modules]
+  await Promise.all(all.map(async (dep) => {
     const f = await read(dep)
     const p = JSON.parse(f)
-    const { 'main': main } = p
-    const j = join(dirname(dep), main)
+    const { 'main': main, 'module': mod } = p
+    const isModule = !!mod
+    const field = isModule ? 'module' : 'main'
+    const M = mod || main
+    const j = join(dirname(dep), M)
     const e = await exists(j)
-    if (!e) throw new Error(`The main for dependency ${dep} does not exist.`)
+    if (!e) throw new Error(`The ${field} for dependency ${dep} does not exist.`)
     if (e.isDirectory()) {
-      const newMain = join(main, 'index.js')
-      p.main = newMain
+      const newM = join(M, 'index.js')
+      p[field] = newM
       console.warn('Updating %s to point to a file.', dep)
       await write(dep, JSON.stringify(p, null, 2))
     }

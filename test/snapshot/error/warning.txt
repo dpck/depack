@@ -1,0 +1,11 @@
+Exit code 1
+[90mnode_modules/argufy/src/index.js:2: WARNING - Bad type annotation.
+* @param {string[]} argv
+^[0m
+
+[90mnode_modules/argufy/src/index.js:2: WARNING - Bad type annotation.
+* @param {string[]} argv
+^[0m
+
+[31mt/argufy.js:3: ERROR - variable src$$module$t$argufy is undeclared
+[0m

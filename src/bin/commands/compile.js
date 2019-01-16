@@ -31,7 +31,7 @@ const Compile = async (opts, options) => {
   } = sorted
   const internalDeps = await prepareCoreModules({ internals })
   const externs = await getExterns(internals)
-  await fixDependencies(commonJsPackageJsons)
+  await fixDependencies(commonJsPackageJsons, packageJsons)
 
   const files = [src,
     ...commonJsPackageJsons,

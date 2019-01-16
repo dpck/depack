@@ -1,0 +1,8 @@
+Exit code 1
+[90mnode_modules/preact/dist/preact.mjs:678:
+Originally at:
+node_modules/preact/src/vdom/component.js:287: WARNING - dangerous use of the global this object
+                component.nextBase = base;
+                ^^^^[0m
+
+[31mt/argufy.js:3: ERROR - variable src$$module$t$argufy is undeclared[0m

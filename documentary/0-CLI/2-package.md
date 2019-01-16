@@ -1,10 +1,10 @@
 ## Compile Mode
 
-The **compile** mode is used to create Node.JS executable binaries. This is useful when a program might have many dependencies and it is desirable to publish the package without specifying any of them in the `"dependencies"` field of `package.json` to speed up the install time and reduce the overall linking time in the package.
+The **compile** mode is used to create Node.JS executable binaries. This is useful when a program might have many dependencies and it is desirable to publish the package without specifying any of them in the `"dependencies"` field of the `package.json` to speed up the install time and reduce the overall linking time in the package.
 
 _Depack_ will recursively scan the files to detect `import from` and `export from` statements to construct the dependency list since the Google Closure Compile requires to pass all files (both source and paths to `package.json`s) used in compilation as arguments. Whenever an external dependency is detected, its `package.json` is inspected to find out either the `module` or `main` fields. In case when the `main` is found, the additional `--process_common_js_modules` will be set.
 
-The main problem which _Depack_ solves is allowing to require internal Node.JS modules, e.g., `import { createReadStream } from fs`. Traditionally, this was impossible because the compiler does not know about this modules and there is no way to pass the location of their `package.json` files. The strategy adopted by this software is to create proxies for internal packages in `node_modules` folder, for example:
+The main problem which _Depack_ solves is allowing to require internal Node.JS modules, e.g., `import { createReadStream } from 'fs'`. Traditionally, this was impossible because the compiler does not know about these modules and there is no way to pass the location of their `package.json` files. The strategy adopted by this software is to create proxies for internal packages in `node_modules` folder, for example:
 
 ```js
 export default child_process
@@ -30,7 +30,7 @@ const _module = require('module'); // special case
 %output%
 ```
 
-There is another step which involves patching the dependencies which specify their `main` field as the path to the directory rather than the file, which [GCL does not understand](https://github.com/google/closure-compiler/issues/3149).
+There is another step which involves patching the dependencies which specify their `main` and `module` fields as the path to the directory rather than the file, which [GCL does not understand](https://github.com/google/closure-compiler/issues/3149).
 
 Put all together, to compile the following file that contains different kinds of modules:
 

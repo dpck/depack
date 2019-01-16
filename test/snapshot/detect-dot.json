@@ -1,0 +1,8 @@
+[
+  {
+    "entry": "test/fixture/dot/index.js",
+    "from": [
+      "test/fixture/dot/dot.js"
+    ]
+  }
+]

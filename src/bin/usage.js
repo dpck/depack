@@ -22,7 +22,7 @@ WHITESPACE, SIMPLE (default), ADVANCED`,
   })
   const backend = usually({
     line: 'depack SOURCE -c [-o output.js] [-s]',
-    example: 'depack source.js -c -o bundle.js -n -I 2018 -O 2018',
+    example: 'depack source.js -c -o bundle.js -I 2018 -O 2018',
     usage: {
       '--no-strict -s': 'Remove "use strict" from the output.',
     },
