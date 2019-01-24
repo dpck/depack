@@ -45,7 +45,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Testt",
-      "program": "${workspaceFolder}/depack.js",
+      "program": "${workspaceFolder}/build/depack.js",
       "args": [
         "src/bin/depack.js",
         "-c", "-n", "-I", "2018", "-O", "2017", "-a", "-o",

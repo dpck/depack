@@ -124,3 +124,8 @@ child_process.execFileSync
  * @return {child_process.ChildProcess}
  */
 child_process.fork
+
+/** @type {Array<string>} */
+child_process.ChildProcess.spawnargs
+/** @type {string} */
+child_process.ChildProcess.spawnfile

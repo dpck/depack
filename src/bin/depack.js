@@ -7,8 +7,9 @@ import getUsage from './usage'
 import { version } from '../../package.json'
 import Compile from './commands/compile'
 
-const compiler = require.resolve('google-closure-compiler-java/compiler.jar')
-const compilerPackage = require.resolve('google-closure-compiler-java/package.json')
+const { 'GOOGLE_CLOSURE_COMPILER': GOOGLE_CLOSURE_COMPILER } = process.env
+const compiler = GOOGLE_CLOSURE_COMPILER || require.resolve('google-closure-compiler-java/compiler.jar')
+const compilerPackage = GOOGLE_CLOSURE_COMPILER ? 'target' : require.resolve('google-closure-compiler-java/package.json')
 
 if (_version) {
   console.log(version)
@@ -57,9 +58,12 @@ const getCompilerOptions = ({
 
 (async () => {
   try {
-    const compilerPackageJson = await read(compilerPackage)
-    const { 'version': cv } = JSON.parse(compilerPackageJson)
-    const [compilerVersion] = cv.split('.')
+    let compilerVersion = 'target'
+    if (!GOOGLE_CLOSURE_COMPILER) {
+      const compilerPackageJson = await read(compilerPackage)
+      const { 'version': cv } = JSON.parse(compilerPackageJson)
+      ;[compilerVersion] = cv.split('.')
+    }
     const options = getCompilerOptions({
       src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps,
     })

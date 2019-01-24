@@ -17,10 +17,10 @@
   resolved "https://registry.yarnpkg.com/@a-la/import/-/import-1.7.0.tgz#169849ac4ac50558867f89e38f841dc2eee51ae8"
   integrity sha512-4iLDtywkxKaRupaLcc/ZNSxE0HWiag3z/9DsfWU0smdwXmgfkcqM9lGwhGM4vkB3YqXTOD3MtGRxxjrOIjDtjQ==
 
-"@a-la/jsx@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.2.0.tgz#9d541f155541e0ed3967d8068fd032975e3ef6bd"
-  integrity sha512-pUBdfZ8aDJUTmpAUic62ordjwdjZI9z9NiKIYNy3LG1nNhUySdNymuZoXRZErJERahz6LEX3o4Yp4TXNaluEAQ==
+"@a-la/jsx@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.2.1.tgz#f97a3b0237138ccb1f7687ce3c2de13bc8ded6fd"
+  integrity sha512-ZJBOfMdSl+aZyp3AtBGJaMSFyDQldptTiLO1d2SZlLULalVcib0wBJkBMqkAAijsiOAgA5GW8n4WJn6S2DXeGA==
   dependencies:
     "@a-la/detect-jsx" "1.0.1"
     restream "3.4.1"
@@ -371,10 +371,10 @@ erte@1.1.4:
   dependencies:
     diff "3.5.0"
 
-erte@1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/erte/-/erte-1.1.5.tgz#df13ceaf3f8f33999f03bd4da1ca3ff46b885b00"
-  integrity sha512-iU6DxSZL8GELIDdirFPxJ0jktZb7DsUoO1+liXCcXho8pNryLs3py0JxPnJ/Q3idBV3/twSXM2npnJaeF5bbrw==
+erte@1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/erte/-/erte-1.1.6.tgz#78f1eade69151dde1acaa5bd3970d57ba2d45f72"
+  integrity sha512-NQ6KXfFeGPM7ct2cCKVyz2K2xxM19ugXIYMzTt5eTR70KYnyK2jjZzkNf5aahZplPaBH8B68ySc6MfLO+Jdb7w==
   dependencies:
     diff "4.0.1"
 
