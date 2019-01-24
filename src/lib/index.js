@@ -1,9 +1,9 @@
 import { dirname, join, relative } from 'path'
-import { read, write, ensurePath } from '@wrote/wrote'
+import { read, write, ensurePath, exists } from '@wrote/wrote'
 import transpileJSX from '@a-la/jsx'
 import { Replaceable } from 'restream'
 import { collect } from 'catchment'
-import { exists, checkIfLib } from './lib'
+import { checkIfLib } from './lib'
 
 const processFile = async (entry, config, cache) => {
   const { cachedNodeModules, cachedFiles } = cache

@@ -15,6 +15,7 @@ const args = argufy({
   'temp': { },
   'no-strict': { short: 's', boolean: true },
   'verbose': { short: 'V', boolean: true },
+  'no-sourcemap': { short: 'S', boolean: true },
   '_suppress-loading': { boolean: true }, // dev
 })
 
@@ -33,6 +34,11 @@ const _suppressLoading = args['_suppress-loading']
  * @type {boolean}
  */
 const _help = args['help']
+/**
+ * Disable source maps.
+ * @type {boolean}
+ */
+const _noSourceMaps = args['no-sourcemap']
 /**
  * Whether to remove the `'use strict'` from the output.
  * @type {boolean}
@@ -103,5 +109,5 @@ const output = args['output']
 export { src as _src, _advanced, output as _output,
   version as _version, _noWarnings, _compile, _argv, _level,
   _language_in, _language_out, _node, _temp, _noStrict, _verbose, _help,
-  _suppressLoading,
+  _suppressLoading, _noSourceMaps,
 }

@@ -1,7 +1,6 @@
 import { c } from 'erte'
 import { join, relative, dirname } from 'path'
-import { ensurePath, write, read } from '@wrote/wrote'
-import { exists } from './lib'
+import { ensurePath, write, read, exists } from '@wrote/wrote'
 
 /**
  * Create an error with color.

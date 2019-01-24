@@ -1,22 +1,6 @@
-import makePromise from 'makepromise'
-import { lstat } from 'fs'
 import { c } from 'erte'
 import { basename, relative } from 'path'
 import { write, read } from '@wrote/wrote'
-
-/**
- * Check whether the file exists.
- * @param {string} path The path to check.
- * @returns {import('fs').Stats|null}
- */
-export const exists = async (path) => {
-  try {
-    const ls = await makePromise(lstat, path)
-    return ls
-  } catch (err) {
-    return null
-  }
-}
 
 /**
  * Returns the pretty-printed command.

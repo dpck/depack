@@ -1,8 +1,8 @@
 import { dirname, join, relative, resolve } from 'path'
 import { builtinModules } from 'module'
-import { read } from '@wrote/wrote'
+import { read, exists } from '@wrote/wrote'
 import mismatch from 'mismatch'
-import { checkIfLib, exists } from '../lib'
+import { checkIfLib } from '../lib'
 
 const RE = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm
 const RE2 = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm
@@ -60,7 +60,7 @@ export const detect = async (path, cache = {}) => {
   }
   const d = deps.map(o => ({ ...o, from: path }))
   const entries = deps
-    .filter(Item => Item.entry && !(Item.entry in cache))
+    .filter(({ entry }) => entry && !(entry in cache))
   const discovered = await entries
     .reduce(async (acc, { entry, hasMain }) => {
       const accRes = await acc
@@ -144,7 +144,7 @@ export const getRequireMatches = (source) => {
  * @param {string} dir The path to the directory.
  * @param {string} name
  */
-export const findPackageJson = async (dir, name, parent) => {
+export const findPackageJson = async (dir, name) => {
   const fold = join(dir, 'node_modules', name)
   const path = join(fold, 'package.json')
   const e = await exists(path)
