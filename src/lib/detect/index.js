@@ -6,30 +6,30 @@ import { checkIfLib } from '../lib'
 
 const RE = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm
 const RE2 = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm
-const RE3 = /^ *export\s+{(?:[^}]+?)}\s+from\s+(['"])(.+?)\1/gm
+const RE3 = /^ *export\s+{[^}]+?}\s+from\s+(['"])(.+?)\1/gm
 
 export default async (path) => {
   const detected = await detect(path)
-  const filtered = detected.filter((Item, i) => {
-    if (Item.internal) {
-      const fi = detected.findIndex(IItem => {
-        return IItem.internal == Item.internal
+  const filtered = detected.filter(({ internal, entry }, i) => {
+    if (internal) {
+      const fi = detected.findIndex(({ internal: ii }) => {
+        return ii == internal
       })
       return fi == i
     }
-    const ei = detected.findIndex(IItem => {
-      return Item.entry == IItem.entry
+    const ei = detected.findIndex(({ entry: ee }) => {
+      return entry == ee
     })
     return ei == i
   })
   const f = filtered.map((ff) => {
     const { entry, internal } = ff
     const froms = detected
-      .filter(Item => {
-        if (internal) return internal == Item.internal
-        if (entry) return entry == Item.entry
+      .filter(({ internal: i, entry: e }) => {
+        if (internal) return internal == i
+        if (entry) return entry == e
       })
-      .map(Item => Item.from)
+      .map(({ from }) => from)
       .filter((el, i, a) => a.indexOf(el) == i)
     const newF =  { ...ff, from: froms }
     return newF

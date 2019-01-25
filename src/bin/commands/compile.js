@@ -13,6 +13,12 @@ const externsDeps = {
   fs: ['events', 'stream'],
   stream: ['events'],
   child_process: ['events', 'stream'],
+  http: ['events', 'net', 'stream'],
+  https: ['http', 'tls'],
+  tls: ['events', 'net', 'stream', 'crypto'],
+  crypto: ['stream'],
+  net: ['events'],
+  zlib: ['stream'],
 }
 
 const Compile = async (opts, options) => {

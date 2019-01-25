@@ -209,7 +209,7 @@ stream.WritableStream.prototype.destroySoon;
  * @constructor
  * @param {Object=} options
  * @extends stream.Readable
- * Xextends stream.Writable
+ * @extends stream.Writable
  */
 stream.Duplex = function(options) {};
 
@@ -227,20 +227,19 @@ stream.Duplex.prototype.allowHalfOpen;
 stream.Transform = function(options) {};
 
 /**
- * @protected
  * @param {string|Buffer} chunk
  * @param {string} encoding
  * @param {function(*=)} cb
  * @return {void}
  */
-stream.Transform._transform;
+stream.Transform.prototype._transform;
 
 /**
  * @protected
  * @param {function(*=)} cb
  * @return {void}
  */
-stream.Transform._flush;
+stream.Transform.prototype._flush;
 
 /**
  * @param {Object=} options

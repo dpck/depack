@@ -43,8 +43,11 @@ export const updateSourceMaps = async (path, tempDir) => {
   const r = await read(map)
   const j = JSON.parse(r)
   const { 'sources': sources } = j
-  const newSources = sources.map(s => `/${relative(tempDir, s)}`)
-  j.sources = newSources
+  const newSources = sources.map(s => {
+    if (s.startsWith(' ')) return s
+    return `/${relative(tempDir, s)}`
+  })
+  j['sources'] = newSources
   const jj = JSON.stringify(j, null, 2)
   await write(map, jj)
 }
