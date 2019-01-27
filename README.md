@@ -16,7 +16,7 @@ yarn add -E depack
 - [Compile Mode](#compile-mode)
   * [Usage](#usage)
   * [Gotchas](#gotchas)
-    * [Do not use `--language_out=ECMA2018`](#do-not-use---language_outecma2018)
+    * [Do not output to `ECMA2018`](#do-not-output-to-ecma2018)
     * [Patch Closure Compiler For Correct `ECMA2017`](#patch-closure-compiler-for-correct-ecma2017)
     * [Babel-Compiled Dependencies Don't Work](#babel-compiled-dependencies-dont-work)
 - [Copyright](#copyright)
@@ -234,7 +234,7 @@ There are _Depack_ specific flags that can be passed when compiling a Node.JS ex
 
 There are a number of things to look out for when compiling a Node.JS program.
 
-#### Do not use `--language_out=ECMA2018`
+#### Do not output to `ECMA2018`
 
 If the language out set to `ECMA2018`, the output will be hardly optimised, meaning that the source code of all `package.json` files will be present making the file-size of the bundle very large. [Google says](https://groups.google.com/forum/#!topic/closure-compiler-discuss/Ogysep0oJN4): _This is working as expected. We haven't implemented any typechecking or code size optimizations for ES2018 yet._ Therefore, use *`-O 2017`* to produce the output of acceptable size without unnecessary rubbish in it.
 
@@ -323,7 +323,7 @@ exports.default = _default;
 </tr>
 </table>
 
-_Output:_
+_Script to compile with GCC:_
 
 ```js
 import erte, { c, b } from '@a-la/fixture-babel'
@@ -351,7 +351,7 @@ _Command:_
 
 _Trying to execute the output:_
 
-```
+```js
 /Users/zavr/adc/depack/example/babel-output.js:8
 console.log(a());
             ^
