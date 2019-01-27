@@ -216,6 +216,8 @@ const l = async() => {
 })();
 ```
 
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="15"></a></p>
+
 ### Usage
 
 There are _Depack_ specific flags that can be passed when compiling a Node.JS executable. These are:
@@ -226,7 +228,7 @@ There are _Depack_ specific flags that can be passed when compiling a Node.JS ex
 | `--compile`, `-c`   | Enables the compilation mode.                          |
 | `--no-strict`, `-s` | Removes the `'use strict';` statement from the output. |
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="15"></a></p>
 
 ### Gotchas
 
@@ -244,7 +246,81 @@ When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destr
 
 Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing so `src` where code is written as ES6 modules. This is a great step forward to move JavaScript language forward because `import`/`export` is what should be used instead of `require`. Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+_node_modules/@a-la/fixture-babel_:
+
+```js
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.b = exports.c = void 0;
+
+/**
+ * A function that returns `erte`.
+ */
+const erte = () => {
+  return 'erte';
+};
+/**
+ * A function that returns `c`.
+ */
+
+
+const c = () => {
+  return 'c';
+};
+/**
+ * A function that returns `b`.
+ */
+
+
+exports.c = c;
+
+const b = () => {
+  return 'b';
+};
+
+exports.b = b;
+var _default = erte;
+exports.default = _default;
+```
+
+_Output:_
+
+```js
+'use strict';
+var a = {}, b = {};
+Object.defineProperty(a, "__esModule", {value:!0});
+a.default = a.a = a.b = void 0;
+a.b = () => "c";
+a.a = () => "b";
+a.default = () => "erte";
+console.log(a());
+console.log(b.b());
+console.log(b.a());
+```
+
+_Trying to execute the output:_
+
+```
+/Users/zavr/adc/depack/example/babel-output.js:8
+console.log(a());
+            ^
+
+TypeError: a is not a function
+    at Object.<anonymous> (/Users/zavr/adc/depack/example/babel-output.js:8:13)
+    at Module._compile (module.js:653:30)
+    at Object.Module._extensions..js (module.js:664:10)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
+    at Function.Module.runMain (module.js:694:10)
+    at startup (bootstrap_node.js:204:16)
+    at bootstrap_node.js:625:3
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
 
 
 

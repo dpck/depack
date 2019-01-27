@@ -13,3 +13,26 @@ When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destr
 #### Babel-Compiled Dependencies Don't Work
 
 Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing so `src` where code is written as ES6 modules. This is a great step forward to move JavaScript language forward because `import`/`export` is what should be used instead of `require`. Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_.
+
+_node_modules/@a-la/fixture-babel_:
+
+%EXAMPLE: node_modules/@a-la/fixture-babel/build/index.js%
+
+_Output:_
+
+```js
+'use strict';
+var a = {}, b = {};
+Object.defineProperty(a, "__esModule", {value:!0});
+a.default = a.a = a.b = void 0;
+a.b = () => "c";
+a.a = () => "b";
+a.default = () => "erte";
+console.log(a());
+console.log(b.b());
+console.log(b.a());
+```
+
+_Trying to execute the output:_
+
+%FORKERR example/babel-output%

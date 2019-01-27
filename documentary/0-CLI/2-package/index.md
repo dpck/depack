@@ -60,3 +60,5 @@ depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
 %FORKERR src/bin example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT --_suppress-loading%
 
 %FORK-js src/bin example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT%
+
+%~ width="15"%
