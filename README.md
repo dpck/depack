@@ -15,6 +15,10 @@ yarn add -E depack
 - [Bundle Mode](#bundle-mode)
 - [Compile Mode](#compile-mode)
   * [Usage](#usage)
+  * [Gotchas](#gotchas)
+    * [Do not use `--language_out=ECMA2018`](#do-not-use---language_outecma2018)
+    * [Patch Closure Compiler For Correct `ECMA2017`](#patch-closure-compiler-for-correct-ecma2017)
+    * [Babel-Compiled Dependencies Don't Work](#babel-compiled-dependencies-dont-work)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -87,9 +91,10 @@ The **compile** mode is used to create Node.JS executable binaries. This is usef
 
 _Depack_ will recursively scan the files to detect `import from` and `export from` statements to construct the dependency list since the Google Closure Compile requires to pass all files (both source and paths to `package.json`s) used in compilation as arguments. Whenever an external dependency is detected, its `package.json` is inspected to find out either the `module` or `main` fields. In case when the `main` is found, the additional `--process_common_js_modules` will be set.
 
-The main problem which _Depack_ solves is allowing to require internal Node.JS modules, e.g., `import { createReadStream } from 'fs'`. Traditionally, this was impossible because the compiler does not know about these modules and there is no way to pass the location of their `package.json` files. The strategy adopted by this software is to create proxies for internal packages in `node_modules` folder, for example:
+The main problem that _Depack_ solves is allowing to require internal Node.JS modules, e.g., `import { createReadStream } from 'fs'`. Traditionally, this was impossible because the compiler does not know about these modules and there is no way to pass the location of their `package.json` files. The strategy adopted by this software is to create proxies for internal packages in `node_modules` folder, for example:
 
 ```js
+// node_modules/child_process/index.js
 export default child_process
 export const {
   'ChildProcess': ChildProcess,
@@ -103,6 +108,14 @@ export const {
 } = child_process
 ```
 
+```json5
+// node_modules/child_process/package.json
+{
+  "name": "child_process",
+  "main": "index.js"
+}
+```
+
 The externs for internal modules are then passed in the arguments list, allowing the compiler to know how to optimise them. Finally, the wrapper is added to prepend the output of the compiler with the actual require calls:
 
 ```js
@@ -113,7 +126,7 @@ const _module = require('module'); // special case
 %output%
 ```
 
-There is another step which involves patching the dependencies which specify their `main` and `module` fields as the path to the directory rather than the file, which [GCL does not understand](https://github.com/google/closure-compiler/issues/3149).
+There is another step which involves patching the dependencies which specify their `main` and `module` fields as the path to the directory rather than the file, which [GCC does not understand](https://github.com/google/closure-compiler/issues/3149).
 
 Put all together, to compile the following file that contains different kinds of modules:
 
@@ -146,6 +159,12 @@ The next _Depack_ command can be used:
 
 ```sh
 depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
+# -c:      set mode to compile
+# -V:      verbose output to print all flags and options
+# -I 2018: set source code language to ECMA2018
+# -O 2017: set output language in to ECMA2017
+# -a:      allow for advanced compilation
+# -w:      don't print warnings
 ```
 
 ```
@@ -207,14 +226,53 @@ There are _Depack_ specific flags that can be passed when compiling a Node.JS ex
 | `--compile`, `-c`   | Enables the compilation mode.                          |
 | `--no-strict`, `-s` | Removes the `'use strict';` statement from the output. |
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="15"></a></p>
+
+### Gotchas
+
+There are a number of things to look out for when compiling a Node.JS program.
+
+#### Do not use `--language_out=ECMA2018`
+
+If the language out set to `ECMA2018`, the output will be hardly optimised, meaning that the source code of all `package.json` files will be present making the file-size of the bundle very large. [Google says](https://groups.google.com/forum/#!topic/closure-compiler-discuss/Ogysep0oJN4): _This is working as expected. We haven't implemented any typechecking or code size optimizations for ES2018 yet._ Therefore, use *`-O 2017`* to produce the output of acceptable size without unnecessary rubbish in it.
+
+#### Patch Closure Compiler For Correct `ECMA2017`
+
+When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destructuring in `filter`, `map` and other array operations which produces incorrect code. E.g., `[{ entry: true }, { }].map(({ entry }) => entry)` will not work. This is rather unfortunate because destructuring is an essential language feature, and compiling for `ES2017` is the only alternative to `ES2018` which produces gigantic output. This bug [has been fixed](https://github.com/google/closure-compiler/commit/877e304fe69498189300238fedc6531b7d9bd126) but the patch has not been released, therefore you must compile the master branch closure compiler yourself and use `GOOGLE_CLOSURE_COMPILER` environment variable to set the compiler path. Hopefully, with the next release the fix will be available.
+
+#### Babel-Compiled Dependencies Don't Work
+
+Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing so `src` where code is written as ES6 modules. This is a great step forward to move JavaScript language forward because `import`/`export` is what should be used instead of require. Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
 
 
 
 ## Copyright
 
-(c) [Art Deco][1] 2019
-
-[1]: https://artd.eco
+<table>
+  <tr>
+    <th>
+      <a href="https://artd.eco">
+        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" />
+      </a>
+    </th>
+    <th>
+      © <a href="https://artd.eco">Art Deco</a>
+      
+      
+      2019
+    </th>
+    
+    <th>
+      <a href="https://www.technation.sucks" title="Tech Nation Visa">
+        <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif" alt="Tech Nation Visa" />
+      </a>
+    </th>
+    <th>
+      <a href="https://www.technation.sucks">Tech Nation Visa Sucks</a>
+    </th>
+  </tr>
+</table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>
