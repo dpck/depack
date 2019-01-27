@@ -52,7 +52,7 @@ depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
 # -c:      set mode to compile
 # -V:      verbose output to print all flags and options
 # -I 2018: set source code language to ECMA2018
-# -O 2017: set output language in to ECMA2017
+# -O 2017: set output language to ECMA2017 (the best)
 # -a:      allow for advanced compilation
 # -w:      don't print warnings
 ```

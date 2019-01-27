@@ -23,7 +23,7 @@ const externsDeps = {
 
 const Compile = async (opts, options) => {
   const { src, noWarnings = false, output, noStrict, verbose,
-    compilerVersion, suppressLoading,
+    compilerVersion, suppressLoading, noSourceMap,
   } = opts
   if (!src) throw new Error('Source is not given.')
   const args = [
@@ -69,7 +69,7 @@ const Compile = async (opts, options) => {
   const { stdout, stderr, code } = await promise
   if (code) throw new Error(makeError(code, stderr))
   if (stdout) console.log(stdout)
-  if (output) await addSourceMap(output)
+  if (output && !noSourceMap) await addSourceMap(output)
   if (noStrict) await removeStrict(output)
   if (output) await makePromise(chmod, [output, '755'])
   if (stderr && !noWarnings) console.warn(c(stderr, 'grey'))

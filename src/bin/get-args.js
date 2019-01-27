@@ -17,6 +17,7 @@ const args = argufy({
   'verbose': { short: 'V', boolean: true },
   'no-sourcemap': { short: 'S', boolean: true },
   '_suppress-loading': { boolean: true }, // dev
+  'pretty-print': { short: 'p', boolean: true },
 })
 
 /**
@@ -24,6 +25,11 @@ const args = argufy({
  * @type {string}
  */
 const src = args['src']
+/**
+ * Whether to apply `--formatting=PRETTY_PRINT` flag.
+ * @type {boolean}
+ */
+export const _prettyPrint = args['pretty-print']
 /**
  * Don't print loading indicator (used to compile documentation)
  * @type {boolean}
@@ -38,7 +44,7 @@ const _help = args['help']
  * Disable source maps.
  * @type {boolean}
  */
-const _noSourceMaps = args['no-sourcemap']
+export const _noSourceMaps = args['no-sourcemap']
 /**
  * Whether to remove the `'use strict'` from the output.
  * @type {boolean}
@@ -109,5 +115,5 @@ const output = args['output']
 export { src as _src, _advanced, output as _output,
   version as _version, _noWarnings, _compile, _argv, _level,
   _language_in, _language_out, _node, _temp, _noStrict, _verbose, _help,
-  _suppressLoading, _noSourceMaps,
+  _suppressLoading,
 }

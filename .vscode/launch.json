@@ -59,6 +59,16 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Transform",
+      "program": "${workspaceFolder}/output/transform.js",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Example",
       "program": "${workspaceFolder}/example/index.js",
       "env": {

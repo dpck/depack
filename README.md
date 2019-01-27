@@ -19,6 +19,10 @@ yarn add -E depack
     * [Do not output to `ECMA2018`](#do-not-output-to-ecma2018)
     * [Patch Closure Compiler For Correct `ECMA2017`](#patch-closure-compiler-for-correct-ecma2017)
     * [Babel-Compiled Dependencies Don't Work](#babel-compiled-dependencies-dont-work)
+  * [Troubleshooting](#troubleshooting)
+    * [Bugs In GCC](#bugs-in-gcc)
+    * [External APIs](#external-apis)
+- [Known Bugs](#known-bugs)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -39,18 +43,20 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
   depack SOURCE [-c] [-o output.js] [-IO 2018] [-awVvh] [-l LEVEL] [... --generic-args]
 
-	SOURCE           	The source file to build.
-	--output -o      	Where to save the output. STDOUT by default.
-	--language_in -I 	Language Input. Can pass ECMA year.
-	--language_out -O	Language Output. Can pass ECMA year.
-	--level -l       	The optimisation level (generic -O).
-	                 	WHITESPACE, SIMPLE (default), ADVANCED
-	--advanced -a    	Turn on advanced optimisation.
-	--no-warnings -w 	Don't print warnings.
-	--compile -c     	Set the mode to compilation.
-	--verbose -V     	Print all compiler arguments.
-	--version -v     	Show version.
-	--help -h        	Print help information.
+	SOURCE            	The source file to build.
+	--output, -o      	Where to save the output. STDOUT by default.
+	--language_in, -I 	Language Input. Can pass ECMA year.
+	--language_out, -O	Language Output. Can pass ECMA year.
+	--level, -l       	The optimisation level (generic -O).
+	                  	WHITESPACE, SIMPLE (default), ADVANCED
+	--advanced, -a    	Turn on advanced optimisation.
+	--no-warnings, -w 	Don't print warnings.
+	--compile, -c     	Set the mode to compilation.
+	--verbose, -V     	Print all compiler arguments.
+	--pretty-print, -p	Add --formatting=PRETTY_PRINT flag.
+	--version, -v     	Show version.
+	--help, -h        	Print help information.
+	--no-sourcemap, -S	Print help information.
 
 [34mBACKEND[0m: Creates a single executable file.
   depack SOURCE -c [-o output.js] [-s]
@@ -162,7 +168,7 @@ depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
 # -c:      set mode to compile
 # -V:      verbose output to print all flags and options
 # -I 2018: set source code language to ECMA2018
-# -O 2017: set output language in to ECMA2017
+# -O 2017: set output language to ECMA2017 (the best)
 # -a:      allow for advanced compilation
 # -w:      don't print warnings
 ```
@@ -236,7 +242,7 @@ There are a number of things to look out for when compiling a Node.JS program.
 
 #### Do not output to `ECMA2018`
 
-If the language out set to `ECMA2018`, the output will be hardly optimised, meaning that the source code of all `package.json` files will be present making the file-size of the bundle very large. [Google says](https://groups.google.com/forum/#!topic/closure-compiler-discuss/Ogysep0oJN4): _This is working as expected. We haven't implemented any typechecking or code size optimizations for ES2018 yet._ Therefore, use *`-O 2017`* to produce the output of acceptable size without unnecessary rubbish in it.
+If the language out set to `ECMA2018`, the output will be hardly optimised, meaning that the source code of all `package.json` files will be present making the file size of the bundle very large. [Google says](https://groups.google.com/forum/#!topic/closure-compiler-discuss/Ogysep0oJN4): _This is working as expected. We haven't implemented any typechecking or code size optimizations for ES2018 yet._ Therefore, use *`-O 2017`* to produce the output of acceptable size without unnecessary rubbish in it.
 
 #### Patch Closure Compiler For Correct `ECMA2017`
 
@@ -368,9 +374,99 @@ TypeError: a is not a function
     at bootstrap_node.js:625:3
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
+
+### Troubleshooting
+
+There are going to be times when the program generated with GCC does not work. The most common error that one would get is going to be similar to the following one:
+
+```js
+console.log(b.a.join(" "));
+                ^
+
+TypeError: Cannot read property 'join' of undefined
+```
+
+This means the compiler has mangled some property on the builtin module that broke the contract with the Node.JS API. This could have happened due to the incorrect/out-of-date externs that are used in _Depack_. The solution to this is to compile the file without the source map and with pretty-print formatting using the `-S -p` options, and setup the debug launch configuration to stop at the point where the error happens:
+
+```json
+{
+  "type": "node",
+  "request": "launch",
+  "name": "Launch Transform",
+  "program": "${workspaceFolder}/output/transform.js",
+  "console": "integratedTerminal",
+  "skipFiles": [
+    "<node_internals>/**/*.js"
+  ]
+},
+```
+
+![Depack Debug](doc/debug.jpg)
+
+When the program is stopped there, it is required to hover over the parent of the object property that does not exist and see what class it belongs to. Once it's been identified, the source of error should be understood which leads to the last step of updating the externs. For this particular example, the program was:
+
+```js
+import { spawn } from 'child_process'
+
+const p = spawn('echo', ['hello world'])
+console.log(p.spawnargs.join(' '))
+```
+
+Where `spawnargs` was not defined in the externs files. The solution is to submit a patch to _Depack_, and before its accepted, use the `--node-externs` flag that points to the location of Node.JS externs that will override the existing externs. Thus, if there is a problem in `child_process` externs, their contents should be copied from https://github.com/artdecocode/depack/blob/master/externs/child_process.js and updated in place. Then the program can be compiled again:
+
+```sh
+depack t/transform.js -c -I 2018 -O 2017 -a
+  -o output/transform.js
+  --node-externs ./externs
+```
+
+If there are problems with global Node.JS externs, the `node.js` extern file should be overridden in your project (don't forget to submit the patch to _Depack_).
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
+
+#### Bugs In GCC
+
+In might be the case that externs are fine, but the Closure Compiler has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `--print_source_after_each_pass` Compiler option when compiling that file to see the output of each pass, then pasting the code to Node.JS repl and seeing of it outputs correct results.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
+
+#### External APIs
+
+When reading and writing files from the filesystem such as a `package.json` files, or loading JSON data from the 3rd party APIs, their properties must be referred to using the quoted properties, e.g.,
+
+```js
+// reading
+const content = await read(packageJson)
+const {
+  'module': mod,
+  'version': version,
+} = JSON.parse(f)
+
+// writing
+await write('package.json', {
+  'module': 'test/index.mjs',
+})
+
+// loading API
+const { 'results': results } = await request('https://service.co/api')
+```
+
+because otherwise the properties' names get changed by the compiler and the result will not be what you expected it to be.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
 
+
+## Known Bugs
+
+There are a number of known bugs with Google Closure Compiler.
+
+1. Cannot do `require('.')`.
+1. Cannot destructure error in `catch` block.
+1. node_modules are not looked up higher than the `cwd`.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 ## Copyright
 

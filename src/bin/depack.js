@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { basename, join } from 'path'
-import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _suppressLoading, _help, _noSourceMaps } from './get-args'
+import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _suppressLoading, _help, _noSourceMaps, _prettyPrint } from './get-args'
 import { read } from '@wrote/wrote'
 import Bundle from './commands/bundle'
 import getUsage from './usage'
@@ -27,7 +27,7 @@ const getLanguage = (l) => {
 
 const getCompilerOptions = ({
   src, output, level, languageIn, languageOut, sourceMap = true, argv,
-  advanced,
+  advanced, prettyPrint,
 }) => {
   const options = ['-jar', compiler]
   if (level) {
@@ -48,6 +48,10 @@ const getCompilerOptions = ({
       // '--source_map_include_content'
     )
   }
+  if (prettyPrint) {
+    options.push('--formatting', 'PRETTY_PRINT',
+    )
+  }
   options.push(...argv)
   if (_output) {
     const o = /\.js$/.test(output) ? output : join(output, basename(src))
@@ -65,7 +69,7 @@ const getCompilerOptions = ({
       ;[compilerVersion] = cv.split('.')
     }
     const options = getCompilerOptions({
-      src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps,
+      src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps, prettyPrint: _prettyPrint,
     })
     if (_compile) {
       return await Compile({
@@ -76,6 +80,7 @@ const getCompilerOptions = ({
         verbose: _verbose,
         compilerVersion,
         suppressLoading: _suppressLoading,
+        noSourceMap: _noSourceMaps,
       }, options)
     }
     await Bundle({

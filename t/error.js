@@ -1,6 +1,6 @@
 import { fork } from 'child_process'
 
-const { stdout, stderr } =  fork('.', [], {
+const { stdout, stderr } = fork('.', [], {
   stdio: 'pipe',
   execArgv: [], // for when debugging
 }).on('error', (error) => {

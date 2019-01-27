@@ -58,5 +58,4 @@ typings/
 .env
 
 out
-testt.js
-testt.js.map
+output

@@ -4,7 +4,7 @@ There are a number of things to look out for when compiling a Node.JS program.
 
 #### Do not output to `ECMA2018`
 
-If the language out set to `ECMA2018`, the output will be hardly optimised, meaning that the source code of all `package.json` files will be present making the file-size of the bundle very large. [Google says](https://groups.google.com/forum/#!topic/closure-compiler-discuss/Ogysep0oJN4): _This is working as expected. We haven't implemented any typechecking or code size optimizations for ES2018 yet._ Therefore, use *`-O 2017`* to produce the output of acceptable size without unnecessary rubbish in it.
+If the language out set to `ECMA2018`, the output will be hardly optimised, meaning that the source code of all `package.json` files will be present making the file size of the bundle very large. [Google says](https://groups.google.com/forum/#!topic/closure-compiler-discuss/Ogysep0oJN4): _This is working as expected. We haven't implemented any typechecking or code size optimizations for ES2018 yet._ Therefore, use *`-O 2017`* to produce the output of acceptable size without unnecessary rubbish in it.
 
 #### Patch Closure Compiler For Correct `ECMA2017`
 
@@ -78,3 +78,5 @@ _Command:_
 _Trying to execute the output:_
 
 %FORKERR-js example/babel-output%
+
+%~ width="15"%
