@@ -83,7 +83,7 @@ async function replacement(m, pre, from) {
     return `${pre}'${dep}'`
   }
   const packageJson = `${from}/package.json`
-  const { module: mod, main } = require(packageJson)
+  const { 'module': mod, 'main': main } = require(packageJson)
   if (!mod) {
     console.warn('[↛] Package %s does not specify module in package.json, will use main.', from)
   }

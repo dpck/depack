@@ -46,7 +46,9 @@ export const prepareCoreModules = async ({
         throw new Error(`Could not prepare core module ${name}: ${path} exists.`)
     }
     await ensurePath(packageJson)
-    await write(packageJson, JSON.stringify({ name, module: 'index.js', depack: VER }))
+    await write(packageJson, JSON.stringify({
+      'name': name, 'module': 'index.js', 'depack': VER,
+    }))
     const core = await read(join(corePath, `${name}.js`))
     await write(index, core)
     return ret

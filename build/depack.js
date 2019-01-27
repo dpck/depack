@@ -65,7 +65,7 @@ async function v(a, b, c) {
     Array.isArray(b) ? (b.forEach((a, b) => {
       u(e, b);
     }), k = [...b, g]) : 1 < Array.from(arguments).length && (u(e, 0), k = [b, g]);
-    a.apply(a.Da, k);
+    a.apply(a.Ea, k);
   });
 }
 ;const {chmod:fa, createReadStream:w, createWriteStream:ha, lstat:y, mkdir:ia, readdir:ja, rmdir:ka, unlink:la} = fs;
@@ -99,7 +99,7 @@ class ta extends B {
     a = void 0 === a ? {} : a;
     var b = Object.assign({}, a);
     void 0 === a.j && t(!0);
-    a = (delete b.j, delete b.Aa, b);
+    a = (delete b.j, delete b.Ba, b);
     super(a);
     const {G:c, P:d} = a;
     this.a = [];
@@ -338,7 +338,7 @@ function M(a, b, c) {
   }, 0);
   b.length ? (b = a.slice(e), b = N(b), Object.assign(c, b)) : (b = N(a), Object.assign(c, b));
   return {L:c, H:d};
-}, N = (a) => M(/(\S+)\s*=\s*(["'])([\s\S]+?)\2/g, a, ["n", "q", "v"]).reduce((a, {n:c, Ea:d, q:e}) => {
+}, N = (a) => M(/(\S+)\s*=\s*(["'])([\s\S]+?)\2/g, a, ["n", "q", "v"]).reduce((a, {n:c, Ga:d, q:e}) => {
   a[c] = `${e}${d}${e}`;
   return a;
 }, {}), Ua = (a, b = [], c = !1) => {
@@ -399,7 +399,7 @@ class Wa {
   return b.length ? Ya(a, b) : [`\`${a}\``];
 }, Ya = (a, b) => {
   let c = 0;
-  b = b.reduce((b, {from:e, aa:f, xa:h, ya:g}) => {
+  b = b.reduce((b, {from:e, aa:f, va:h, wa:g}) => {
     (e = a.slice(c, e)) && b.push(`\`${e}\``);
     c = f;
     h ? b.push(h) : g && b.push(g);
@@ -412,7 +412,7 @@ class Wa {
   return b;
 };
 const $a = (a, b = {}) => {
-  var {qa:c} = b, d = Pa(a);
+  var {pa:c} = b, d = Pa(a);
   if (null === d) {
     return a;
   }
@@ -452,7 +452,7 @@ const ab = (a) => {
   }, ha(a) {
     return new RegExp(`/\\*%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_(\\d+)_%%\\*/`, "g");
   }});
-  a = $a(L.D(a, [L.s(b), L.s(c), L.s(d), L.s(e)]), {qa:!0});
+  a = $a(L.D(a, [L.s(b), L.s(c), L.s(d), L.s(e)]), {pa:!0});
   return L.D(a, [L.B(b), L.B(c), L.B(d), L.B(e)]);
 };
 const {spawn:bb} = child_process;
@@ -599,7 +599,7 @@ class ob extends nb {
   return hb;
 }, get ba() {
   return nb;
-}, get va() {
+}, get ua() {
   return ob;
 }, get D() {
   return db;
@@ -612,9 +612,9 @@ var T = {get read() {
   return Ia;
 }, get V() {
   return Ha;
-}, get ra() {
+}, get qa() {
   return Fa;
-}, get Ba() {
+}, get Ca() {
   return G;
 }, get exists() {
   return ma;
@@ -708,7 +708,7 @@ function wb(a = []) {
   a = bb("java", a, {});
   const b = xb(a);
   a.i = b;
-  a.Ca = a.spawnargs.join(" ");
+  a.Da = a.spawnargs.join(" ");
   return a;
 }
 const xb = async(a) => {
@@ -775,18 +775,31 @@ function yb(a = {}) {
   c = JSON.stringify(c, null, 2);
   await T.write(a, c);
 };
-const Db = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm, Eb = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm, Fb = /^ *export\s+{(?:[^}]+?)}\s+from\s+(['"])(.+?)\1/gm;
+const Db = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm, Eb = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm, Fb = /^ *export\s+{[^}]+?}\s+from\s+(['"])(.+?)\1/gm;
 var Hb = async(a) => {
   const b = await Gb(a);
-  return b.filter((a, d) => a.internal ? b.findIndex((b) => b.internal == a.internal) == d : b.findIndex((b) => a.c == b.c) == d).map((a) => {
+  return b.filter((a, d) => {
+    var {internal:c, c:f} = a;
+    return c ? b.findIndex((a) => {
+      ({internal:a} = a);
+      return a == c;
+    }) == d : b.findIndex((a) => {
+      ({c:a} = a);
+      return f == a;
+    }) == d;
+  }).map((a) => {
     const {c, internal:e} = a, f = b.filter((a) => {
+      var {internal:b, c:d} = a;
       if (e) {
-        return e == a.internal;
+        return e == b;
       }
       if (c) {
-        return c == a.c;
+        return c == d;
       }
-    }).map((a) => a.from).filter((a, b, c) => c.indexOf(a) == b);
+    }).map((a) => {
+      ({from:a} = a);
+      return a;
+    }).filter((a, b, c) => c.indexOf(a) == b);
     return Object.assign({}, a, {from:f});
   });
 };
@@ -880,7 +893,7 @@ const Gb = async(a, b) => {
     x && m ? d.push(x) : x && e.push(x);
     p && h.push(p);
   });
-  return {fa:c, pa:b, T:d, W:e, A:f, w:h};
+  return {fa:c, oa:b, T:d, W:e, A:f, w:h};
 }, Pb = (a) => {
   if (a.length) {
     return `#!/usr/bin/env node\n${a.map((a) => `const ${"module" == a ? "_module" : a} = r` + `equire('${a}');`).join("\n") + "\n%output%"}`;
@@ -902,7 +915,7 @@ const Qb = (a, b) => {
       throw Error(`Could not prepare core module ${a}: ${e} exists.`);
     }
     await T.V(h);
-    await T.write(h, JSON.stringify({name:a, na:"index.js", wa:V}));
+    await T.write(h, JSON.stringify({name:a, module:"index.js", depack:V}));
     a = await T.read(E(d, `${a}.js`));
     await T.write(g, a);
     return k;
@@ -961,7 +974,7 @@ async function Ub(a, b, c) {
   if (/^[./]/.test(c)) {
     return a = await Xb(this.path, c), this.w.push(a), `${b}'${a}'`;
   }
-  const {na:d, main:e} = require(`${c}/package.json`);
+  const {module:d, main:e} = require(`${c}/package.json`);
   d || console.warn("[\u219b] Package %s does not specify module in package.json, will use main.", c);
   if (!d && !e) {
     throw Error("No main is available.");
@@ -986,15 +999,15 @@ const Xb = async(a, b) => {
   }
   return d;
 };
-const Yb = {fs:["events", "stream"], stream:["events"], child_process:["events", "stream"]}, ac = async(a, b) => {
-  const {src:c, K:d = !1, u:e, oa:f, ua:h, U:g, ta:k} = a;
+const Yb = {fs:["events", "stream"], stream:["events"], child_process:["events", "stream"], xa:["events", "net", "stream"], ya:["http", "tls"], Fa:["events", "net", "stream", "crypto"], crypto:["stream"], za:["events"], Ha:["stream"]}, ac = async(a, b) => {
+  const {src:c, K:d = !1, u:e, na:f, ta:h, U:g, sa:k} = a;
   if (!c) {
     throw Error("Source is not given.");
   }
   a = [...b, "--module_resolution", "NODE", "--package_json_entry_names", "module,main"];
   b = await Hb(c);
   b = Ob(b);
-  const {T:m, fa:p, A:x, W:z, pa:H} = b;
+  const {T:m, fa:p, A:x, W:z, oa:H} = b;
   var A = await Sb({A:x});
   const wa = await Zb(x);
   await Tb(p, H);
@@ -1072,7 +1085,7 @@ const dc = async(a, b) => {
   await Cb(f, d);
   h && console.log(h);
   g && !e && console.warn(I(g, "grey"));
-  await T.ra(d);
+  await T.qa(d);
 };
 const W = function(a, b) {
   a = void 0 === a ? {} : a;
@@ -1094,7 +1107,7 @@ const W = function(a, b) {
       ({value:k, argv:b} = La(b, f, g));
     } else {
       try {
-        const {b:a, f:e, za:h, ea:z, multiple:H} = g;
+        const {b:a, f:e, Aa:h, ea:z, multiple:H} = g;
         z && H && c.length ? (k = c, d = !0) : z && c.length ? (k = c[0], d = !0) : {value:k, argv:b} = La(b, f, a, e, h);
       } catch (m) {
         return Object.assign({}, {h:b}, e);
@@ -1116,7 +1129,7 @@ const uc = (a) => /^\d+$/.test(a) ? `ECMASCRIPT_${a}` : a;
       const {version:b} = JSON.parse(a);
       [p] = b.split(".");
     }
-    var {src:b, u:c, level:d, la:e, ma:f, sa:h = !0, argv:g, advanced:k} = {src:X, u:Y, level:mc, la:kc, ma:lc, argv:nc, advanced:rc, sa:!!Y && !gc};
+    var {src:b, u:c, level:d, la:e, ma:f, ra:h = !0, argv:g, advanced:k} = {src:X, u:Y, level:mc, la:kc, ma:lc, argv:nc, advanced:rc, ra:!!Y && !gc};
     a = ["-jar", sc];
     d ? a.push("--compilation_level", d) : k && a.push("--compilation_level", "ADVANCED");
     e && a.push("--language_in", uc(e));
@@ -1129,7 +1142,7 @@ const uc = (a) => /^\d+$/.test(a) ? `ECMASCRIPT_${a}` : a;
     }
     var m = a;
     if (oc) {
-      return await ac({src:X, K:pc, u:Y, oa:hc, ua:ic, U:p, ta:ec}, m);
+      return await ac({src:X, K:pc, u:Y, na:hc, ta:ic, U:p, sa:ec}, m);
     }
     await dc({src:X, u:Y, v:jc, K:pc, U:p}, m);
   } catch (p) {
