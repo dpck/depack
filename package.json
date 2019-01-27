@@ -53,6 +53,7 @@
   },
   "homepage": "https://github.com/artdecocode/depack#readme",
   "devDependencies": {
+    "@a-la/fixture-babel": "1.0.0",
     "@a-la/jsx": "1.2.2",
     "@wrote/wrote": "1.2.1",
     "alamode": "1.7.0",
