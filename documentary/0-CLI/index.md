@@ -46,6 +46,10 @@ _Depack_ supports the following flags for both modes. Any additional arguments t
     "Prints the raw command line arguments passed to the compiler."
   ],
   [
+    "no-sourcemap", "S",
+    "Disable generation of the source maps."
+  ],
+  [
     "version", "v",
     "Displays the _Depack_ version."
   ],

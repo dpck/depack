@@ -18,7 +18,7 @@ WHITESPACE, SIMPLE (default), ADVANCED`,
       '--pretty-print, -p': 'Add --formatting=PRETTY_PRINT flag.',
       '--version, -v': 'Show version.',
       '--help, -h': 'Print help information.',
-      '--no-sourcemap, -S': 'Print help information.',
+      '--no-sourcemap, -S': 'Do not add source maps.',
       // '--temp': 'Set the mode to compilation.',
     },
   })

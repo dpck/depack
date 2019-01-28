@@ -56,7 +56,7 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 	--pretty-print, -p	Add --formatting=PRETTY_PRINT flag.
 	--version, -v     	Show version.
 	--help, -h        	Print help information.
-	--no-sourcemap, -S	Print help information.
+	--no-sourcemap, -S	Do not add source maps.
 
 [34mBACKEND[0m: Creates a single executable file.
   depack SOURCE -c [-o output.js] [-s]
@@ -80,6 +80,7 @@ _Depack_ supports the following flags for both modes. Any additional arguments t
 | `--advanced`, `-a`     | Sets the optimisation level to `ADVANCED`, i.e., the shortcut for `--level ADVANCED`                                            |
 | `--no-warnings`, `-w`  | Suppresses the warnings.                                                                                                                                                          |
 | `--verbose`, `-V`      | Prints the raw command line arguments passed to the compiler.                                                                                                                     |
+| `--no-sourcemap`, `-S` | Disable generation of the source maps.                                                                                                                                            |
 | `--version`, `-v`      | Displays the _Depack_ version.                                                                                                                                                    |
 | `--help`, `-h`         | Show the help information about the usage.                                                                                                                                        |
 
@@ -427,13 +428,13 @@ If there are problems with global Node.JS externs, the `node.js` extern file sho
 
 #### Bugs In GCC
 
-In might be the case that externs are fine, but the Closure Compiler has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `--print_source_after_each_pass` Compiler option when compiling that file to see the output of each pass, then pasting the code to Node.JS repl and seeing of it outputs correct results.
+In might be the case that externs are fine, but the Closure Compiler has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `--print_source_after_each_pass` Compiler option when compiling that file to see the output of each pass, then pasting the code to Node.JS REPL and seeing if it outputs correct results.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
 
 #### External APIs
 
-When reading and writing files from the filesystem such as a `package.json` files, or loading JSON data from the 3rd party APIs, their properties must be referred to using the quoted properties, e.g.,
+When reading and writing files from the filesystem such as a `package.json` files, or loading JSON data from the 3rd party APIs, their properties must be referred to using the quoted notation, e.g.,
 
 ```js
 // reading

@@ -44,13 +44,13 @@ If there are problems with global Node.JS externs, the `node.js` extern file sho
 
 #### Bugs In GCC
 
-In might be the case that externs are fine, but the Closure Compiler has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `--print_source_after_each_pass` Compiler option when compiling that file to see the output of each pass, then pasting the code to Node.JS repl and seeing of it outputs correct results.
+In might be the case that externs are fine, but the Closure Compiler has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `--print_source_after_each_pass` Compiler option when compiling that file to see the output of each pass, then pasting the code to Node.JS REPL and seeing if it outputs correct results.
 
 %~ width="15"%
 
 #### External APIs
 
-When reading and writing files from the filesystem such as a `package.json` files, or loading JSON data from the 3rd party APIs, their properties must be referred to using the quoted properties, e.g.,
+When reading and writing files from the filesystem such as a `package.json` files, or loading JSON data from the 3rd party APIs, their properties must be referred to using the quoted notation, e.g.,
 
 ```js
 // reading
