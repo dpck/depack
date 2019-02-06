@@ -29,6 +29,13 @@ WHITESPACE, SIMPLE (default), ADVANCED`,
       '--no-strict -s': 'Remove "use strict" from the output.',
     },
   })
+  const frontend = usually({
+    line: 'depack SOURCE [-o output.js] [-H]',
+    example: 'depack source.js -o bundle.js -I 2018 -H',
+    usage: {
+      '-H': 'Add import { h } from \'preact\' to files.',
+    },
+  })
   const usage = `Google Closure Compiler-based packager for front and back-end.
 https://github.com/artdecocode/depack
 Performs static analysis on the source files to find out all dependencies.
@@ -36,6 +43,9 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
 ${common}
 ${c('BACKEND', 'blue')}: Creates a single executable file.
-${backend}`
+${backend}
+${c('FRONTEND', 'cyan')}: Creates a bundle for the web.
+${frontend}
+`
   return usage
 }

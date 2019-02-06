@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { basename, join } from 'path'
-import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _suppressLoading, _help, _noSourceMaps, _prettyPrint } from './get-args'
+import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _suppressLoading, _help, _noSourceMaps, _prettyPrint, _preact } from './get-args'
 import { read } from '@wrote/wrote'
 import Bundle from './commands/bundle'
 import getUsage from './usage'
@@ -89,6 +89,7 @@ const getCompilerOptions = ({
       tempDir: _temp,
       noWarnings: _noWarnings,
       compilerVersion,
+      preact: _preact,
     }, options)
   } catch (error) {
     process.env['DEBUG'] ? console.log(error.stack) : console.log(error.message)

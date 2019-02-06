@@ -19,6 +19,7 @@ const externsDeps = {
   crypto: ['stream'],
   net: ['events'],
   zlib: ['stream'],
+  readline: ['stream', 'events'],
 }
 
 const Compile = async (opts, options) => {

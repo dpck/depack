@@ -22,11 +22,11 @@ import { getCommand, addSourceMap, updateSourceMaps } from '../../lib/lib'
 const Bundle = async (opts, options) => {
   const {
     src, tempDir = 'depack-temp',
-    noWarnings = false, output: path,
+    noWarnings = false, output: path, preact,
   } = opts
   if (!src) throw new Error('Entry file is not given.')
   if (!path) throw new Error('Destination path is not given.')
-  const deps = await generateTemp(src, { tempDir })
+  const deps = await generateTemp(src, { tempDir, preact })
   const Args = [...options, ...deps.reduce((acc, d) => {
     return [...acc, '--js', d]
   }, [])]

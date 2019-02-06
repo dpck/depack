@@ -18,6 +18,7 @@ const args = argufy({
   'no-sourcemap': { short: 'S', boolean: true },
   '_suppress-loading': { boolean: true }, // dev
   'pretty-print': { short: 'p', boolean: true },
+  'preact': { short: 'H', boolean: true },
 })
 
 /**
@@ -111,6 +112,11 @@ const _advanced = args['advanced']
  * @type {string}
  */
 const output = args['output']
+/**
+ * Whether to add the Preact's pragma.
+ * @type {boolean}
+ */
+export const _preact = args['preact']
 
 export { src as _src, _advanced, output as _output,
   version as _version, _noWarnings, _compile, _argv, _level,

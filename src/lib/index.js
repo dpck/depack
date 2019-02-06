@@ -1,15 +1,17 @@
 import { dirname, join, relative } from 'path'
-import { read, write, ensurePath, exists } from '@wrote/wrote'
+import { read, write, ensurePath } from '@wrote/wrote'
 import transpileJSX from '@a-la/jsx'
 import { Replaceable } from 'restream'
 import { collect } from 'catchment'
+import resolveDependency from 'resolve-dependency'
 import { checkIfLib } from './lib'
 
 const processFile = async (entry, config, cache) => {
   const { cachedNodeModules, cachedFiles } = cache
-  const { tempDir } = config
+  const { tempDir, preact } = config
   const source = await read(entry)
-  const transpiled = entry.endsWith('.jsx') ? transpileJSX(source, {
+  const isJSX = entry.endsWith('.jsx')
+  const transpiled = isJSX ? transpileJSX(source, {
     quoteProps: true,
   }): source
   const dir = relative('', dirname(entry))
@@ -27,10 +29,13 @@ const processFile = async (entry, config, cache) => {
     },
   ])
   Object.assign(rs, data)
-  rs.end(transpiled)
+  const T = preact && isJSX ? `import { h } from 'preact'
+${transpiled}` : transpiled
+  rs.end(T)
   const transformed = await collect(rs)
   const tto = join(tempDir, entry)
   await ensurePath(tto)
+
   await write(tto, transformed)
 
   // now deal with dependencies
@@ -53,11 +58,12 @@ const processFile = async (entry, config, cache) => {
 /**
  * Generates a temp directory for the given entry file and transpiles JSX files. Returns the list of all dependencies including in the `node_modules`.
  * @param {string} entry The path to the entry file.
- * @param {{ tempDir: string }} [config] The configuration.
+ * @param {{ tempDir: string, preact: boolean }} [config] The configuration.
  */
 export const generateTemp = async (entry, config = {}) => {
   const {
     tempDir = 'depack-temp',
+    preact,
   } = config
   const cache = {
     cachedFiles: {
@@ -66,7 +72,7 @@ export const generateTemp = async (entry, config = {}) => {
     cachedNodeModules: {},
   }
   await processFile(entry, {
-    tempDir,
+    tempDir, preact,
   }, cache)
   const tempFiles = Object.keys(cache.cachedFiles)
     .map(f => join(tempDir, f))
@@ -78,12 +84,21 @@ export const generateTemp = async (entry, config = {}) => {
  */
 async function replacement(m, pre, from) {
   if (checkIfLib(from)) {
-    const dep = await resolveDependency(this.path, from)
-    this.deps.push(dep)
-    return `${pre}'${dep}'`
+    const { path } = await resolveDependency(from, this.path)
+    const relativePath = relative(dirname(this.path), path)
+    this.deps.push(relativePath)
+    const r = `${pre}'./${relativePath}'`
+    return r
   }
   const packageJson = `${from}/package.json`
-  const { 'module': mod, 'main': main } = require(packageJson)
+  let RPJ
+  try {
+    RPJ = require(packageJson)
+  } catch (err) {
+    err.message = `Could not resolve ${from} (from ${this.path})`
+    throw err
+  }
+  const { 'module': mod, 'main': main } = RPJ
   if (!mod) {
     console.warn('[↛] Package %s does not specify module in package.json, will use main.', from)
   }
@@ -95,21 +110,4 @@ async function replacement(m, pre, from) {
   this.nodeModules.push(modPath)
   const modRel = relative(this.to, modPath)
   return `${pre}'${modRel}'`
-}
-
-/**
- * Returns the name of the local dependency with its extension.
- * @param {string} path The path from which the file is required.
- * @param {string} from The name of the local module that is imported.
- */
-export const resolveDependency = async (path, from) => {
-  if (/\.jsx?$/.test(from)) return from
-  const dir = dirname(path)
-  const js = `${from}.js`
-  const jse = await exists(join(dir, js))
-  if (jse) return js
-  const jsx = `${from}.jsx`
-  const jsxe = await exists(join(dir, jsx))
-  if (!jsxe) throw new Error(`Neither JS nor JSX files are found for ${from} in ${path}`)
-  return jsx
 }
