@@ -1,7 +1,7 @@
 /*
  * Copyright 2014 The Closure Compiler Authors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -21,10 +21,10 @@
  */
 
 /** @const {string} */
-var __filename;
+var __filename
 
 /** @const {string} */
-var __dirname;
+var __dirname
 
 /**
  * @param {string} name
@@ -45,10 +45,10 @@ require.resolve.path
 function TimeoutId() {}
 
 /** @see http://nodejs.org/api/timers.html#timers_unref */
-TimeoutId.prototype.unref = function() {};
+TimeoutId.prototype.unref = function() {}
 
 /** @see http://nodejs.org/api/timers.html#timers_ref */
-TimeoutId.prototype.ref = function() {};
+TimeoutId.prototype.ref = function() {}
 
 /**
  * @param {TimeoutId} id
@@ -78,117 +78,118 @@ function Process() {}
  * @return {void}
  * @see http://nodejs.org/api/process.html#process_process_abort
  */
-Process.prototype.abort = function () {};
+Process.prototype.abort = function () {}
 
 /**
  * @type {string}
  * @see http://nodejs.org/api/process.html#process_process_arch
  */
-Process.prototype.arch;
+Process.prototype.arch
 
 /**
  * @type {!Array<string>}
  * @see http://nodejs.org/api/process.html#process_process_argv
  */
-Process.prototype.argv;
+Process.prototype.argv
 
 /**
  * @param {string} directory
  * @see http://nodejs.org/api/process.html#process_process_chdir_directory
  */
-Process.prototype.chdir = function (directory) {};
+Process.prototype.chdir = function (directory) {}
 
 /**
  * @type {*}
  * @see http://nodejs.org/api/process.html#process_process_config
  */
-Process.prototype.config;
+Process.prototype.config
 
 /**
  * @type {boolean}
  * @see http://nodejs.org/api/process.html#process_process_connected
  */
-Process.prototype.connected;
+Process.prototype.connected
 
 /**
  * @return {string}
  * @see http://nodejs.org/api/process.html#process_process_cwd
  */
-Process.prototype.cwd = function () {};
+Process.prototype.cwd = function () {}
 
 /**
  * @return {void}
  * @see http://nodejs.org/api/process.html#process_process_disconnect
  */
-Process.prototype.disconnect = function () {};
+Process.prototype.disconnect = function () {}
 
 /**
  * @type {*}
  * @see http://nodejs.org/api/process.html#process_process_env
  */
-Process.prototype.env;
+Process.prototype.env
 
 /**
  * @param {number=} code
  * @see http://nodejs.org/api/process.html#process_process_exit_code
  */
-Process.prototype.exit = function (code) {};
+Process.prototype.exit = function (code) {}
 
 /**
  * @param {number} pid
  * @param {string|number} signal
  * @see http://nodejs.org/api/process.html#process_process_kill_pid_signal
  */
-Process.prototype.kill = function (pid, signal) {};
+Process.prototype.kill = function (pid, signal) {}
 
 /**
  * @param {!Function} fn
  * @param {...*} var_args
  * @see http://nodejs.org/api/process.html#process_process_nexttick_callback_arg
  */
-Process.prototype.nextTick = function (fn, var_args) {};
+Process.prototype.nextTick = function (fn, var_args) {}
 
 /**
  * @type {string}
  * @see http://nodejs.org/api/process.html#process_process_pid
  */
-Process.prototype.pid;
+Process.prototype.pid
 
 /**
  * @type {string}
  * @see http://nodejs.org/api/process.html#process_process_platform
  */
-Process.prototype.platform;
+Process.prototype.platform
 
 /**
  * @type {*}
  * @see http://nodejs.org/api/process.html#process_process_release
  */
-Process.prototype.release;
+Process.prototype.release
 
 /**
  * @return {number}
  * @see http://nodejs.org/api/process.html#process_process_uptime
  */
-Process.prototype.uptime = function () {};
+Process.prototype.uptime = function () {}
 
-Process.prototype.stdout;
-Process.prototype.stderr;
+Process.prototype.stdout
+Process.prototype.stdin
+Process.prototype.stderr
 
 /**
  * @type {string}
  * @see http://nodejs.org/api/process.html#process_process_version
  */
-Process.prototype.version;
+Process.prototype.version
 
 /**
  * @type {*}
  * @see http://nodejs.org/api/process.html#process_process_versions
  */
-Process.prototype.versions;
+Process.prototype.versions
 
 /** @const {Process} */
-var process;
+var process
 
 
 /**
@@ -196,20 +197,20 @@ var process;
  * @constructor
  * @nosideeffects
  */
-var Buffer = function (var_args) {};
+var Buffer = function (var_args) {}
 
 /**
  * @param {string} encoding
  * @return {boolean}
  */
-Buffer.isEncoding;
+Buffer.isEncoding
 
 /**
  * @param {*} obj
  * @return {boolean}
  * @nosideeffects
  */
-Buffer.isBuffer;
+Buffer.isBuffer
 
 /**
  * @param {string} string
@@ -217,7 +218,7 @@ Buffer.isBuffer;
  * @return {number}
  * @nosideeffects
  */
-Buffer.byteLength;
+Buffer.byteLength
 
 /**
  * @param {Array.<Buffer>} list
@@ -225,19 +226,19 @@ Buffer.byteLength;
  * @return {Buffer}
  * @nosideeffects
  */
-Buffer.concat;
+Buffer.concat
 
 /**
  * @param {number} offset
  * @return {*}
  */
-Buffer.prototype.get;
+Buffer.prototype.get
 
 /**
  * @param {number} offset
  * @param {*} v
  */
-Buffer.prototype.set;
+Buffer.prototype.set
 
 /**
  * @param {string} string
@@ -246,17 +247,17 @@ Buffer.prototype.set;
  * @param {number|string=} encoding
  * @return {*}
  */
-Buffer.prototype.write;
+Buffer.prototype.write
 
 /**
  * @return {Array}
  */
-Buffer.prototype.toJSON;
+Buffer.prototype.toJSON
 
 /**
  * @type {number}
  */
-Buffer.prototype.length;
+Buffer.prototype.length
 
 /**
  * @param {Buffer} targetBuffer
@@ -265,7 +266,7 @@ Buffer.prototype.length;
  * @param {number=} sourceEnd
  * @return {Buffer}
  */
-Buffer.prototype.copy;
+Buffer.prototype.copy
 
 /**
  * @param {number=} start
@@ -273,113 +274,105 @@ Buffer.prototype.copy;
  * @return {Buffer}
  * @nosideeffects
  */
-Buffer.prototype.slice;
+Buffer.prototype.slice
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readUInt8;
+Buffer.prototype.readUInt8
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readUInt16LE;
+Buffer.prototype.readUInt16LE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readUInt16BE;
+Buffer.prototype.readUInt16BE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readUInt32LE;
+Buffer.prototype.readUInt32LE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readUInt32BE;
+Buffer.prototype.readUInt32BE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readInt8;
+Buffer.prototype.readInt8
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readInt16LE;
+Buffer.prototype.readInt16LE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readInt16BE;
+Buffer.prototype.readInt16BE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readInt32LE;
+Buffer.prototype.readInt32LE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readInt32BE;
+Buffer.prototype.readInt32BE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readFloatLE;
+Buffer.prototype.readFloatLE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readFloatBE;
+Buffer.prototype.readFloatBE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readDoubleLE;
+Buffer.prototype.readDoubleLE
 
 /**
  * @param {number} offset
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.readDoubleBE;
-
-/**
- * @param {number} value
- * @param {number} offset
- * @param {boolean=} noAssert
- * @return {number}
- */
-Buffer.prototype.writeUInt8;
+Buffer.prototype.readDoubleBE
 
 /**
  * @param {number} value
@@ -387,7 +380,7 @@ Buffer.prototype.writeUInt8;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeUInt16LE;
+Buffer.prototype.writeUInt8
 
 /**
  * @param {number} value
@@ -395,7 +388,7 @@ Buffer.prototype.writeUInt16LE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeUInt16BE;
+Buffer.prototype.writeUInt16LE
 
 /**
  * @param {number} value
@@ -403,7 +396,7 @@ Buffer.prototype.writeUInt16BE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeUInt32LE;
+Buffer.prototype.writeUInt16BE
 
 /**
  * @param {number} value
@@ -411,7 +404,7 @@ Buffer.prototype.writeUInt32LE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeUInt32BE;
+Buffer.prototype.writeUInt32LE
 
 /**
  * @param {number} value
@@ -419,7 +412,7 @@ Buffer.prototype.writeUInt32BE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeInt8;
+Buffer.prototype.writeUInt32BE
 
 /**
  * @param {number} value
@@ -427,7 +420,7 @@ Buffer.prototype.writeInt8;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeInt16LE;
+Buffer.prototype.writeInt8
 
 /**
  * @param {number} value
@@ -435,7 +428,7 @@ Buffer.prototype.writeInt16LE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeInt16BE;
+Buffer.prototype.writeInt16LE
 
 /**
  * @param {number} value
@@ -443,7 +436,7 @@ Buffer.prototype.writeInt16BE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeInt32LE;
+Buffer.prototype.writeInt16BE
 
 /**
  * @param {number} value
@@ -451,7 +444,7 @@ Buffer.prototype.writeInt32LE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeInt32BE;
+Buffer.prototype.writeInt32LE
 
 /**
  * @param {number} value
@@ -459,7 +452,7 @@ Buffer.prototype.writeInt32BE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeFloatLE;
+Buffer.prototype.writeInt32BE
 
 /**
  * @param {number} value
@@ -467,7 +460,7 @@ Buffer.prototype.writeFloatLE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeFloatBE;
+Buffer.prototype.writeFloatLE
 
 /**
  * @param {number} value
@@ -475,7 +468,7 @@ Buffer.prototype.writeFloatBE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeDoubleLE;
+Buffer.prototype.writeFloatBE
 
 /**
  * @param {number} value
@@ -483,7 +476,15 @@ Buffer.prototype.writeDoubleLE;
  * @param {boolean=} noAssert
  * @return {number}
  */
-Buffer.prototype.writeDoubleBE;
+Buffer.prototype.writeDoubleLE
+
+/**
+ * @param {number} value
+ * @param {number} offset
+ * @param {boolean=} noAssert
+ * @return {number}
+ */
+Buffer.prototype.writeDoubleBE
 
 /**
  * @param {*} value
@@ -491,7 +492,7 @@ Buffer.prototype.writeDoubleBE;
  * @param {number=} end
  * @return {void}
  */
-Buffer.prototype.fill;
+Buffer.prototype.fill
 
 /**
  * @param {string=} encoding
@@ -500,12 +501,12 @@ Buffer.prototype.fill;
  * @return {string}
  * @nosideeffects
  */
-Buffer.prototype.toString;
+Buffer.prototype.toString
 
 /**
  * @type {number}
  */
-Buffer.INSPECT_MAX_BYTES = 50;
+Buffer.INSPECT_MAX_BYTES = 50
 
 //
 // Legacy
@@ -516,39 +517,39 @@ Buffer.INSPECT_MAX_BYTES = 50;
  * @param {number=} end
  * @return {Buffer}
  */
-Buffer.prototype.utf8Slice;
+Buffer.prototype.utf8Slice
 
 /**
  * @param {number=} start
  * @param {number=} end
  * @return {Buffer}
  */
-Buffer.prototype.binarySlice;
+Buffer.prototype.binarySlice
 
 /**
  * @param {number=} start
  * @param {number=} end
  * @return {Buffer}
  */
-Buffer.prototype.asciiSlice;
+Buffer.prototype.asciiSlice
 
 /**
  * @param {string} string
  * @param {number=} offset
  * @return {Buffer}
  */
-Buffer.prototype.utf8Write;
+Buffer.prototype.utf8Write
 
 /**
  * @param {string} string
  * @param {number=} offset
  * @return {Buffer}
  */
-Buffer.prototype.binaryWrite;
+Buffer.prototype.binaryWrite
 
 /**
  * @param {string} string
  * @param {number=} offset
  * @return {Buffer}
  */
-Buffer.prototype.asciiWrite;
+Buffer.prototype.asciiWrite
