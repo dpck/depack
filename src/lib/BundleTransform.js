@@ -3,6 +3,22 @@ import { relative, dirname } from 'path'
 import resolveDependency from 'resolve-dependency'
 import { checkIfLib } from './lib'
 
+/**
+ * @param {string} inner The inner string inside of `{ ... }`
+ */
+const quoteProps = (inner) => {
+  const vars = inner.split(',')
+  const v = vars.map(vv => {
+    if (/\s*['"]/.test(vv)) return vv
+    const [b, a] = vv.split(':')
+    const bb = b.replace(/(\s*)(\S+)(\s*)/, (_, B, R, A) => {
+      return `${B}'${R}':${ a ? a : ` ${R}`}${A}`
+    })
+    return bb
+  })
+  return v.join(',')
+}
+
 export default class BundleTransform extends Replaceable {
   /**
    * @param {string} path Path to the file.
@@ -14,6 +30,26 @@ export default class BundleTransform extends Replaceable {
       {
         re: /^( *import(?:\s+[^\s,]+\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+)['"](.+)['"]/gm,
         replacement: this.replacement.bind(this),
+      },
+      {
+        re: /{([^{}]+)}(\s+=\s+this\.props)/g,
+        replacement(m, inner, rest) {
+          const p = quoteProps(inner)
+          return `{${p}}${rest}`
+        },
+      },
+      {
+        re: /(this\.props)\.([_$\d\w]+)/g,
+        replacement(m, b, a) {
+          return `${b}['${a}']`
+        },
+      },
+      {
+        re: /\({([^{}]+)}\)(\s+=>\s+<)/g,
+        replacement(m, inner, rest) {
+          const p = quoteProps(inner)
+          return `({${p}})${rest}`
+        },
       },
     ]
     this._nodeModules = []
