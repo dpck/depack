@@ -59,6 +59,22 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Frontend",
+      "program": "${workspaceFolder}/src/bin/index.js",
+      "args": [
+        "frontend-admin/index.jsx",
+        "-o", "build/admin.js", "-I", "2018", "-a",
+        "-H", "--charset=UTF-8"
+      ],
+      "cwd": "${workspaceFolder}/../../artdecoweb/knedv.ru",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Transform",
       "program": "${workspaceFolder}/output/transform.js",
       "console": "integratedTerminal",
