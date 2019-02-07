@@ -39,6 +39,15 @@
     mismatch "1.0.3"
     restream "3.4.1"
 
+"@a-la/jsx@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.3.0.tgz#52f8a9d1ee656c76bddaafaa74d6ddcb95e6974b"
+  integrity sha512-OQxO0qupfIFQNws+gNy5eK/DgiatktX5riLeY//uaCeIwfikqEe6dKsEpjoBsANfbAfJBqZdrDOsq0to+81m8A==
+  dependencies:
+    "@a-la/detect-jsx" "1.0.1"
+    mismatch "1.0.3"
+    restream "3.4.1"
+
 "@a-la/markers@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@a-la/markers/-/markers-1.0.3.tgz#2800c812acce35d01756cd82a0553320d405f38d"

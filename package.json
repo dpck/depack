@@ -54,7 +54,7 @@
   "homepage": "https://github.com/artdecocode/depack#readme",
   "devDependencies": {
     "@a-la/fixture-babel": "1.0.0",
-    "@a-la/jsx": "1.2.5",
+    "@a-la/jsx": "1.3.0",
     "@wrote/wrote": "1.2.1",
     "alamode": "1.7.3",
     "argufy": "1.3.2",

@@ -10,6 +10,7 @@ const quoteProps = (inner) => {
   const vars = inner.split(',')
   const v = vars.map(vv => {
     if (/\s*['"]/.test(vv)) return vv
+    else if (/\s*\.\.\./.test(vv)) return vv
     const [b, a] = vv.split(':')
     const bb = b.replace(/(\s*)(\S+)(\s*)/, (_, B, R, A) => {
       return `${B}'${R}':${ a ? a : ` ${R}`}${A}`
@@ -31,26 +32,29 @@ export default class BundleTransform extends Replaceable {
         re: /^( *import(?:\s+[^\s,]+\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+)['"](.+)['"]/gm,
         replacement: this.replacement.bind(this),
       },
-      {
-        re: /{([^{}]+)}(\s+=\s+this\.props)/g,
-        replacement(m, inner, rest) {
-          const p = quoteProps(inner)
-          return `{${p}}${rest}`
-        },
-      },
-      {
-        re: /(this\.props)\.([_$\d\w]+)/g,
-        replacement(m, b, a) {
-          return `${b}['${a}']`
-        },
-      },
-      {
-        re: /\({([^{}]+)}\)(\s+=>\s+<)/g,
-        replacement(m, inner, rest) {
-          const p = quoteProps(inner)
-          return `({${p}})${rest}`
-        },
-      },
+      // {
+      //   re: /{([^{}]+)}(\s+=\s+this\.props)/g,
+      //   replacement(m, inner, rest) {
+      //     console.log('%s %s', this.path, c(m, 'grey'))
+      //     const p = quoteProps(inner)
+      //     return `{${p}}${rest}`
+      //   },
+      // },
+      // {
+      //   re: /(this\.props)\.([_$\d\w]+)/g,
+      //   replacement(m, b, a) {
+      //     console.log('%s %s', this.path, c(m, 'grey'))
+      //     return `${b}['${a}']`
+      //   },
+      // },
+      // {
+      //   re: /\({([^{}]+)}\)(\s+=>\s+[<{])/g,
+      //   replacement(m, inner, rest) {
+      //     console.log('%s %s', this.path, c(m, 'grey'))
+      //     const p = quoteProps(inner)
+      //     return `({${p}})${rest}`
+      //   },
+      // },
     ]
     this._nodeModules = []
     this._deps = []
