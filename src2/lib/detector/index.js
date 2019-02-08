@@ -1,8 +1,9 @@
 import { builtinModules } from 'module'
-import { dirname, relative } from 'path'
-import { findPackageJson, getMatches, getRequireMatches } from './lib'
-import { checkIfLib, getLibRequire } from '..'
+import { dirname } from 'path'
+import { getMatches, getRequireMatches } from './lib'
 import read from '@wrote/read'
+import findPackageJson from 'fpj'
+import { checkIfLib, getLibRequire } from '..'
 
 /**
  * Finds all imports and requires in the source file, and returns an array with resolved dependencies.

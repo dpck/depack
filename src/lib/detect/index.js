@@ -1,7 +1,8 @@
-import { dirname, join, relative, resolve } from 'path'
+import { dirname, join } from 'path'
 import { builtinModules } from 'module'
 import { read, exists } from '@wrote/wrote'
 import mismatch from 'mismatch'
+import findPackageJson from 'fpj'
 import { checkIfLib } from '../lib'
 
 const RE = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm
@@ -137,54 +138,6 @@ export const getRequireMatches = (source) => {
   const m = mismatch(/(?:^|\s+)require\((['"])(.+?)\1\)/gm, source, ['q', 'from'])
   const res = m.map(a => a['from'])
   return res
-}
-
-/**
- * Finds the location of the `package.json` for the given dependency in the directory, and its module file.
- * @param {string} dir The path to the directory.
- * @param {string} name
- */
-export const findPackageJson = async (dir, name) => {
-  const fold = join(dir, 'node_modules', name)
-  const path = join(fold, 'package.json')
-  const e = await exists(path)
-  if (e) {
-    const res = await findEntry(path)
-    if (res === undefined)
-      throw new Error(`The package ${relative('', path)} does export the module.`)
-    else if (res === null)
-      throw new Error(`The exported module in package ${name} does not exist.`)
-    const { entry, version, packageName, main } = res
-    return {
-      entry: relative('', entry), packageJson: relative('', path), version, packageName, ...(main ? { hasMain: true } : {}),
-    }
-  }
-  if (dir == '/' && !e)
-    throw new Error(`Package.json for module ${name} not found.`)
-  return findPackageJson(join(resolve(dir), '..'), name)
-}
-
-/** Finds the path to the entry based on package.json file. */
-export const findEntry = async (path) => {
-  const f = await read(path)
-  let mod, version, packageName, main
-  try {
-    ({ 'module': mod, 'version': version, 'name': packageName, 'main': main } = JSON.parse(f))
-  } catch (err) {
-    throw new Error(`Could not parse ${path}.`)
-  }
-  const resolved = mod || main
-  if (!resolved) return undefined
-  let entry = join(dirname(path), resolved)
-  const stat = await exists(entry)
-  if (!stat) return null
-  if (stat.isDirectory()) {
-    const tt = join(entry, 'index.js')
-    const e2 = await exists(tt)
-    if (!e2) return null
-    entry = tt
-  }
-  return { entry, version, packageName, main: !mod && main }
 }
 
 /**
