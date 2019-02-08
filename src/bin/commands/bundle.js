@@ -3,7 +3,7 @@ import { relative } from 'path'
 import { rm } from '@wrote/wrote'
 import spawn from 'spawncommand'
 import { c } from 'erte'
-import { generateTemp } from '../../lib'
+import generateTemp from '@depack/bundle'
 import { makeError } from '../../lib/closure'
 import { getCommand, addSourceMap, updateSourceMaps } from '../../lib/lib'
 

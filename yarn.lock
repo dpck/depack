@@ -39,15 +39,6 @@
     mismatch "1.0.3"
     restream "3.4.1"
 
-"@a-la/jsx@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.3.0.tgz#52f8a9d1ee656c76bddaafaa74d6ddcb95e6974b"
-  integrity sha512-OQxO0qupfIFQNws+gNy5eK/DgiatktX5riLeY//uaCeIwfikqEe6dKsEpjoBsANfbAfJBqZdrDOsq0to+81m8A==
-  dependencies:
-    "@a-la/detect-jsx" "1.0.1"
-    mismatch "1.0.3"
-    restream "3.4.1"
-
 "@a-la/jsx@1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.3.1.tgz#55e574e0d3f4dc9102811a19cdd6bc35d14b314c"
@@ -74,10 +65,10 @@
   resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.0.1.tgz#7e4d3bb1b0ac62173b00e4bba7091f7847cdb088"
   integrity sha512-ZSavD8NpWA1/1SRCKrx8LZ5WfbKS1kRUIFOERJvR1jXqCAcbM3xWSP2VdCKEh4lCwWghSWQkotbpK6n+o1Y/xQ==
 
-"@depack/bundle@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@depack/bundle/-/bundle-1.0.0.tgz#4c2c99a89b5bac2885ec944915ad227b937b21cd"
-  integrity sha512-QPJrSOeJmNBSP/JEvXjFrxY+J/6QsXvheKWwP27FsT3LOMCCTGaRdzqrPoEyuqDK+6yxYkRdWgSb3Q6vaq2Cag==
+"@depack/bundle@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@depack/bundle/-/bundle-1.0.1.tgz#a07276508ede67e765dd7d4848e7ed5c497716c9"
+  integrity sha512-3A5UpYCHRE4rguSClTuqcIZSZcgVCOZXHbwetfq7GWQIjSdfYhVE7xtDmaqvykRAV/WDwS5ugrAe7COSZ+hmOg==
   dependencies:
     "@a-la/jsx" "1.3.1"
     "@wrote/wrote" "1.2.1"
