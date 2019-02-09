@@ -2,12 +2,9 @@ import { dirname, join } from 'path'
 import { builtinModules } from 'module'
 import { read, exists } from '@wrote/wrote'
 import mismatch from 'mismatch'
+import getMatches from '@depack/detect'
 import findPackageJson from 'fpj'
 import { checkIfLib } from '../lib'
-
-const RE = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm
-const RE2 = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm
-const RE3 = /^ *export\s+{[^}]+?}\s+from\s+(['"])(.+?)\1/gm
 
 export default async (path) => {
   const detected = await detect(path)
@@ -120,18 +117,6 @@ export const getLibRequire = async (source, mod) => {
     }
   }
   return d
-}
-
-/**
- * Returns the names of the modules imported with `import` statements.
- */
-export const getMatches = (source) => {
-  const r = mismatch(RE, source, ['q', 'from'])
-  const r2 = mismatch(RE2, source, ['q', 'from'])
-  const r3 = mismatch(RE3, source, ['q', 'from'])
-  // destructuring in .map bug: https://github.com/google/closure-compiler/issues/3198
-  const res = [...r, ...r2, ...r3].map(a => a['from'])
-  return res
 }
 
 export const getRequireMatches = (source) => {
