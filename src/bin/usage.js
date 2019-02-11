@@ -37,7 +37,7 @@ WHITESPACE, SIMPLE (default), ADVANCED`,
     },
   })
   const usage = `Google Closure Compiler-based packager for front and back-end.
-https://github.com/artdecocode/depack
+https://github.com/dpck/depack
 Performs static analysis on the source files to find out all dependencies.
 Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 

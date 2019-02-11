@@ -37,7 +37,7 @@ depack -h
 
 ```
 Google Closure Compiler-based packager for front and back-end.
-https://github.com/artdecocode/depack
+https://github.com/dpck/depack
 Performs static analysis on the source files to find out all dependencies.
 Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
@@ -66,6 +66,15 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
   Example:
 
     depack source.js -c -o bundle.js -I 2018 -O 2018
+
+[36mFRONTEND[0m: Creates a bundle for the web.
+  depack SOURCE [-o output.js] [-H]
+
+	-H	Add import { h } from 'preact' to files.
+
+  Example:
+
+    depack source.js -o bundle.js -I 2018 -H
 ```
 
 _Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
@@ -359,12 +368,12 @@ _Command:_
 _Trying to execute the output:_
 
 ```js
-/Users/zavr/adc/depack/example/babel-output.js:8
+/Users/zavr/depack/depack/example/babel-output.js:8
 console.log(a());
             ^
 
 TypeError: a is not a function
-    at Object.<anonymous> (/Users/zavr/adc/depack/example/babel-output.js:8:13)
+    at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-output.js:8:13)
     at Module._compile (module.js:653:30)
     at Object.Module._extensions..js (module.js:664:10)
     at Module.load (module.js:566:32)
@@ -414,7 +423,7 @@ const p = spawn('echo', ['hello world'])
 console.log(p.spawnargs.join(' '))
 ```
 
-Where `spawnargs` was not defined in the externs files. The solution is to submit a patch to _Depack_, and before its accepted, use the `--node-externs` flag that points to the location of Node.JS externs that will override the existing externs. Thus, if there is a problem in `child_process` externs, their contents should be copied from https://github.com/artdecocode/depack/blob/master/externs/child_process.js and updated in place. Then the program can be compiled again:
+Where `spawnargs` was not defined in the externs files. The solution is to submit a patch to _Depack_, and before its accepted, use the `--node-externs` flag that points to the location of Node.JS externs that will override the existing externs. Thus, if there is a problem in `child_process` externs, their contents should be copied from https://github.com/dpck/depack/blob/master/externs/child_process.js and updated in place. Then the program can be compiled again:
 
 ```sh
 depack t/transform.js -c -I 2018 -O 2017 -a

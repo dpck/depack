@@ -30,7 +30,7 @@ When the program is stopped there, it is required to hover over the parent of th
 
 %EXAMPLE: t/child_process.js%
 
-Where `spawnargs` was not defined in the externs files. The solution is to submit a patch to _Depack_, and before its accepted, use the `--node-externs` flag that points to the location of Node.JS externs that will override the existing externs. Thus, if there is a problem in `child_process` externs, their contents should be copied from https://github.com/artdecocode/depack/blob/master/externs/child_process.js and updated in place. Then the program can be compiled again:
+Where `spawnargs` was not defined in the externs files. The solution is to submit a patch to _Depack_, and before its accepted, use the `--node-externs` flag that points to the location of Node.JS externs that will override the existing externs. Thus, if there is a problem in `child_process` externs, their contents should be copied from https://github.com/dpck/depack/blob/master/externs/child_process.js and updated in place. Then the program can be compiled again:
 
 ```sh
 depack t/transform.js -c -I 2018 -O 2017 -a

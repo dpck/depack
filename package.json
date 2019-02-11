@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/artdecocode/depack.git"
+    "url": "git://github.com/dpck/depack.git"
   },
   "keywords": [
     "depack",
@@ -49,9 +49,9 @@
   "author": "Anton <anton@adc.sh>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/artdecocode/depack/issues"
+    "url": "https://github.com/dpck/depack/issues"
   },
-  "homepage": "https://github.com/artdecocode/depack#readme",
+  "homepage": "https://github.com/dpck/depack#readme",
   "devDependencies": {
     "@a-la/fixture-babel": "1.0.0",
     "@a-la/jsx": "1.3.1",
