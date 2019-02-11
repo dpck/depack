@@ -649,6 +649,18 @@ spawncommand@2.1.0:
   dependencies:
     catchment "3.1.1"
 
+static-analysis@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-1.0.0.tgz#f1dd46316ab9de29c5f49fcb50578b516077d0b5"
+  integrity sha512-PAR3wlFPhoEYZ+WK+GBY2dmFkWAO6MHDE9ltarihhHpeVvnmFzy2yya41yZIlQ6AemALHPMvPullWZUPRujm6A==
+  dependencies:
+    "@depack/detect" "1.0.0"
+    "@wrote/exists" "1.0.1"
+    "@wrote/read" "1.0.2"
+    fpj "1.0.0"
+    mismatch "1.0.3"
+    resolve-dependency "1.0.0"
+
 temp-context@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/temp-context/-/temp-context-2.1.0.tgz#0af3aeae7c7aa3bfb0c01fc11fb9963c2ce2db60"

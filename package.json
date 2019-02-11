@@ -75,6 +75,7 @@
     "restream": "3.5.0",
     "snapshot-context": "2.0.4",
     "spawncommand": "2.1.0",
+    "static-analysis": "1.0.0",
     "temp-context": "2.1.0",
     "unfetch": "4.0.1",
     "usually": "1.1.0",
@@ -83,5 +84,6 @@
   },
   "peerDependencies": {
     "google-closure-compiler-java": "*"
-  }
+  },
+  "dependencies": {}
 }

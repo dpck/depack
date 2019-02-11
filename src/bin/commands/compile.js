@@ -5,8 +5,9 @@ import { relative, join, dirname } from 'path'
 import makePromise from 'makepromise'
 import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
+import detect, { sort } from 'static-analysis'
 import { addSourceMap, removeStrict } from '../../lib/lib'
-import detect, { sort, getWrapper } from '../../lib/detect'
+import { getWrapper } from '../../lib/detect'
 import { makeError, prepareCoreModules, fixDependencies } from '../../lib/closure'
 
 const externsDeps = {
