@@ -27,9 +27,13 @@ const Bundle = async (opts, options) => {
   if (!src) throw new Error('Entry file is not given.')
   if (!path) throw new Error('Destination path is not given.')
   const deps = await generateTemp(src, { tempDir, preact })
-  const Args = [...options, ...deps.reduce((acc, d) => {
-    return [...acc, '--js', d]
-  }, [])]
+  const Args = [
+    ...options,
+    '--source_map_include_content',
+    '--module_resolution', 'NODE',
+    ...deps.reduce((acc, d) => {
+      return [...acc, '--js', d]
+    }, [])]
   const { promise } = spawn('java', Args)
   const a = getCommand(Args, js => js.startsWith(tempDir) ? relative(tempDir, js) : js)
   console.log(a)
