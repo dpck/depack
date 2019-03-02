@@ -1,4 +1,4 @@
-## Org Structure
+## Org Structure
 
 - [[**dpck**](https://github.com/dpck)] The GitHub org.
 - [[**@depack**](https://npmjs.com/org/depack)] The NPM scope.

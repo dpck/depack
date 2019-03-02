@@ -23,6 +23,7 @@ yarn add -E depack
     * [Bugs In GCC](#bugs-in-gcc)
     * [External APIs](#external-apis)
 - [Known Bugs](#known-bugs)
+- [Org Structure](#org-structure)
 - [Notes](#notes)
 - [Copyright](#copyright)
 
@@ -479,7 +480,7 @@ There are a number of known bugs with Google Closure Compiler.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
-## Org Structure
+## Org Structure
 
 - [[**dpck**](https://github.com/dpck)] The GitHub org.
 - [[**@depack**](https://npmjs.com/org/depack)] The NPM scope.
