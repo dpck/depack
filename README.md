@@ -23,6 +23,7 @@ yarn add -E depack
     * [Bugs In GCC](#bugs-in-gcc)
     * [External APIs](#external-apis)
 - [Known Bugs](#known-bugs)
+- [Notes](#notes)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -58,7 +59,7 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 	--help, -h        	Print help information.
 	--no-sourcemap, -S	Do not add source maps.
 
-[34mBACKEND[0m: Creates a single executable file.
+BACKEND: Creates a single executable file.
   depack SOURCE -c [-o output.js] [-s]
 
 	--no-strict -s	Remove "use strict" from the output.
@@ -67,7 +68,7 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
     depack source.js -c -o bundle.js -I 2018 -O 2018
 
-[36mFRONTEND[0m: Creates a bundle for the web.
+FRONTEND: Creates a bundle for the web.
   depack SOURCE [-o output.js] [-H]
 
 	-H	Add import { h } from 'preact' to files.
@@ -478,6 +479,24 @@ There are a number of known bugs with Google Closure Compiler.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
+## Org Structure
+
+- [[**dpck**](https://github.com/dpck)] The GitHub org.
+- [[**@depack**](https://npmjs.com/org/depack)] The NPM scope.
+- [[@depack/form](https://dpck.github.io/form/)] Bootstrap Form.
+- [[@depack/router](https://dpck.github.io/router/)] Front-end router.
+- [[@depack/render](https://github.com/dpck/render)] Render server-side HTML from JSX.
+- [[@depack/context](https://github.com/dpck/context)] Testing context for unit-testing.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
+
+## Notes
+
+- The static analysis might discover built-in and other modules even if they were not used, since no tree-shaking is performed.
+- [2 March 2019] Current bug does not let compile later `jsx` detection. Trying to compile front-end bundler with _Depack_.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+
 ## Copyright
 
 <table>
@@ -488,7 +507,7 @@ There are a number of known bugs with Google Closure Compiler.
       </a>
     </th>
     <th>
-      © <a href="https://artd.eco">Art Deco</a>  
+      © <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a>
       2019
     </th>
     <th>
