@@ -14,21 +14,21 @@ const ba = (a, b = 0, c = !1) => {
   }
   a = a.split("\n", c ? b + 1 : Number.Infinity);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, ca = (a) => {
+}, ca = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
 const {homedir:l} = os;
-const da = /\s+at.*(?:\(|\s)(.*)\)?/, fa = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, ha = l(), q = (a) => {
+const da = /\s+at.*(?:\(|\s)(.*)\)?/, fa = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, ha = l(), q = a => {
   const {ga:b = !1, ca:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(fa.source.replace("IGNORED_MODULES", d));
-  return a.replace(/\\/g, "/").split("\n").filter((a) => {
+  return a.replace(/\\/g, "/").split("\n").filter(a => {
     a = a.match(da);
     if (null === a || !a[1]) {
       return !0;
     }
     a = a[1];
     return a.includes(".app/Contents/Resources/electron.asar") || a.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(a);
-  }).filter((a) => "" !== a.trim()).map((a) => b ? a.replace(da, (a, b) => a.replace(b, b.replace(ha, "~"))) : a).join("\n");
+  }).filter(a => "" !== a.trim()).map(a => b ? a.replace(da, (a, b) => a.replace(b, b.replace(ha, "~"))) : a).join("\n");
 };
 function ia(a, b, c = !1) {
   return function(d) {
@@ -69,7 +69,7 @@ async function t(a, b, c) {
   });
 }
 ;const ka = (a, b) => {
-  b.once("error", (b) => {
+  b.once("error", b => {
     a.emit("error", b);
   });
   return b;
@@ -83,20 +83,20 @@ const ta = (a, b = 0, c = !1) => {
   }
   a = a.split("\n", c ? b + 1 : Number.Infinity);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, ua = (a) => {
+}, ua = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
-const va = /\s+at.*(?:\(|\s)(.*)\)?/, wa = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, xa = l(), D = (a) => {
+const va = /\s+at.*(?:\(|\s)(.*)\)?/, wa = /^(?:(?:(?:node|(?:internal\/[\w/]*|.*node_modules\/(?:IGNORED_MODULES)\/.*)?\w+)\.js:\d+:\d+)|native)/, xa = l(), D = a => {
   const {ga:b = !1, ca:c = ["pirates"]} = {}, d = c.join("|"), e = new RegExp(wa.source.replace("IGNORED_MODULES", d));
-  return a.replace(/\\/g, "/").split("\n").filter((a) => {
+  return a.replace(/\\/g, "/").split("\n").filter(a => {
     a = a.match(va);
     if (null === a || !a[1]) {
       return !0;
     }
     a = a[1];
     return a.includes(".app/Contents/Resources/electron.asar") || a.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(a);
-  }).filter((a) => "" !== a.trim()).map((a) => b ? a.replace(va, (a, b) => a.replace(b, b.replace(xa, "~"))) : a).join("\n");
+  }).filter(a => "" !== a.trim()).map(a => b ? a.replace(va, (a, b) => a.replace(b, b.replace(xa, "~"))) : a).join("\n");
 };
 function ya(a, b, c = !1) {
   return function(d) {
@@ -114,7 +114,7 @@ function ya(a, b, c = !1) {
   return ya(c, b, a);
 }
 ;const Aa = (a, b) => {
-  b.once("error", (b) => {
+  b.once("error", b => {
     a.emit("error", b);
   });
   return b;
@@ -135,7 +135,7 @@ class Ba extends C {
         a(b);
         this.a = [];
       });
-      this.once("error", (a) => {
+      this.once("error", a => {
         if (-1 != a.stack.indexOf("\n")) {
           const b = D(a.stack);
           a.stack = b;
@@ -172,7 +172,7 @@ async function Ea(a) {
   }
   a = a.split("\n", c ? b + 1 : Number.Infinity);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, Ga = (a) => {
+}, Ga = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
@@ -197,7 +197,7 @@ function Ha(a, b, c = !1) {
   }
   const c = Ia(!0), d = na(a);
   await new Promise((a, f) => {
-    d.on("error", (a) => {
+    d.on("error", a => {
       a = c(a);
       f(a);
     }).on("close", a).end(b);
@@ -209,7 +209,7 @@ function Ha(a, b, c = !1) {
   }
   a = a.split("\n", c ? b + 1 : Number.Infinity);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, La = (a) => {
+}, La = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
@@ -278,13 +278,13 @@ async function F(a) {
   }
 }
 ;async function Qa(a, b) {
-  b = b.map(async(b) => {
+  b = b.map(async b => {
     const c = z(a, b);
     return {lstat:await E(B, c), path:c, F:b};
   });
   return await Promise.all(b);
 }
-const Ra = (a) => a.lstat.isDirectory(), Sa = (a) => !a.lstat.isDirectory();
+const Ra = a => a.lstat.isDirectory(), Sa = a => !a.lstat.isDirectory();
 async function G(a) {
   if (!a) {
     throw Error("Please specify a path to the directory");
@@ -307,30 +307,30 @@ async function G(a) {
   }, {});
   return {content:Object.assign({}, b, a), type:"Directory"};
 }
-;const Ta = async(a) => {
+;const Ta = async a => {
   await E(ra, a);
-}, Ua = async(a) => {
+}, Ua = async a => {
   const {content:b} = await G(a);
-  var c = Object.keys(b).filter((a) => {
+  var c = Object.keys(b).filter(a => {
     ({type:a} = b[a]);
     if ("File" == a || "SymbolicLink" == a) {
       return !0;
     }
-  }), d = Object.keys(b).filter((a) => {
+  }), d = Object.keys(b).filter(a => {
     ({type:a} = b[a]);
     if ("Directory" == a) {
       return !0;
     }
   });
-  c = c.map((b) => v(a, b));
+  c = c.map(b => v(a, b));
   await Promise.all(c.map(Ta));
-  d = d.map((b) => v(a, b));
+  d = d.map(b => v(a, b));
   await Promise.all(d.map(Ua));
   await E(qa, a);
-}, Va = async(a) => {
+}, Va = async a => {
   (await E(B, a)).isDirectory() ? await Ua(a) : await Ta(a);
 };
-const H = async(a) => {
+const H = async a => {
   try {
     return await E(B, a);
   } catch (b) {
@@ -360,7 +360,7 @@ const Xa = (a, b) => {
   ({length:b} = b.split("\n").slice(0, a).join("\n"));
   return b + e + (a ? 1 : 0);
 };
-const Ya = (a) => {
+const Ya = a => {
   try {
     new Wa(a);
   } catch (b) {
@@ -412,7 +412,7 @@ const $a = (a, b) => b.filter(Za).reduce((a, {m:b, o:e}) => {
     });
   }
 }, `${a}`);
-const ab = (a) => new RegExp(`%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_(\\d+)_%%`, "g"), bb = (a, b) => `%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_${b}_%%`, cb = (a, b) => Object.keys(a).reduce((c, d) => {
+const ab = a => new RegExp(`%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_(\\d+)_%%`, "g"), bb = (a, b) => `%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_${b}_%%`, cb = (a, b) => Object.keys(a).reduce((c, d) => {
   {
     var e = a[d];
     var {O:f = bb, ta:g = ab} = void 0 === b ? {} : b;
@@ -428,7 +428,7 @@ const ab = (a) => new RegExp(`%%_RESTREAM_${a.toUpperCase()}_REPLACEMENT_(\\d+)_
     delete d[c];
     return $a(a, Array.isArray(b) ? b : [b]);
   }};
-}, eb = (a) => {
+}, eb = a => {
   const {m:b, map:c, O:d, name:e} = a;
   return {m:b, o(b) {
     const {lastIndex:f} = a;
@@ -509,7 +509,7 @@ class gb extends fb {
 }, get L() {
   return $a;
 }};
-const N = (a) => {
+const N = a => {
   var b = [];
   const c = {}, d = [], e = {}, f = b.reduce((b, {open:f, close:k}) => {
     b = a.slice(b, f);
@@ -538,7 +538,7 @@ const N = (a) => {
     Object.assign(e, d);
   }
   return {R:c, M:d, H:e};
-}, M = (a) => {
+}, M = a => {
   const b = [], c = {};
   a.replace(/(\s*)(\S+)(\s*)=(\s*)(["'])([\s\S]+?)\5/g, (a, e, f, g, h, k, m, n) => {
     c[f] = {before:e, X:g, W:h};
@@ -596,7 +596,7 @@ const nb = (a, b = []) => {
     throw Error(1);
   }
   return {Ca:a, ra:d};
-}, pb = (a) => {
+}, pb = a => {
   var b;
   [, b] = /<\s*(.+?)(?:\s+[\s\S]+)?\s*\/?\s*>/.exec(a) || [];
   const {oa:c} = L.ea({oa:/=>/g});
@@ -621,7 +621,7 @@ class ob {
     Object.assign(this, a);
   }
 }
-;const Q = (a) => {
+;const Q = a => {
   let b = "", c = "";
   a = a.replace(/^(\n\s*)([\s\S]+)?/, (a, c, f = "") => {
     b = c;
@@ -631,7 +631,7 @@ class ob {
     return b;
   });
   return `${b}${a ? `\`${a}\`` : ""}${c}`;
-}, rb = (a) => {
+}, rb = a => {
   const b = [];
   return b.length ? qb(a, b) : [Q(a)];
 }, qb = (a, b) => {
@@ -700,7 +700,7 @@ const ub = (a, b = 0, c = !1) => {
   }
   a = a.split("\n", c ? b + 1 : Number.Infinity);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, vb = (a) => {
+}, vb = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
@@ -720,7 +720,7 @@ function wb(a, b, c = !1) {
   return wb(c, b, a);
 }
 ;const yb = (a, b) => {
-  b.once("error", (b) => {
+  b.once("error", b => {
     a.emit("error", b);
   });
   return b;
@@ -741,7 +741,7 @@ class zb extends C {
         a(b);
         this.a = [];
       });
-      this.once("error", (a) => {
+      this.once("error", a => {
         if (-1 != a.stack.indexOf("\n")) {
           const b = D(a.stack);
           a.stack = b;
@@ -759,7 +759,7 @@ class zb extends C {
     return this.l;
   }
 }
-const Ab = async(a) => {
+const Ab = async a => {
   var b = void 0 === b ? {} : b;
   ({g:a} = new zb(Object.assign({}, {s:a}, b, {c:xb(!0)})));
   return await a;
@@ -803,8 +803,8 @@ function Cb(a, b) {
   }
   return {path:a.startsWith(".") ? w("", c) : c, wa:d};
 };
-const Eb = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm, Fb = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm, Gb = /^ *import\s+(['"])(.+?)\1/gm, Hb = /^ *export\s+{[^}]+?}\s+from\s+(['"])(.+?)\1/gm, Ib = (a) => [Eb, Fb, Gb, Hb].reduce((b, c) => {
-  c = Cb(c, a).map((a) => a.from);
+const Eb = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm, Fb = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm, Gb = /^ *import\s+(['"])(.+?)\1/gm, Hb = /^ *export\s+{[^}]+?}\s+from\s+(['"])(.+?)\1/gm, Ib = a => [Eb, Fb, Gb, Hb].reduce((b, c) => {
+  c = Cb(c, a).map(a => a.from);
   return [...b, ...c];
 }, []);
 const S = async(a, b) => {
@@ -826,7 +826,7 @@ const S = async(a, b) => {
     throw Error(`Package.json for module ${b} not found.`);
   }
   return S(v(z(a), ".."), b);
-}, Jb = async(a) => {
+}, Jb = async a => {
   var b = await Da(a);
   let c, d, e, f;
   try {
@@ -838,19 +838,19 @@ const S = async(a, b) => {
     return a = v(u(a), b), b = await H(a), !b || b.isDirectory() && (a = v(a, "index.js"), !await H(a)) ? null : {b:a, version:d, w:e, main:!c && f};
   }
 };
-const Lb = async(a) => {
+const Lb = async a => {
   const b = await Kb(a);
   return b.filter((a, d) => {
     var {internal:c, b:f} = a;
-    return c ? b.findIndex((a) => {
+    return c ? b.findIndex(a => {
       ({internal:a} = a);
       return a == c;
-    }) == d : b.findIndex((a) => {
+    }) == d : b.findIndex(a => {
       ({b:a} = a);
       return f == a;
     }) == d;
-  }).map((a) => {
-    const {b:c, internal:e} = a, f = b.filter((a) => {
+  }).map(a => {
+    const {b:c, internal:e} = a, f = b.filter(a => {
       var {internal:b, b:d} = a;
       if (e) {
         return e == b;
@@ -858,7 +858,7 @@ const Lb = async(a) => {
       if (c) {
         return c == d;
       }
-    }).map((a) => {
+    }).map(a => {
       ({from:a} = a);
       return a;
     }).filter((a, b, c) => c.indexOf(a) == b);
@@ -879,19 +879,19 @@ const Lb = async(a) => {
   } catch (f) {
     throw f.message = `${a}\n [!] ${f.message}`, f;
   }
-  d = e.map((b) => Object.assign({}, b, {from:a}));
-  return await e.filter((a) => {
+  d = e.map(b => Object.assign({}, b, {from:a}));
+  return await e.filter(a => {
     ({b:a} = a);
     return a && !(a in b);
   }).reduce(async(a, c) => {
     var {b:d, j:e} = c;
     a = await a;
-    c = (await Kb(d, b)).map((a) => Object.assign({}, a, {from:a.from ? a.from : d}, !a.i && e ? {j:e} : {}));
+    c = (await Kb(d, b)).map(a => Object.assign({}, a, {from:a.from ? a.from : d}, !a.i && e ? {j:e} : {}));
     return [...a, ...c];
   }, d);
 }, Nb = async(a, b) => {
   const c = u(a);
-  b = b.map(async(b) => {
+  b = b.map(async b => {
     if (aa.includes(b)) {
       return {internal:b};
     }
@@ -906,7 +906,7 @@ const Lb = async(a) => {
     return Object.assign({}, {b:d, i:f, version:g, name:h}, k ? {j:k} : {});
   });
   return await Promise.all(b);
-}, Mb = (a) => Cb(/(?:^|\s+)require\((['"])(.+?)\1\)/gm, a).map((a) => a.from);
+}, Mb = a => Cb(/(?:^|\s+)require\((['"])(.+?)\1\)/gm, a).map(a => a.from);
 class Ob extends L.la {
   constructor(a, b) {
     super();
@@ -941,18 +941,18 @@ class Ob extends L.la {
   var n = v(f, m);
   n = new Ob(a, n);
   n.end(g && k ? `import { h } from 'preact'
-  ${h}` : h);
+${h}` : h);
   h = await Ab(n);
   k = k ? await Pb(h, a) : h;
   a = v(f, a);
   await J.N(a);
   await J.write(a, k);
-  a = n.I.map((a) => v(m, a)).filter((a) => !(a in e));
-  n = n.fa.filter((a) => !(a in d));
-  n.forEach((a) => {
+  a = n.I.map(a => v(m, a)).filter(a => !(a in e));
+  n = n.fa.filter(a => !(a in d));
+  n.forEach(a => {
     d[a] = 1;
   });
-  a.forEach((a) => {
+  a.forEach(a => {
     e[a] = 1;
   });
   await n.reduce(async(a, b) => {
@@ -978,7 +978,7 @@ const Rb = async(a, b = {}) => {
   const {G:c = "depack-temp", D:d} = b;
   b = {Y:{[w("", a)]:1}, Z:{}};
   await Qb(a, {G:c, D:d}, b);
-  return [...Object.keys(b.Y).map((a) => v(c, a)), ...Object.keys(b.Z)];
+  return [...Object.keys(b.Y).map(a => v(c, a)), ...Object.keys(b.Z)];
 };
 class Sb extends C {
   constructor(a) {
@@ -996,7 +996,7 @@ class Sb extends C {
         a(b);
         this.a = [];
       });
-      this.once("error", (a) => {
+      this.once("error", a => {
         if (-1 != a.stack.indexOf("\n")) {
           const b = q(a.stack);
           a.stack = b;
@@ -1019,7 +1019,7 @@ const Tb = async(a, b) => {
   ({g:a} = new Sb(Object.assign({}, {s:a}, b, {c:r(!0)})));
   return await a;
 };
-const T = async(a) => {
+const T = async a => {
   try {
     return await t(B, a);
   } catch (b) {
@@ -1027,13 +1027,13 @@ const T = async(a) => {
   }
 };
 async function Ub(a, b) {
-  b = b.map(async(b) => {
+  b = b.map(async b => {
     const c = z(a, b);
     return {lstat:await t(B, c), path:c, F:b};
   });
   return await Promise.all(b);
 }
-const Vb = (a) => a.lstat.isDirectory(), Wb = (a) => !a.lstat.isDirectory();
+const Vb = a => a.lstat.isDirectory(), Wb = a => !a.lstat.isDirectory();
 async function Xb(a) {
   if (!a) {
     throw Error("Please specify a path to the directory");
@@ -1056,27 +1056,27 @@ async function Xb(a) {
   }, {});
   return {content:Object.assign({}, b, a), type:"Directory"};
 }
-;const Yb = async(a) => {
+;const Yb = async a => {
   await t(ra, a);
-}, Zb = async(a) => {
+}, Zb = async a => {
   const {content:b} = await Xb(a);
-  var c = Object.keys(b).filter((a) => {
+  var c = Object.keys(b).filter(a => {
     ({type:a} = b[a]);
     if ("File" == a || "SymbolicLink" == a) {
       return !0;
     }
-  }), d = Object.keys(b).filter((a) => {
+  }), d = Object.keys(b).filter(a => {
     ({type:a} = b[a]);
     if ("Directory" == a) {
       return !0;
     }
   });
-  c = c.map((b) => v(a, b));
+  c = c.map(b => v(a, b));
   await Promise.all(c.map(Yb));
-  d = d.map((b) => v(a, b));
+  d = d.map(b => v(a, b));
   await Promise.all(d.map(Zb));
   await t(qa, a);
-}, $b = async(a) => {
+}, $b = async a => {
   (await t(B, a)).isDirectory() ? await Zb(a) : await Yb(a);
 };
 async function ac(a) {
@@ -1111,7 +1111,7 @@ async function bc(a) {
   }
   const c = r(!0), d = na(a);
   await new Promise((a, f) => {
-    d.on("error", (a) => {
+    d.on("error", a => {
       a = c(a);
       f(a);
     }).on("close", a).end(b);
@@ -1129,7 +1129,7 @@ async function ec(a) {
   d = void 0 === d ? !1 : d;
   e = void 0 === e ? !1 : e;
   const f = new RegExp(`^-(${c}|-${b})`);
-  b = a.findIndex((a) => f.test(a));
+  b = a.findIndex(a => f.test(a));
   if (-1 == b) {
     return {argv:a};
   }
@@ -1143,7 +1143,7 @@ async function ec(a) {
   }
   e && (c = parseInt(c, 10));
   return {value:c, argv:[...a.slice(0, b), ...a.slice(d + 1)]};
-}, gc = (a) => {
+}, gc = a => {
   const b = [];
   for (let c = 0; c < a.length; c++) {
     const d = a[c];
@@ -1208,12 +1208,12 @@ function ic(a, b) {
   }
   return {path:a.startsWith(".") ? w("", c) : c, wa:d};
 };
-const kc = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm, lc = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm, mc = /^ *import\s+(['"])(.+?)\1/gm, nc = /^ *export\s+{[^}]+?}\s+from\s+(['"])(.+?)\1/gm, oc = (a) => [kc, lc, mc, nc].reduce((b, c) => {
-  c = ic(c, a).map((a) => a.from);
+const kc = /^ *import(?:\s+(?:[^\s,]+)\s*,?)?(?:\s*{(?:[^}]+)})?\s+from\s+(['"])(.+?)\1/gm, lc = /^ *import\s+(?:.+?\s*,\s*)?\*\s+as\s+.+?\s+from\s+(['"])(.+?)\1/gm, mc = /^ *import\s+(['"])(.+?)\1/gm, nc = /^ *export\s+{[^}]+?}\s+from\s+(['"])(.+?)\1/gm, oc = a => [kc, lc, mc, nc].reduce((b, c) => {
+  c = ic(c, a).map(a => a.from);
   return [...b, ...c];
 }, []);
 const pc = (a, b) => {
-  b.once("error", (b) => {
+  b.once("error", b => {
     a.emit("error", b);
   });
   return b;
@@ -1234,7 +1234,7 @@ class qc extends C {
         a(b);
         this.a = [];
       });
-      this.once("error", (a) => {
+      this.once("error", a => {
         if (-1 != a.stack.indexOf("\n")) {
           const b = q(a.stack);
           a.stack = b;
@@ -1252,7 +1252,7 @@ class qc extends C {
     return this.l;
   }
 }
-const rc = async(a) => {
+const rc = async a => {
   var b = void 0 === b ? {} : b;
   ({g:a} = new qc(Object.assign({}, {s:a}, b, {c:r(!0)})));
   return await a;
@@ -1280,7 +1280,7 @@ async function sc(a) {
     throw Error(`Package.json for module ${b} not found.`);
   }
   return uc(v(z(a), ".."), b);
-}, tc = async(a) => {
+}, tc = async a => {
   var b = await sc(a);
   let c, d, e, f;
   try {
@@ -1292,19 +1292,19 @@ async function sc(a) {
     return a = v(u(a), b), b = await T(a), !b || b.isDirectory() && (a = v(a, "index.js"), !await T(a)) ? null : {b:a, version:d, w:e, main:!c && f};
   }
 };
-const wc = async(a) => {
+const wc = async a => {
   const b = await vc(a);
   return b.filter((a, d) => {
     var {internal:c, b:f} = a;
-    return c ? b.findIndex((a) => {
+    return c ? b.findIndex(a => {
       ({internal:a} = a);
       return a == c;
-    }) == d : b.findIndex((a) => {
+    }) == d : b.findIndex(a => {
       ({b:a} = a);
       return f == a;
     }) == d;
-  }).map((a) => {
-    const {b:c, internal:e} = a, f = b.filter((a) => {
+  }).map(a => {
+    const {b:c, internal:e} = a, f = b.filter(a => {
       var {internal:b, b:d} = a;
       if (e) {
         return e == b;
@@ -1312,7 +1312,7 @@ const wc = async(a) => {
       if (c) {
         return c == d;
       }
-    }).map((a) => {
+    }).map(a => {
       ({from:a} = a);
       return a;
     }).filter((a, b, c) => c.indexOf(a) == b);
@@ -1333,19 +1333,19 @@ const wc = async(a) => {
   } catch (f) {
     throw f.message = `${a}\n [!] ${f.message}`, f;
   }
-  d = e.map((b) => Object.assign({}, b, {from:a}));
-  return await e.filter((a) => {
+  d = e.map(b => Object.assign({}, b, {from:a}));
+  return await e.filter(a => {
     ({b:a} = a);
     return a && !(a in b);
   }).reduce(async(a, c) => {
     var {b:d, j:e} = c;
     a = await a;
-    c = (await vc(d, b)).map((a) => Object.assign({}, a, {from:a.from ? a.from : d}, !a.i && e ? {j:e} : {}));
+    c = (await vc(d, b)).map(a => Object.assign({}, a, {from:a.from ? a.from : d}, !a.i && e ? {j:e} : {}));
     return [...a, ...c];
   }, d);
 }, yc = async(a, b) => {
   const c = u(a);
-  b = b.map(async(b) => {
+  b = b.map(async b => {
     if (aa.includes(b)) {
       return {internal:b};
     }
@@ -1360,9 +1360,9 @@ const wc = async(a) => {
     return Object.assign({}, {b:d, i:f, version:g, name:h}, k ? {j:k} : {});
   });
   return await Promise.all(b);
-}, xc = (a) => ic(/(?:^|\s+)require\((['"])(.+?)\1\)/gm, a).map((a) => a.from), zc = (a) => {
+}, xc = a => ic(/(?:^|\s+)require\((['"])(.+?)\1\)/gm, a).map(a => a.from), zc = a => {
   const b = [], c = [], d = [], e = [], f = [], g = [];
-  a.forEach((a) => {
+  a.forEach(a => {
     var {i:h, j:m, name:n, b:p, internal:x} = a;
     if (x) {
       return f.push(x);
@@ -1397,7 +1397,7 @@ async function Ac(a, b, c = {}) {
   }
   a = a.split("\n", c ? b + 1 : Number.Infinity);
   return c ? a[a.length - 1] : a.slice(b).join("\n");
-}, Cc = (a) => {
+}, Cc = a => {
   ({callee:{caller:a}} = a);
   return a;
 };
@@ -1406,14 +1406,14 @@ var V = (a, b = {}) => {
   const {ga:c = !1, ca:d = ["pirates"]} = b;
   b = d.join("|");
   const e = new RegExp(Ec.source.replace("IGNORED_MODULES", b));
-  return a.replace(/\\/g, "/").split("\n").filter((a) => {
+  return a.replace(/\\/g, "/").split("\n").filter(a => {
     a = a.match(Dc);
     if (null === a || !a[1]) {
       return !0;
     }
     a = a[1];
     return a.includes(".app/Contents/Resources/electron.asar") || a.includes(".app/Contents/Resources/default_app.asar") ? !1 : !e.test(a);
-  }).filter((a) => "" !== a.trim()).map((a) => c ? a.replace(Dc, (a, b) => a.replace(b, b.replace(Fc, "~"))) : a).join("\n");
+  }).filter(a => "" !== a.trim()).map(a => c ? a.replace(Dc, (a, b) => a.replace(b, b.replace(Fc, "~"))) : a).join("\n");
 };
 function Gc(a, b, c = !1) {
   return function(d) {
@@ -1448,7 +1448,7 @@ var Hc = class extends C {
         a(b);
         this.a = [];
       });
-      this.once("error", (a) => {
+      this.once("error", a => {
         if (-1 == a.stack.indexOf("\n")) {
           a = c(a), b(a);
         } else {
@@ -1457,7 +1457,7 @@ var Hc = class extends C {
           b(a);
         }
       });
-      e && (e.once("error", (a) => this.emit("error", a)), e.pipe(this));
+      e && (e.once("error", a => this.emit("error", a)), e.pipe(this));
     });
   }
   _write(a, b, c) {
@@ -1467,7 +1467,7 @@ var Hc = class extends C {
   get g() {
     return this.l;
   }
-}, Ic = async(a) => {
+}, Ic = async a => {
   var b = void 0 === b ? {v:!1} : b;
   ({g:a} = new Hc(Object.assign({}, {s:a}, b, {c:W(!0)})));
   return await a;
@@ -1479,9 +1479,9 @@ function Jc(a = []) {
   a.Sa = a.spawnargs.join(" ");
   return a;
 }
-const Kc = async(a) => {
+const Kc = async a => {
   const [b, c, d] = await Promise.all([new Promise((b, c) => {
-    a.on("error", c).on("exit", (a) => {
+    a.on("error", c).on("exit", a => {
       b(a);
     });
   }), a.stdout ? Ic(a.stdout) : void 0, a.stderr ? Ic(a.stderr) : void 0]);
@@ -1505,28 +1505,29 @@ function Lc(a = {}) {
     const [d, ...e] = c;
     b = `${b}\t${d}`;
     const k = h("", g);
-    c = e.map((a) => `${k}\t${a}`);
+    c = e.map(a => `${k}\t${a}`);
     return [...a, b, ...c];
-  }, []).map((a) => `\t${a}`);
-  const k = [c, `  ${d || ""}`].filter((a) => a ? a.trim() : a).join("\n\n");
+  }, []).map(a => `\t${a}`);
+  const k = [c, `  ${d || ""}`].filter(a => a ? a.trim() : a).join("\n\n");
   a = `${k ? `${k}\n` : ""}
-  ${a.join("\n")}
-  `;
+${a.join("\n")}
+`;
   return e ? `${a}
   Example:
+
     ${e}
-  ` : a;
+` : a;
 }
 ;const Mc = {black:30, red:31, green:32, yellow:33, blue:34, magenta:35, cyan:36, white:37, grey:90};
 function X(a, b) {
   return (b = Mc[b]) ? `\x1b[${b}m${a}\x1b[0m` : a;
 }
-;const Nc = (a) => {
+;const Nc = a => {
   if (a.length) {
-    return `#!/usr/bin/env node\n${a.map((a) => `const ${"module" == a ? "_module" : a} = r` + `equire('${a}');`).join("\n") + "\n%output%"}`;
+    return `#!/usr/bin/env node\n${a.map(a => `const ${"module" == a ? "_module" : a} = r` + `equire('${a}');`).join("\n") + "\n%output%"}`;
   }
 };
-const Oc = (a, b = (a) => a) => {
+const Oc = (a, b = a => a) => {
   const c = [];
   a = a.join(" ").replace(/--js (\S+)\s*/g, (a, d) => {
     a = `  --js ${X(b(d), "green")}`;
@@ -1535,11 +1536,11 @@ const Oc = (a, b = (a) => a) => {
   }).replace(/--externs (\S+)/g, (a, b) => `\n  --externs ${X(b, "grey")}`).replace(/--js_output_file (\S+)/g, (a, b) => `\n  --js_output_file ${X(b, "red")}`);
   const d = c.join("\n");
   return `${a}\n${d}`;
-}, Pc = async(a) => {
+}, Pc = async a => {
   var b = la(a);
   b = [await U.read(a), "//" + `# sourceMappingURL=${b}.map`].join("\n");
   await U.write(a, b);
-}, Qc = async(a) => {
+}, Qc = async a => {
   const b = (await U.read(a)).replace(/^'use strict';/m, " ".repeat(13));
   await U.write(a, b);
 }, Rc = async(a, b) => {
@@ -1547,17 +1548,17 @@ const Oc = (a, b = (a) => a) => {
   var c = await U.read(a);
   c = JSON.parse(c);
   var {sources:d} = c;
-  d = d.map((a) => a.startsWith(" ") ? a : `/${w(b, a)}`);
+  d = d.map(a => a.startsWith(" ") ? a : `/${w(b, a)}`);
   c.sources = d;
   c = JSON.stringify(c, null, 2);
   await U.write(a, c);
 };
 const Sc = (a, b) => {
-  b = b.split("\n\n").map((a) => /^.+?:\d+:(?:\s*Originally at:\s*.+?)? WARNING -/.test(a) ? X(a, "grey") : X(a, "red")).join("\n\n");
+  b = b.split("\n\n").map(a => /^.+?:\d+:(?:\s*Originally at:\s*.+?)? WARNING -/.test(a) ? X(a, "grey") : X(a, "red")).join("\n\n");
   return `Exit code ${a}\n${b}`;
 }, [Tc] = process.version.split(".", 1), Vc = async({K:a, a:b = "node_modules", force:c = !0}) => {
   const d = w("", v(u(require.resolve("depack/package.json")), "builtin-modules", Tc));
-  return (await Promise.all(a.map(async(a) => {
+  return (await Promise.all(a.map(async a => {
     const e = v(b, a), g = v(e, "package.json");
     var h = v(e, "index.js");
     const k = {i:g, index:h};
@@ -1573,7 +1574,7 @@ const Sc = (a, b) => {
     await U.write(h, a);
     return k;
   }))).reduce((a, {i:b, index:c}) => [...a, b, c], []);
-}, Uc = async(a) => {
+}, Uc = async a => {
   try {
     const b = await U.read(a), {depack:c} = JSON.parse(b);
     return c;
@@ -1581,7 +1582,7 @@ const Sc = (a, b) => {
   }
 }, Wc = async(a, b) => {
   a = [...a, ...b];
-  await Promise.all(a.map(async(a) => {
+  await Promise.all(a.map(async a => {
     var b = await U.read(a);
     b = JSON.parse(b);
     const {main:c, module:f} = b, g = f ? "module" : "main";
@@ -1637,10 +1638,10 @@ const Xc = {fs:["events", "stream"], stream:["events"], child_process:["events",
   c.length && console.log("%s: %s", X("Modules", "yellow"), c.join(" "));
   a.length && console.log("%s: %s", X("CommonJS", "yellow"), a.join(" "));
   e.length && console.log("%s: %s", X("Built-ins", "yellow"), e.join(", "));
-}, ad = (a) => !a.startsWith("node_modules"), Yc = async(a) => {
+}, ad = a => !a.startsWith("node_modules"), Yc = async a => {
   const b = w("", u(require.resolve("depack/package.json"))), c = v(b, "externs");
-  a = [...a.reduce((a, b) => [...a, b, ...Xc[b] || []], []).filter((a, b, c) => c.indexOf(a) == b), "node"].map((a) => v(c, `${a}.js`));
-  await Promise.all(a.map(async(a) => {
+  a = [...a.reduce((a, b) => [...a, b, ...Xc[b] || []], []).filter((a, b, c) => c.indexOf(a) == b), "node"].map(a => v(c, `${a}.js`));
+  await Promise.all(a.map(async a => {
     if (!await U.exists(a)) {
       throw Error(`Externs ${a} don't exist.`);
     }
@@ -1655,12 +1656,13 @@ var bd = () => {
 https://github.com/dpck/depack
 Performs static analysis on the source files to find out all dependencies.
 Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
-  ${a}
-  ${X("BACKEND", "blue")}: Creates a single executable file.
-  ${b}
-  ${X("FRONTEND", "cyan")}: Creates a bundle for the web.
-  ${c}
-  `;
+
+${a}
+${X("BACKEND", "blue")}: Creates a single executable file.
+${b}
+${X("FRONTEND", "cyan")}: Creates a bundle for the web.
+${c}
+`;
 };
 const cd = async(a, b) => {
   const {src:c, G:d = "depack-temp", P:e = !1, C:f, D:g} = a;
@@ -1673,7 +1675,7 @@ const cd = async(a, b) => {
   a = await Rb(c, {G:d, D:g});
   a = [...b, "--source_map_include_content", "--module_resolution", "NODE", ...a.reduce((a, b) => [...a, "--js", b], [])];
   ({g:b} = Jc(a));
-  a = Oc(a, (a) => a.startsWith(d) ? w(d, a) : a);
+  a = Oc(a, a => a.startsWith(d) ? w(d, a) : a);
   console.log(a);
   const {stdout:h, stderr:k, code:m} = await Ac("Running Google Closure Compiler", b);
   if (m) {
@@ -1718,7 +1720,7 @@ id = Y["no-strict"], jd = Y.verbose, kd = Y.temp, ld = Y.language_in, md = Y.lan
 const {GOOGLE_CLOSURE_COMPILER:ud} = process.env, vd = ud || require.resolve("google-closure-compiler-java/compiler.jar"), wd = ud ? "target" : require.resolve("google-closure-compiler-java/package.json");
 rd && (console.log("0.0.1-alpha"), process.exit(0));
 gd && (console.log(bd()), process.exit(0));
-const xd = (a) => /^\d+$/.test(a) ? `ECMASCRIPT_${a}` : a;
+const xd = a => /^\d+$/.test(a) ? `ECMASCRIPT_${a}` : a;
 (async() => {
   try {
     let p = "target";
