@@ -6,7 +6,7 @@ const os = require('os');
 const child_process = require('child_process');
 const vm = require('vm');
 const _module = require('module');
-'use strict';
+             
 const {builtinModules:aa} = _module;
 const ba = (a, b = 0, c = !1) => {
   if (0 === b && !c) {
