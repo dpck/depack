@@ -17,7 +17,6 @@ yarn add -E depack
   * [Usage](#usage)
   * [Gotchas](#gotchas)
     * [Do not output to `ECMA2018`](#do-not-output-to-ecma2018)
-    * [Patch Closure Compiler For Correct `ECMA2017`](#patch-closure-compiler-for-correct-ecma2017)
     * [Babel-Compiled Dependencies Don't Work](#babel-compiled-dependencies-dont-work)
   * [Troubleshooting](#troubleshooting)
     * [Bugs In GCC](#bugs-in-gcc)
@@ -217,9 +216,9 @@ async function g(a) {
 const l = async() => {
   var a = require.resolve("depack/package.json");
   const c = k(a);
-  a = await new Promise((a) => {
+  a = await new Promise(a => {
     const b = [];
-    c.on("data", (a) => b.push(a));
+    c.on("data", a => b.push(a));
     c.on("close", () => a(b.join("")));
   });
   ({version:a} = JSON.parse(a));
@@ -256,9 +255,9 @@ There are a number of things to look out for when compiling a Node.JS program.
 
 If the language out set to `ECMA2018`, the output will be hardly optimised, meaning that the source code of all `package.json` files will be present making the file size of the bundle very large. [Google says](https://groups.google.com/forum/#!topic/closure-compiler-discuss/Ogysep0oJN4): _This is working as expected. We haven't implemented any typechecking or code size optimizations for ES2018 yet._ Therefore, use *`-O 2017`* to produce the output of acceptable size without unnecessary rubbish in it.
 
-#### Patch Closure Compiler For Correct `ECMA2017`
+~~**Patch Closure Compiler For Correct `ECMA2017`**~
 
-When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destructuring in `filter`, `map` and other array operations which produces incorrect code. E.g., `[{ entry: true }, { }].filter(({ entry}) => entry).map(({ entry }) => { ...entry, mapped: true })` will not work. This is rather unfortunate because destructuring is an essential language feature, and compiling for `ES2017` is the only alternative to `ES2018` which produces gigantic output. This bug [has been fixed](https://github.com/google/closure-compiler/commit/877e304fe69498189300238fedc6531b7d9bd126) but the patch has not been released, therefore you must compile the master branch closure compiler yourself and use `GOOGLE_CLOSURE_COMPILER` environment variable to set the compiler path. Hopefully, with the next release (after *`v20190121`*) the fix will be available.
+~~When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destructuring in `filter`, `map` and other array operations which produces incorrect code. E.g., `[{ entry: true }, { }].filter(({ entry}) => entry).map(({ entry }) => { ...entry, mapped: true })` will not work. This is rather unfortunate because destructuring is an essential language feature, and compiling for `ES2017` is the only alternative to `ES2018` which produces gigantic output. This bug [has been fixed](https://github.com/google/closure-compiler/commit/877e304fe69498189300238fedc6531b7d9bd126) but the patch has not been released, therefore you must compile the master branch closure compiler yourself and use `GOOGLE_CLOSURE_COMPILER` environment variable to set the compiler path. Hopefully, with the next release (after *`v20190121`*) the fix will be available.~~
 
 #### Babel-Compiled Dependencies Don't Work
 
@@ -500,26 +499,6 @@ There are a number of known bugs with Google Closure Compiler.
 
 ## Copyright
 
-<table>
-  <tr>
-    <th>
-      <a href="https://artd.eco">
-        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" />
-      </a>
-    </th>
-    <th>
-      © <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a>
-      2019
-    </th>
-    <th>
-      <a href="https://www.technation.sucks" title="Tech Nation Visa">
-        <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif" alt="Tech Nation Visa" />
-      </a>
-    </th>
-    <th>
-      <a href="https://www.technation.sucks">Tech Nation Visa Sucks</a>
-    </th>
-  </tr>
-</table>
+<table><tr><th><a href="https://artd.eco"><img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" /></a></th><th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a>2019</th><th><a href="https://www.technation.sucks" title="Tech Nation Visa"><img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif" alt="Tech Nation Visa" /></a></th><th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th></tr></table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>
