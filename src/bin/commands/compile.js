@@ -1,14 +1,13 @@
-import loading from 'indicatrix'
-import spawn from 'spawncommand'
 import { c } from 'erte'
 import { relative, join, dirname } from 'path'
 import makePromise from 'makepromise'
 import { chmod } from 'fs'
 import { exists } from '@wrote/wrote'
 import detect, { sort } from 'static-analysis'
-import { addSourceMap, removeStrict } from '../../lib/lib'
+import { removeStrict } from '../../lib/lib'
 import { getWrapper } from '../../lib/detect'
-import { makeError, prepareCoreModules, fixDependencies } from '../../lib/closure'
+import { prepareCoreModules, fixDependencies } from '../../lib/closure'
+import run from '../run'
 
 const externsDeps = {
   fs: ['events', 'stream'],
@@ -24,8 +23,8 @@ const externsDeps = {
 }
 
 const Compile = async (opts, options) => {
-  const { src, noWarnings = false, output, noStrict, verbose,
-    compilerVersion, suppressLoading, noSourceMap,
+  const { src, output, noStrict, verbose,
+    compilerVersion, suppressLoading, noSourceMap, debug,
   } = opts
   if (!src) throw new Error('Source is not given.')
   const args = [
@@ -62,19 +61,10 @@ const Compile = async (opts, options) => {
     '--js', ...files,
   ]
   verbose ? console.error(Args.join(' ')) : printCommand(args, externs, sorted)
-  let { promise } = spawn('java', Args)
-  if (!suppressLoading) { // is here until documentary is fixed for \r
-    promise =  loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise, {
-      writable: process.stderr,
-    })
-  }
-  const { stdout, stderr, code } = await promise
-  if (code) throw new Error(makeError(code, stderr))
-  if (stdout) console.log(stdout)
-  if (output && !noSourceMap) await addSourceMap(output)
+
+  await run(Args, { debug, compilerVersion, suppressLoading, output, noSourceMap })
   if (noStrict) await removeStrict(output)
   if (output) await makePromise(chmod, [output, '755'])
-  if (stderr && !noWarnings) console.warn(c(stderr, 'grey'))
 }
 
 const printCommand = (args, externs, sorted) => {
@@ -95,7 +85,9 @@ const printCommand = (args, externs, sorted) => {
   const fjs = js.filter(filterNodeModule)
   const cjs = commonJs.filter(filterNodeModule)
   if (deps.length) console.log('%s: %s',
-    c('Dependencies', 'yellow'), deps.join(' '))
+    c('Dependencies', 'yellow'), deps.filter((e, i, a) => {
+      return a.indexOf(e) == i
+    }).join(' '))
   if (fjs.length) console.log('%s: %s',
     c('Modules', 'yellow'), fjs.join(' '))
   if (cjs.length) console.log('%s: %s',

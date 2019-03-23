@@ -12,10 +12,11 @@ export default () => {
       '--level, -l': `The optimisation level (generic -O).
 WHITESPACE, SIMPLE (default), ADVANCED`,
       '--advanced, -a': 'Turn on advanced optimisation.',
-      '--no-warnings, -w': 'Don\'t print warnings.',
+      '--no-warnings, -w': 'Don\'t print warnings. Same as\n--warning_level QUIET',
       '--compile, -c': 'Set the mode to compilation.',
       '--verbose, -V': 'Print all compiler arguments.',
       '--pretty-print, -p': 'Add --formatting=PRETTY_PRINT flag.',
+      '--debug, -d': 'Set --print_source_after_each_pass\nand save stderr to the specified file.',
       '--version, -v': 'Show version.',
       '--help, -h': 'Print help information.',
       '--no-sourcemap, -S': 'Do not add source maps.',
@@ -45,7 +46,6 @@ ${common}
 ${c('BACKEND', 'blue')}: Creates a single executable file.
 ${backend}
 ${c('FRONTEND', 'cyan')}: Creates a bundle for the web.
-${frontend}
-`
+${frontend}`
   return usage
 }

@@ -19,13 +19,14 @@ const args = argufy({
   '_suppress-loading': { boolean: true }, // dev
   'pretty-print': { short: 'p', boolean: true },
   'preact': { short: 'H', boolean: true },
+  'debug': { short: 'd' },
 })
 
 /**
  * The source to build.
  * @type {string}
  */
-const src = args['src']
+export const _src = args['src']
 /**
  * Whether to apply `--formatting=PRETTY_PRINT` flag.
  * @type {boolean}
@@ -50,47 +51,47 @@ export const _noSourceMaps = args['no-sourcemap']
  * Whether to remove the `'use strict'` from the output.
  * @type {boolean}
  */
-const _noStrict = args['no-strict']
+export const _noStrict = args['no-strict']
 /**
  * Print the exact command.
  * @type {boolean}
  */
-const _verbose = args['verbose']
+export const _verbose = args['verbose']
 /**
  * The path to the temp directory that will be created to make bundles.
  * @type {string}
  */
-const _temp = args['temp']
+export const _temp = args['temp']
 /**
  * Sets `module_resolution` to `NODE`.
  * @type {string}
  */
-const _node = args['node']
+export const _node = args['node']
 /**
  * Sets the language spec to which input sources should conform.
  * @type {string}
  */
-const _language_in = args['language_in']
+export const _language_in = args['language_in']
 /**
  * Sets the language spec to which output should conform.
  * @type {string}
  */
-const _language_out = args['language_out']
+export const _language_out = args['language_out']
 /**
  * The compilation level.
  * @type {string}
  */
-const _level = args['level']
+export const _level = args['level']
 /**
  * Any additional arguments.
  * @type {Array<string>}
  */
-const _argv = args._argv
+export const _argv = args._argv
 /**
  * Run the compiler with the manually passed arguments
  * @type {boolean}
  */
-const _compile = args['compile']
+export const _compile = args['compile']
 /**
  * Do not print compiler's warnings.
  * @type {boolean}
@@ -101,25 +102,26 @@ const _noWarnings = args['no-warnings']
  * The version.
  * @type {boolean}
  */
-const version = args['version']
+export const _version = args['version']
 /**
  * Whether to enable advanced optimisation.
  * @type {boolean}
  */
-const _advanced = args['advanced']
+export const _advanced = args['advanced']
 /**
  * The path where to save the built file.
  * @type {string}
  */
-const output = args['output']
+export const _output = args['output']
 /**
  * Whether to add the Preact's pragma.
  * @type {boolean}
  */
 export const _preact = args['preact']
+/**
+ * Debug by printing each pass to the file
+ * @type {boolean}
+ */
+export const _debug = args['debug']
 
-export { src as _src, _advanced, output as _output,
-  version as _version, _noWarnings, _compile, _argv, _level,
-  _language_in, _language_out, _node, _temp, _noStrict, _verbose, _help,
-  _suppressLoading,
-}
+export { _noWarnings, _help, _suppressLoading }

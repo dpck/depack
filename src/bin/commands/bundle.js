@@ -1,11 +1,8 @@
-import loading from 'indicatrix'
-import { relative } from 'path'
 import { rm } from '@wrote/wrote'
-import spawn from 'spawncommand'
-import { c } from 'erte'
 import generateTemp from '@depack/bundle'
-import { makeError } from '../../lib/closure'
-import { getCommand, addSourceMap, updateSourceMaps } from '../../lib/lib'
+import { relative } from 'path'
+import { getCommand, updateSourceMaps } from '../../lib/lib'
+import run from '../run'
 
 /**
  * Bundle the source code.
@@ -22,10 +19,10 @@ import { getCommand, addSourceMap, updateSourceMaps } from '../../lib/lib'
 const Bundle = async (opts, options) => {
   const {
     src, tempDir = 'depack-temp',
-    noWarnings = false, output: path, preact,
+    output, preact, compilerVersion, debug, suppressLoading,
   } = opts
   if (!src) throw new Error('Entry file is not given.')
-  if (!path) throw new Error('Destination path is not given.')
+
   const deps = await generateTemp(src, { tempDir, preact })
   const Args = [
     ...options,
@@ -34,15 +31,12 @@ const Bundle = async (opts, options) => {
     ...deps.reduce((acc, d) => {
       return [...acc, '--js', d]
     }, [])]
-  const { promise } = spawn('java', Args)
   const a = getCommand(Args, js => js.startsWith(tempDir) ? relative(tempDir, js) : js)
   console.log(a)
-  const { stdout, stderr, code } = await loading('Running Google Closure Compiler', promise)
-  if (code) throw new Error(makeError(code, stderr))
-  await addSourceMap(path)
-  await updateSourceMaps(path, tempDir)
-  if (stdout) console.log(stdout)
-  if (stderr && !noWarnings) console.warn(c(stderr, 'grey'))
+
+  await run(Args, { debug, compilerVersion, output,
+    suppressLoading })
+  if (output) await updateSourceMaps(output, tempDir)
   await rm(tempDir)
 }
 
