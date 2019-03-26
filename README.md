@@ -11,6 +11,7 @@ yarn add -E depack
 ## Table Of Contents
 
 - [Table Of Contents](#table-of-contents)
+- [GCC Installation](#gcc-installation)
 - [**CLI**](#cli)
 - [Bundle Mode](#bundle-mode)
 - [Compile Mode](#compile-mode)
@@ -27,6 +28,14 @@ yarn add -E depack
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
+
+## GCC Installation
+
+Depack has been built to contain no dependencies to prove its concept. [Google Closure Compiler](https://github.com/google/closure-compiler) is not installed by it, because the general use-case is to reuse _Depack_ across many projects, and it does not make sense to download and install _GCC_ in each of them in the `node_modules` folder. Therefore, the recommended way is to install GCC in the home or projects directory, e.g., `/Users/home/user` or `/Users/home/js-projects`. In that way, the single _GCC_ will be accessible from there even when running _Depack_ from a particular project (because Node.js will try to resolve the module by traversing up to the root).
+
+The other way to install _GCC_ is to set the `GOOGLE_CLOSURE_COMPILER` environment variable to point to the compiler, either downloaded from the internet, or built yourself.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
 ## **CLI**
 
@@ -51,10 +60,13 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 	--level, -l       	The optimisation level (generic -O).
 	                  	WHITESPACE, SIMPLE (default), ADVANCED
 	--advanced, -a    	Turn on advanced optimisation.
-	--no-warnings, -w 	Don't print warnings.
+	--no-warnings, -w 	Don't print warnings. Same as
+	                  	--warning_level QUIET
 	--compile, -c     	Set the mode to compilation.
 	--verbose, -V     	Print all compiler arguments.
 	--pretty-print, -p	Add --formatting=PRETTY_PRINT flag.
+	--debug, -d       	Set --print_source_after_each_pass
+	                  	and save stderr to the specified file.
 	--version, -v     	Show version.
 	--help, -h        	Print help information.
 	--no-sourcemap, -S	Do not add source maps.
@@ -81,26 +93,26 @@ FRONTEND: Creates a bundle for the web.
 _Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
 
 
-|          Flag          |                                                                                    Description                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--output`, `-o`       | The output path. Will print to `STDOUT` when not specified.                                                                                         |
-| `--language_in`, `-I`  | The version of the language of the input file. Analogues to the original Closure flag, but supports passing just the year to set the ECMA version, e.g., `-I 2018` is acceptable. |
-| `--language_out`, `-O` | The version of the language of the output file. The year can also be passed.                                                                                                      |
-| `--level`, `-l`        | The optimisation level, which is the same as passing the Closure's `-O` flag. Can be `WHITESPACE`, `SIMPLE` and `ADVANCED`. |
-| `--advanced`, `-a`     | Sets the optimisation level to `ADVANCED`, i.e., the shortcut for `--level ADVANCED`                                            |
-| `--no-warnings`, `-w`  | Suppresses the warnings.                                                                                                                                                          |
-| `--verbose`, `-V`      | Prints the raw command line arguments passed to the compiler.                                                                                                                     |
-| `--no-sourcemap`, `-S` | Disable generation of the source maps.                                                                                                                                            |
-| `--version`, `-v`      | Displays the _Depack_ version.                                                                                                                                                    |
-| `--help`, `-h`         | Show the help information about the usage.                                                                                                                                        |
+|       Flag       | Short |                                                                                    Description                                                                                    |
+| ---------------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--output`       | `-o`  | The output path. Will print to `STDOUT` when not specified.                                                                                         |
+| `--language_in`  | `-I`  | The version of the language of the input file. Analogues to the original Closure flag, but supports passing just the year to set the ECMA version, e.g., `-I 2018` is acceptable. |
+| `--language_out` | `-O`  | The version of the language of the output file. The year can also be passed.                                                                                                      |
+| `--level`        | `-l`  | The optimisation level, which is the same as passing the Closure's `-O` flag. Can be `WHITESPACE`, `SIMPLE` and `ADVANCED`. |
+| `--advanced`     | `-a`  | Sets the optimisation level to `ADVANCED`, i.e., the shortcut for `--level ADVANCED`                                            |
+| `--no-warnings`  | `-w`  | Suppresses the warnings.                                                                                                                                                          |
+| `--verbose`      | `-V`  | Prints the raw command line arguments passed to the compiler.                                                                                                                     |
+| `--no-sourcemap` | `-S`  | Disable generation of the source maps.                                                                                                                                            |
+| `--version`      | `-v`  | Displays the _Depack_ version.                                                                                                                                                    |
+| `--help`         | `-h`  | Show the help information about the usage.                                                                                                                                        |
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
 ## Bundle Mode
 
 The bundle mode is used to create front-end bundles. It discovers all imported dependencies in the project.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
 
 ## Compile Mode
 
@@ -178,14 +190,14 @@ The next _Depack_ command can be used:
 depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
 # -c:      set mode to compile
 # -V:      verbose output to print all flags and options
-# -I 2018: set source code language to ECMA2018
+# -I 2018: set source code language to ECMA2018 (default)
 # -O 2017: set output language to ECMA2017 (the best)
 # -a:      allow for advanced compilation
 # -w:      don't print warnings
 ```
 
 ```
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_in ECMASCRIPT_2018 --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --module_resolution NODE --package_json_entry_names module,main --externs externs/fs.js --externs externs/events.js --externs externs/stream.js --externs externs/node.js --process_common_js_modules --output_wrapper #!/usr/bin/env node
+-jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --warning_level QUIET --module_resolution NODE --package_json_entry_names module,main --externs externs/fs.js --externs externs/events.js --externs externs/stream.js --externs externs/node.js --process_common_js_modules --output_wrapper #!/usr/bin/env node
 const fs = require('fs');
 %output% --js node_modules/indicatrix/package.json node_modules/indicatrix/build/index.js node_modules/fs/package.json node_modules/fs/index.js example/example.js
 ```
@@ -233,7 +245,7 @@ const l = async() => {
 })();
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="15"></a></p>
 
 ### Usage
 
@@ -245,7 +257,7 @@ There are _Depack_ specific flags that can be passed when compiling a Node.JS ex
 | `--compile`, `-c`   | Enables the compilation mode.                          |
 | `--no-strict`, `-s` | Removes the `'use strict';` statement from the output. |
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
 
 ### Gotchas
 
@@ -376,16 +388,17 @@ console.log(a());
 TypeError: a is not a function
     at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-output.js:8:13)
     at Module._compile (module.js:653:30)
-    at Object.Module._extensions..js (module.js:664:10)
+    at Module._compile (/Users/zavr/adc/documentary/node_modules/pirates/lib/index.js:99:24)
+    at Module._extensions..js (module.js:664:10)
+    at Object.newLoader [as .js] (/Users/zavr/adc/documentary/node_modules/pirates/lib/index.js:104:7)
     at Module.load (module.js:566:32)
     at tryModuleLoad (module.js:506:12)
     at Function.Module._load (module.js:498:3)
-    at Function.Module.runMain (module.js:694:10)
-    at startup (bootstrap_node.js:204:16)
-    at bootstrap_node.js:625:3
+    at Module.require (module.js:597:17)
+    at require (internal/module.js:11:18)
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
 
 ### Troubleshooting
 
@@ -434,13 +447,13 @@ depack t/transform.js -c -I 2018 -O 2017 -a
 
 If there are problems with global Node.JS externs, the `node.js` extern file should be overridden in your project (don't forget to submit the patch to _Depack_).
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
 
 #### Bugs In GCC
 
 In might be the case that externs are fine, but the Closure Compiler has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `--print_source_after_each_pass` Compiler option when compiling that file to see the output of each pass, then pasting the code to Node.JS REPL and seeing if it outputs correct results.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
 
 #### External APIs
 
@@ -465,7 +478,7 @@ const { 'results': results } = await request('https://service.co/api')
 
 because otherwise the properties' names get changed by the compiler and the result will not be what you expected it to be.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 
 
@@ -477,7 +490,7 @@ There are a number of known bugs with Google Closure Compiler.
 1. Cannot destructure error in `catch` block.
 1. node_modules are not looked up higher than the `cwd`.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
 ## Org Structure
 
@@ -488,17 +501,17 @@ There are a number of known bugs with Google Closure Compiler.
 - [[@depack/render](https://github.com/dpck/render)] Render server-side HTML from JSX.
 - [[@depack/context](https://github.com/dpck/context)] Testing context for unit-testing.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## Notes
 
 - The static analysis might discover built-in and other modules even if they were not used, since no tree-shaking is performed.
 - [2 March 2019] Current bug does not let compile later `jsx` detection. Trying to compile front-end bundler with _Depack_.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## Copyright
 
-<table><tr><th><a href="https://artd.eco"><img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" /></a></th><th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a>2019</th><th><a href="https://www.technation.sucks" title="Tech Nation Visa"><img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif" alt="Tech Nation Visa" /></a></th><th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th></tr></table>
+<table><tr><th><a href="https://artd.eco"><img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" /></a></th><th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th><th><a href="https://www.technation.sucks" title="Tech Nation Visa"><img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif" alt="Tech Nation Visa" /></a></th><th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th></tr></table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>

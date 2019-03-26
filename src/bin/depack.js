@@ -6,14 +6,11 @@ import getUsage from './usage'
 import getCompilerOptions from './get-options'
 import { version } from '../../package.json'
 import Compile from './commands/compile'
+import run from './run'
 
 const { 'GOOGLE_CLOSURE_COMPILER': GOOGLE_CLOSURE_COMPILER } = process.env
 const compilerPackage = GOOGLE_CLOSURE_COMPILER ? 'target' : require.resolve('google-closure-compiler-java/package.json')
 
-if (_version) {
-  console.log(version)
-  process.exit(0)
-}
 if (_help) {
   console.log(getUsage())
   process.exit(0)
@@ -27,6 +24,13 @@ if (_help) {
       const { 'version': cv } = JSON.parse(compilerPackageJson)
       ;[compilerVersion] = cv.split('.')
     }
+    if (_version) {
+      console.log('Depack version: %s', version)
+      await run([
+        ...getCompilerOptions({ compiler: GOOGLE_CLOSURE_COMPILER }),
+        '--version'], { compilerVersion })
+      process.exit(0)
+    }
     const options = getCompilerOptions({
       compiler: GOOGLE_CLOSURE_COMPILER,
       src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps, prettyPrint: _prettyPrint, noWarnings: _noWarnings, debug: _debug,
@@ -39,7 +43,7 @@ if (_help) {
         verbose: _verbose,
         compilerVersion,
         suppressLoading: _suppressLoading,
-        noSourceMap: _noSourceMaps,
+        noSourceMap: _noSourceMaps || _debug,
         debug: _debug,
       }, options)
     }
@@ -50,6 +54,7 @@ if (_help) {
       compilerVersion,
       preact: _preact,
       debug: _debug,
+      noSourceMap: _noSourceMaps || _debug,
     }, options)
   } catch (error) {
     process.env['DEBUG'] ? console.log(error.stack) : console.log(error.message)

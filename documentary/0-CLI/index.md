@@ -6,17 +6,17 @@ The package `depack` can be used from the command line interface to create bundl
 depack -h
 ```
 
-%FORK src/bin --help%
+%FORK src/bin/depack --help%
 
 _Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
 
 %TABLE-MACRO Usage
-  `--$1`\, `-$2`, $3
+  `--$1`, `-$2`, $3
 %
 
 ```table Usage
 [
-  ["Flag", "Description"],
+  ["Flag", "Short", "Description"],
   [
     "output", "o",
     "The output path. Will print to `STDOUT` when not specified."

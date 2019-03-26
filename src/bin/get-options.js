@@ -8,7 +8,7 @@ const getLanguage = (l) => {
 export default ({
   compiler = require.resolve('google-closure-compiler-java/compiler.jar'),
   src, output, level, languageIn, languageOut, sourceMap = true,
-  argv, advanced, prettyPrint, noWarnings, debug,
+  argv = [], advanced, prettyPrint, noWarnings, debug,
 }) => {
   const options = ['-jar', compiler]
   if (level) {
@@ -35,9 +35,8 @@ export default ({
   if (debug) {
     options.push('--print_source_after_each_pass')
   }
-  if (noWarnings) {
-    options.push('--warning_level', 'QUIET',
-    )
+  if (noWarnings || debug) {
+    options.push('--warning_level', 'QUIET')
   }
   options.push(...argv)
   if (output) {

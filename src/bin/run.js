@@ -10,9 +10,6 @@ export default async (args, {
 }) => {
   let { promise, stderr: compilerStderr } = spawn('java', args)
   if (debug) compilerStderr.pipe(createWriteStream(debug))
-  const { stdout, stderr, code } = await loading(`Running Google Closure Compiler ${c(compilerVersion, 'grey')}`, promise, {
-    writable: process.stderr,
-  })
 
   if (!suppressLoading) {
     // is here until documentary is fixed for \r
@@ -20,6 +17,7 @@ export default async (args, {
       writable: process.stderr,
     })
   }
+  const { stdout, stderr, code } = await promise
   // if(process.stderr.isTTY) process.stderr.write(' '.repeat(process.stderr.columns))
 
   if (code) throw new Error(makeError(code, stderr))

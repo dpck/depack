@@ -51,14 +51,14 @@ The next _Depack_ command can be used:
 depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
 # -c:      set mode to compile
 # -V:      verbose output to print all flags and options
-# -I 2018: set source code language to ECMA2018
+# -I 2018: set source code language to ECMA2018 (default)
 # -O 2017: set output language to ECMA2017 (the best)
 # -a:      allow for advanced compilation
 # -w:      don't print warnings
 ```
 
-%FORKERR src/bin example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT --_suppress-loading%
+%FORKERR src/bin/depack example/example.js -c -V -O 2017 -a -w -p --_suppress-loading%
 
-%FORK-js src/bin example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT%
+%FORK-js src/bin/depack example/example.js -c -V -O 2017 -a -w -p --_suppress-loading%
 
 %~ width="15"%

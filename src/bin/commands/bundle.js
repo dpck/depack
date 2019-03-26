@@ -19,7 +19,7 @@ import run from '../run'
 const Bundle = async (opts, options) => {
   const {
     src, tempDir = 'depack-temp',
-    output, preact, compilerVersion, debug, suppressLoading,
+    output, preact, compilerVersion, debug, suppressLoading, noSourceMap,
   } = opts
   if (!src) throw new Error('Entry file is not given.')
 
@@ -35,8 +35,8 @@ const Bundle = async (opts, options) => {
   console.log(a)
 
   await run(Args, { debug, compilerVersion, output,
-    suppressLoading })
-  if (output) await updateSourceMaps(output, tempDir)
+    suppressLoading, noSourceMap })
+  if (output && !noSourceMap) await updateSourceMaps(output, tempDir)
   await rm(tempDir)
 }
 
