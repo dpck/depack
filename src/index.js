@@ -1,1 +1,0 @@
-export { resolveDependency } from './lib'

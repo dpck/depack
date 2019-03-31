@@ -1,15 +1,8 @@
 #!/usr/bin/env node
-import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _suppressLoading, _help, _noSourceMaps, _prettyPrint, _preact, _debug } from './get-args'
-import { read } from '@wrote/wrote'
-import Bundle from './commands/bundle'
+import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _help, _noSourceMaps, _prettyPrint, _preact, _debug, _iife } from './get-args'
+import { GOOGLE_CLOSURE_COMPILER, run, Bundle, Compile, getOptions, getCompilerVersion } from '@depack/depack'
 import getUsage from './usage'
-import getCompilerOptions from './get-options'
 import { version } from '../../package.json'
-import Compile from './commands/compile'
-import run from './run'
-
-const { 'GOOGLE_CLOSURE_COMPILER': GOOGLE_CLOSURE_COMPILER } = process.env
-const compilerPackage = GOOGLE_CLOSURE_COMPILER ? 'target' : require.resolve('google-closure-compiler-java/package.json')
 
 if (_help) {
   console.log(getUsage())
@@ -18,22 +11,17 @@ if (_help) {
 
 (async () => {
   try {
-    let compilerVersion = 'target'
-    if (!GOOGLE_CLOSURE_COMPILER) {
-      const compilerPackageJson = await read(compilerPackage)
-      const { 'version': cv } = JSON.parse(compilerPackageJson)
-      ;[compilerVersion] = cv.split('.')
-    }
+    const compilerVersion = await getCompilerVersion()
     if (_version) {
       console.log('Depack version: %s', version)
       await run([
-        ...getCompilerOptions({ compiler: GOOGLE_CLOSURE_COMPILER }),
+        ...getOptions({ compiler: GOOGLE_CLOSURE_COMPILER }),
         '--version'], { compilerVersion })
       process.exit(0)
     }
-    const options = getCompilerOptions({
+    const options = getOptions({
       compiler: GOOGLE_CLOSURE_COMPILER,
-      src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps, prettyPrint: _prettyPrint, noWarnings: _noWarnings, debug: _debug,
+      src: _src, output: _output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps, prettyPrint: _prettyPrint, noWarnings: _noWarnings, debug: _debug, iife: _iife,
     })
     if (_compile) {
       return await Compile({
@@ -42,7 +30,6 @@ if (_help) {
         noStrict: _noStrict,
         verbose: _verbose,
         compilerVersion,
-        suppressLoading: _suppressLoading,
         noSourceMap: _noSourceMaps || _debug,
         debug: _debug,
       }, options)

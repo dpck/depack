@@ -10,13 +10,14 @@ const args = argufy({
   'no-warnings': { short: 'w', boolean: true },
   'level': { short: 'l' },
   'language_in': { short: 'I' },
+  'iife': { short: 'i', boolean: true },
   'language_out': { short: 'O' },
   'node': { short: 'n', boolean: true },
   'temp': { },
+  'just-temp': { short: 'T', boolean: true },
   'no-strict': { short: 's', boolean: true },
   'verbose': { short: 'V', boolean: true },
   'no-sourcemap': { short: 'S', boolean: true },
-  '_suppress-loading': { boolean: true }, // dev
   'pretty-print': { short: 'p', boolean: true },
   'preact': { short: 'H', boolean: true },
   'debug': { short: 'd' },
@@ -32,11 +33,6 @@ export const _src = args['src']
  * @type {boolean}
  */
 export const _prettyPrint = args['pretty-print']
-/**
- * Don't print loading indicator (used to compile documentation)
- * @type {boolean}
- */
-const _suppressLoading = args['_suppress-loading']
 /**
  * Whether to print help and exit.
  * @type {boolean}
@@ -124,4 +120,16 @@ export const _preact = args['preact']
  */
 export const _debug = args['debug']
 
-export { _noWarnings, _help, _suppressLoading }
+/**
+ * Add the IIFE flag to prevent global conflicts (OK google prevent world conflict)
+ * @type {boolean}
+ */
+export const _iife = args['iife']
+
+/**
+ * Only generate the temp directory that would be used as input.
+ * @type {boolean}
+ */
+export const _justTemp = args['just-temp']
+
+export { _noWarnings, _help }
