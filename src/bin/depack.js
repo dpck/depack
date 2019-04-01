@@ -2,7 +2,7 @@
 import { _src, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _help, _noSourceMaps, _prettyPrint, _preact, _debug, _iife } from './get-args'
 import { GOOGLE_CLOSURE_COMPILER, run, Bundle, Compile, getOptions, getCompilerVersion } from '@depack/depack'
 import getUsage from './usage'
-import { version } from '../../package.json'
+const { version } = require('../../package.json')
 
 if (_help) {
   console.log(getUsage())

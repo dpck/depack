@@ -124,11 +124,13 @@
       },
       "console": "integratedTerminal",
       "args": [
-        "src/cli/index.js",
+        // "src/cli/index.js",
+        "t/package.js",
         "-a",
+        "-c"
         //  "out/example2.js",
       ],
-      "cwd": "${workspaceFolder}/../../Downloads/kibana-6.5.0-SNAPSHOT-darwin-x86_64",
+      // "cwd": "${workspaceFolder}/../../Downloads/kibana-6.5.0-SNAPSHOT-darwin-x86_64",
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
