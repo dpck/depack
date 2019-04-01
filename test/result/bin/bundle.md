@@ -1,4 +1,4 @@
-// creates a bundle
+## creates a bundle
 test/fixture/index.jsx
 
 /* expected */

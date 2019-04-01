@@ -1,4 +1,4 @@
-// bundles a package
+## bundles a package
 test/fixture/index.jsx
 
 /* expected */

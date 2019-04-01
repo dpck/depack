@@ -1,8 +1,8 @@
-import { makeTestSuite } from 'zoroaster'
+import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
 import { join } from 'path'
+import clearR from 'clearr'
 import Context from '../../context'
-import Bundle from '../../../src/bin/commands/bundle'
 
 const { BIN } = Context
 
@@ -17,33 +17,34 @@ class Temp extends TempContext {
   async _destroy() {
     try {
       await super._destroy()
-    } catch (err) {/**/}
+    } catch (err) {}
   }
 }
 
-const ts = makeTestSuite('test/result/bin.md', {
+export const compile = makeTestSuite('test/result/compile', {
   context: [Temp, OutputContext],
   fork: {
     module: BIN,
     /**
      * @param {string[]} args
      * @param {TempContext} context
-     * @param {OutputContext} context
      */
-    getArgs(args, { TEMP }, { TEMP: OUTPUT }) {
-      return [...args, '--temp', TEMP, '-o', OUTPUT]
+    getArgs(args, { resolve }) {
+      return [...args, '-o', resolve('result.js')]
+    },
+    preprocess(a) {
+      const s = clearR(a)
+      return s.trim()
     },
   },
   /**
    * @param {string}
    * @param {Temp}
-   * @param {OutputContext} c
    */
-  async getResults(_, __, { snapshot }){
-    const s = await snapshot()
-    return s.length > 0
+  async getResults(_, { read }){
+    return read('result.js')
+    // return s.length > 0
   },
-  jsonProps: 'expected',
 })
 
 // export
@@ -66,5 +67,3 @@ const bundle = makeTestSuite('test/result/bin/bundle.md', {
   },
   jsonProps: ['expected'],
 })
-
-export default ts
