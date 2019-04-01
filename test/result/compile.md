@@ -5,7 +5,7 @@ test/fixture/nodejs.js -c -a -p
 Built-ins: os, fs
 /**/
 /* stderr */
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --create_source_map %outname%.map --formatting PRETTY_PRINT --js_output_file test/temp/result.js --module_resolution NODE --package_json_entry_names module,main --externs ../externs/v8/os.js --externs ../externs/v8/fs.js --externs ../externs/v8/stream.js --externs ../externs/v8/events.js --externs ../externs/v8/url.js --externs ../externs/v8/global.js --externs ../externs/v8/nodejs.js
+-jar compiler.jar --compilation_level ADVANCED --create_source_map %outname%.map --formatting PRETTY_PRINT --js_output_file test/temp/result.js --module_resolution NODE --package_json_entry_names module,main --externs externs/v8/os.js --externs externs/v8/fs.js --externs externs/v8/stream.js --externs externs/v8/events.js --externs externs/v8/url.js --externs externs/v8/global.js --externs externs/v8/nodejs.js
 /**/
 /* expected */
 #!/usr/bin/env node

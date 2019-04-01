@@ -35,6 +35,10 @@ export const compile = makeTestSuite('test/result/compile', {
     preprocess(a) {
       const s = clearR(a)
       return s.trim()
+        .replace(/--externs .+?(externs[\\/]\S+)/g, (m, e) => {
+          return `--externs ${e}`
+        })
+        .replace(/-jar .+?compiler\.jar/, '-jar compiler.jar')
     },
   },
   /**
