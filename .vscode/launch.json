@@ -48,9 +48,10 @@
       "program": "${workspaceFolder}/build/depack.js",
       "args": [
         "src/bin/depack.js",
-        "-c", "-n", "-I", "2018", "-O", "2017", "-a", "-o",
-        "depack1.js", "-w"
+        "-c", "-a", "-w",
+        "-o", "depack1.js"
       ],
+      "env": { "DEBUG": "1" },
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"

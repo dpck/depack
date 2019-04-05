@@ -118,19 +118,21 @@
     "@wrote/read-dir-structure" "1.0.1"
     makepromise "3.0.1"
 
+"@wrote/clone@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@wrote/clone/-/clone-1.1.1.tgz#66800b5ee6db034967856a6b98587b795742364b"
+  integrity sha512-32fC0SU6iomk+Be+Lt8V3Ecf1LMKAf4BpeNPmYAoltyGjMetE6MbwGkw+02QyBEmcIQyEf7crltZ7/kbwjpSuA==
+  dependencies:
+    "@wrote/ensure-path" "^1.0.6"
+    "@wrote/read-dir-structure" "^1.0.3"
+    makepromise "^3.0.3"
+
 "@wrote/ensure-path@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@wrote/ensure-path/-/ensure-path-1.0.3.tgz#7faeff4ebb5b3972b745e0cc85f3e06cbca51d51"
   integrity sha512-rp1HNLlxzGwiYB/hEcJeejPoSkyS96xPmRVfzEu/BqV/KPtPUhUiRIxhYQykQPQVhql9qwy2fYrGszG3UBCKGw==
   dependencies:
     makepromise "3.0.1"
-
-"@wrote/ensure-path@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@wrote/ensure-path/-/ensure-path-1.0.5.tgz#63d02db2564c15b86074375f5799fb5071bd93ba"
-  integrity sha512-oO3eJSmm2qcDBuK1dxIRhixLpPu9tv3ic9C/MqECRdhWltG4OHk7ldHlU4hbMkQ5nfcliQD0AqeoDjkig6ur4A==
-  dependencies:
-    makepromise "3.0.2"
 
 "@wrote/ensure-path@1.0.6", "@wrote/ensure-path@^1.0.6":
   version "1.0.6"
@@ -160,19 +162,12 @@
   dependencies:
     makepromise "3.0.2"
 
-"@wrote/read-dir-structure@1.0.3":
+"@wrote/read-dir-structure@1.0.3", "@wrote/read-dir-structure@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@wrote/read-dir-structure/-/read-dir-structure-1.0.3.tgz#f2f65da8cef15e2083edd812f748d3277a91754c"
   integrity sha512-UljeWxX/8s4AEsgPaFxuhGCVnlLQ7XWZ8XjhiJLQqPV6H3qXTY6dF7L8u23WzoDXta+Sxhs5Iem27RV6WVYTJw==
   dependencies:
     makepromise "3.0.3"
-
-"@wrote/read@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@wrote/read/-/read-1.0.2.tgz#6d1d2b2f3e2e1830007384b06c31fb58ec77cf21"
-  integrity sha512-Db4j0GimaxxK4oudPvtlyirgNzmVgadiBv2pu1qWYWQM9M2/Pt53cnbSaJplnORZV19908NWm2x18g5XZNoKDQ==
-  dependencies:
-    catchment "3.2.1"
 
 "@wrote/read@1.0.3", "@wrote/read@^1.0.3":
   version "1.0.3"
@@ -181,14 +176,6 @@
   dependencies:
     catchment "3.2.3"
 
-"@wrote/rm@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@wrote/rm/-/rm-1.1.2.tgz#98b0fa0c9eebe6f82b5dc75ce872441639f6cdd4"
-  integrity sha512-+yl+infL+EeF6ijKzWwqas/KRUwIe7ifEdkV43DXlyPQhtxccyNDNJ2WYUGzFhoDEafegdDweozV+vSu5av6Gg==
-  dependencies:
-    "@wrote/read-dir-structure" "1.0.2"
-    makepromise "3.0.2"
-
 "@wrote/rm@1.1.3", "@wrote/rm@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@wrote/rm/-/rm-1.1.3.tgz#f7448585b36b1952d97bac2e0d2ed1bbec84a1ed"
@@ -196,13 +183,6 @@
   dependencies:
     "@wrote/read-dir-structure" "1.0.3"
     makepromise "3.0.3"
-
-"@wrote/write@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@wrote/write/-/write-1.0.2.tgz#0a781e76d530a9bf2846af9709aaad209d09ba14"
-  integrity sha512-2i9KXxypTP/3716suS7aYUE62EeqcOJl/edtCNvjJbcaVm2NtXskcY7HVUTVAkXpEA53ewjqIvn8giw0hw5Edg==
-  dependencies:
-    erotic "2.0.2"
 
 "@wrote/write@1.0.3", "@wrote/write@^1.0.3":
   version "1.0.3"
@@ -310,14 +290,6 @@ catchment@3.0.1:
   resolved "https://registry.yarnpkg.com/catchment/-/catchment-3.0.1.tgz#11dab5fea86d412343e797e052b21091b7e83a55"
   integrity sha512-rT/WIcR2hBPwlcOLx7ULAM6yWBLfDjVTMnzrMyjxKhFKAWClVTjDSoe8mxn3ZyAlCyg+Vbtw1iPopa6YxUkW4A==
 
-catchment@3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/catchment/-/catchment-3.2.1.tgz#43b1aa1f183538fb8fc556b5dc5e0885bfe707d1"
-  integrity sha512-ITAsJ2U7YAZgref9E8TtpVU+xdkHLa7xWoj5XCGS7oE1OV/4c/MLiaDUE3x7tbJIpd3ADEvKLtfwBHGHl/Xk1g==
-  dependencies:
-    "@artdeco/clean-stack" "1.0.1"
-    erotic "2.0.2"
-
 catchment@3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/catchment/-/catchment-3.2.2.tgz#f7a6b97073ab9e0f442fd38145e4150ffe909542"
@@ -373,7 +345,7 @@ difflib@~0.2.1:
   dependencies:
     heap ">= 0.2.0"
 
-documentary@^1.23.2:
+documentary@^1.23.4:
   version "1.23.4"
   resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.23.4.tgz#147744352d83e95927c0648de510ce2c67c43ecd"
   integrity sha512-PCzvUAuARcp7UQWvzqsUZZPmfo/oxz4m6afkBRfwpyRRBKVZ9Q4sbXWnNvHpS1UyKBQEoWkSgaMHvF82dERFBQ==
@@ -579,7 +551,7 @@ paddys@1.1.0:
   resolved "https://registry.yarnpkg.com/paddys/-/paddys-1.1.0.tgz#38f23de14ea0e1af629710fab84f65b3215b3618"
   integrity sha512-cdis3a0TexvTEz12xQ4qBwQ6EwtzNTk9zgdQnBgXOS3QTj8uYv1IWwCJPqPVrUddGV4qvrotz1ijtw90JCUhig==
 
-pedantry@2.3.1, pedantry@^2.3.1:
+pedantry@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/pedantry/-/pedantry-2.3.1.tgz#953e5de705f157136a6031187b1ec4fba5f36827"
   integrity sha512-X4Vqc+TWMRlSnEp/JwgpFhY2k9tWw0Qh+HQUAiDRItmW5b3gEn/q3RzxZHaUbf22xZJvRX0dIj89GJuBFCX2nA==
@@ -689,19 +661,19 @@ static-analysis@^1.3.3, static-analysis@^1.3.4:
     mismatch "^1.1.0"
     resolve-dependency "^1.0.2"
 
-temp-context@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/temp-context/-/temp-context-2.1.2.tgz#f884a0cf80adf8a5e5a0ae5bdf612afab75b9b89"
-  integrity sha512-jqaiGBJOmNy+Idk7xkdStyv+KusNAOO1JdMyVkG2T+abQdldsL3NRKtLALyjfkJ/MG7Eld7Idk7ZGgANl1GaSA==
+temp-context@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/temp-context/-/temp-context-2.1.3.tgz#278502e47a2aa717334d5d84f18657ea42d7512c"
+  integrity sha512-x5Zoj1X1OJe/2RNbPJwVLbhFs0Gu8552E8VBAEZH+vLxARdUb1Kf5RXIdX6VZBMmgRpN1NXEXJsMcNirIHubeA==
   dependencies:
-    "@wrote/clone" "1.1.0"
-    "@wrote/ensure-path" "1.0.5"
-    "@wrote/read" "1.0.2"
-    "@wrote/rm" "1.1.2"
-    "@wrote/write" "1.0.2"
-    catchment "3.2.2"
-    makepromise "3.0.2"
-    pedantry "2.3.1"
+    "@wrote/clone" "^1.1.1"
+    "@wrote/ensure-path" "^1.0.6"
+    "@wrote/read" "^1.0.3"
+    "@wrote/rm" "^1.1.3"
+    "@wrote/write" "^1.0.3"
+    catchment "^3.2.3"
+    makepromise "^3.0.3"
+    pedantry "^2.3.1"
 
 typal@^1.2.3:
   version "1.2.3"
@@ -744,7 +716,7 @@ yarn-s@1.1.0:
   dependencies:
     spawncommand "1.1.0"
 
-zoroaster@^3.11.3:
+zoroaster@^3.11.4:
   version "3.11.4"
   resolved "https://registry.yarnpkg.com/zoroaster/-/zoroaster-3.11.4.tgz#6bb5a5e2ba24921c219d7e02299f758a396729e4"
   integrity sha512-4o0lIDoZMucKZ+dl46K+m3wmrI3Ebxej8Ln6OKtUjJe0o0ggZ85fEr//kTPioWOnkuJm+1UoqHy58bw6l4WOFg==

@@ -21,9 +21,13 @@ if (_help) {
     }
     const { path: src } = await resolveDependency(_src)
     const output = _output ? getOutput(_output, src) : null
+    let languageOut = _language_out
+    if (!_language_out && _compile) {
+      languageOut = 2017
+    }
     const options = getOptions({
       compiler: GOOGLE_CLOSURE_COMPILER,
-      output, level: _level, languageIn: _language_in, languageOut: _language_out, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps, prettyPrint: _prettyPrint, noWarnings: _noWarnings, debug: _debug, iife: _iife,
+      output, level: _level, languageIn: _language_in, languageOut, argv: _argv, advanced: _advanced, sourceMap: !!_output && !_noSourceMaps, prettyPrint: _prettyPrint, noWarnings: _noWarnings, debug: _debug, iife: _iife,
     })
     const runOptions = {
       compilerVersion, output,
