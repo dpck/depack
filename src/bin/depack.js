@@ -15,9 +15,11 @@ if (_help) {
     const compilerVersion = await getCompilerVersion()
     if (_version) {
       console.log('Depack version: %s', version)
-      return await run([
+      const res = await run([
         ...getOptions({ compiler: GOOGLE_CLOSURE_COMPILER }),
         '--version'], { compilerVersion })
+      console.log(res)
+      return
     }
     const { path: src } = await resolveDependency(_src)
     const output = _output ? getOutput(_output, src) : null

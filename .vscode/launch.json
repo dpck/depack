@@ -147,10 +147,25 @@
         // "t/wrote/index.js",
         "-c",
         "-n",
-        "-I", "2018",
-        "-O", "2017"
+        "-O", "2017",
         "-o", "depack.js",
       ],
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Typal",
+      "program": "${workspaceFolder}/../../depack/depack/src/bin/index.js",
+      "env": {"GOOGLE_CLOSURE_COMPILER": "/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar"},
+      "args": [
+        "src/bin/typal.js",
+        "-c", "-o", "build/bin", "-a", "-p", "-S",
+      ],
+      "cwd": "${workspaceFolder}/../../adc/typal",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"
