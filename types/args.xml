@@ -1,7 +1,0 @@
-<types>
-  <type name="Arguments" desc="The arguments for the CLI program.">
-    <prop boolean name="iife" default="false">
-      Add the `--isolation_mode IIFE` flag to prevent conflicts with global vars.
-    </prop>
-  </type>
-</types>
