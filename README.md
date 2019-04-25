@@ -390,10 +390,10 @@ requiring a common js from ecma:
 
 #### Babel-Compiled Dependencies Don't Work
 
-Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
+Even if we follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, the _Babel_-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
  <table>
 <tr>
-<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">`@a-la/fixture-babel`</a>)</th><th>Babel <a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
+<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">@a-la/fixture-babel</a>)</th><th>Babel-<a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
 </tr>
 <tr>
 <td>
@@ -466,14 +466,14 @@ exports.default = _default;
 </tr>
 </table>
 
-_Script to compile with GCC:_
+_Script to compile with GCC which follows the single default export rule:_
 
 ```js
-import erte, { c, b } from '@a-la/fixture-babel'
+import erte from '@a-la/fixture-babel'
 
-console.log(erte())
-console.log(c())
-console.log(b())
+console.log(erte.default())
+console.log(erte.c())
+console.log(erte.b())
 ```
 
 _Command:_
@@ -486,21 +486,21 @@ java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 ../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
 ../src/node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-example/babel.js:3: WARNING - {default: {           
+example/babel.js:3: WARNING - {                     
   b: function(): ?,
   c: function(): ?,
   default: (function(): ?|undefined)
-}} expressions are not callable
-console.log(erte())
-            ^^^^^^
+} expressions are not callable
+console.log(erte.default())
+            ^^^^^^^^^^^^^^
 
 example/babel.js:4: WARNING - Property c never defined on module$node_modules$$a_la$fixture_babel$build$index
-console.log(c())
-            ^
+console.log(erte.c())
+                 ^
 
 example/babel.js:5: WARNING - Property b never defined on module$node_modules$$a_la$fixture_babel$build$index
-console.log(b())
-            ^
+console.log(erte.b())
+                 ^
 
 node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
 found   : undefined
@@ -514,7 +514,7 @@ required: function(): ?
 exports.default = exports.b = exports.c = void 0;
                               ^^^^^^^^^^^^^^^^^^
 
-0 error(s), 5 warning(s), 95.3% typed
+0 error(s), 5 warning(s), 95.4% typed
 
 ```
 ```js
@@ -525,19 +525,19 @@ a.default = a.a = a.b = void 0;
 a.b = () => "c";
 a.a = () => "b";
 a.default = () => "erte";
-console.log(b());
-console.log((0,b.b)());
-console.log((0,b.a)());
+console.log(a());
+console.log(b.b());
+console.log(b.a());
 ```
 
 _Trying to execute the output:_
 
 ```js
 /Users/zavr/depack/depack/example/babel-output.js:8
-console.log(b());
+console.log(a());
             ^
 
-TypeError: b is not a function
+TypeError: a is not a function
     at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-output.js:8:13)
     at Module._compile (module.js:653:30)
     at Module.r._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:836:20)

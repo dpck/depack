@@ -2,7 +2,7 @@
 "version":3,
 "file":"/Users/zavr/depack/depack/example/babel-output.js",
 "lineCount":11,
-"mappings":"A;AAAA,IAAA,IAAA,EAAA,EAAA,IAAA,EAAA;AAEAA,MAAAC,eAAA,CAAsBC,CAAtB,EAA+B,YAA/B,EAA6C,CAC3CC,MAAO,CAAA,CADoC,CAA7C,CAAA;AAGAC,CAAAC,QAAA,GAAkBC,CAAAC,EAAlB,GAA8BC,CAAAC,EAA9B,GAA0C,IAAK,EAA/C;AAaMD,CAAAC,EAAAA,GAAIA,EAAAA,IACDA,GADHA;AAUAH,CAAAC,EAAAA,GAAIA,EAAAA,IACDA,GADHA;AAKFH,CAAAM,QAAAA,GAvBS,EAAAC,IACJ,MAsBLD;AC/BJE,OAAAC,IAAA,CAAYF,CAAA,EAAZ,CAAA;AACAC,OAAAC,IAAA,CAAY,GAAAJ,CAAAA,EAAA,GAAZ,CAAA;AACAG,OAAAC,IAAA,CAAY,GAAAN,CAAAA,EAAA,GAAZ,CAAA;;",
+"mappings":"A;AAAA,IAAA,IAAA,EAAA,EAAA,IAAA,EAAA;AAEAA,MAAAC,eAAA,CAAsBC,CAAtB,EAA+B,YAA/B,EAA6C,CAC3CC,MAAO,CAAA,CADoC,CAA7C,CAAA;AAGAC,CAAAC,QAAA,GAAkBC,CAAAC,EAAlB,GAA8BC,CAAAC,EAA9B,GAA0C,IAAK,EAA/C;AAaMD,CAAAC,EAAAA,GAAIA,EAAAA,IACDA,GADHA;AAUAH,CAAAC,EAAAA,GAAIA,EAAAA,IACDA,GADHA;AAKFH,CAAAM,QAAAA,GAvBS,EAAAC,IACJ,MAsBLD;AC/BJE,OAAAC,IAAA,CAAYX,CAAA,EAAZ,CAAA;AACAU,OAAAC,IAAA,CAAYF,CAAAF,EAAA,EAAZ,CAAA;AACAG,OAAAC,IAAA,CAAYF,CAAAJ,EAAA,EAAZ,CAAA;;",
 "sources":["node_modules/@a-la/fixture-babel/build/index.js","/Users/zavr/depack/depack/example/babel.js"],
 "names":["Object","defineProperty","module$node_modules$$a_la$fixture_babel$build$index.default","value","module$node_modules$$a_la$fixture_babel$build$index.default.default","default","module$node_modules$$a_la$fixture_babel$build$index.default.b","b","module$node_modules$$a_la$fixture_babel$build$index.default.c","c","_default","erte","console","log"]
 }

@@ -86,14 +86,14 @@ If the language out set to `ECMA2018`, the output will be hardly optimised, mean
 
 #### Babel-Compiled Dependencies Don't Work
 
-Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
+Even if we follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, the _Babel_-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
  <!-- This is a great step forward to move _JavaScript_ language forward because `import`/`export` is what should be used instead of `require`. -->
 
 <!-- Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_. -->
 
 <table>
 <tr>
-<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">`@a-la/fixture-babel`</a>)</th><th>Babel <a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
+<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">@a-la/fixture-babel</a>)</th><th>Babel-<a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
 </tr>
 <tr>
 <td>
@@ -107,17 +107,17 @@ Babel-compiled modules won't work, therefore it's a good idea to ping the packag
 </tr>
 </table>
 
-_Script to compile with GCC:_
+_Script to compile with GCC which follows the single default export rule:_
 
 %EXAMPLE: example/babel%
 
 _Command:_
 
-%FORKERR src/bin/depack example/babel -c -a -p%
-%FORK-js src/bin/depack example/babel -c -a -p%
+%!FORKERR src/bin/depack example/babel -c -a -p%
+%!FORK-js src/bin/depack example/babel -c -a -p%
 
 _Trying to execute the output:_
 
-%FORKERR-js example/babel-output%
+%!FORKERR-js example/babel-output%
 
 %~%

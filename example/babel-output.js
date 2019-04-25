@@ -5,9 +5,9 @@ a.default = a.a = a.b = void 0;
 a.b = () => "c";
 a.a = () => "b";
 a.default = () => "erte";
-console.log(b());
-console.log((0,b.b)());
-console.log((0,b.a)());
+console.log(a());
+console.log(b.b());
+console.log(b.a());
 
 
 //# sourceMappingURL=babel-output.js.map

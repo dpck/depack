@@ -1,5 +1,5 @@
-import erte, { c, b } from '@a-la/fixture-babel'
+import erte from '@a-la/fixture-babel'
 
-console.log(erte())
-console.log(c())
-console.log(b())
+console.log(erte.default())
+console.log(erte.c())
+console.log(erte.b())
