@@ -616,7 +616,7 @@ _Trying to execute the output:_
 
 ```
 
-Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we. But presto it works with _Babel_!
+Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_!
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
 
