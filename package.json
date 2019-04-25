@@ -13,7 +13,7 @@
     "dev": "node src",
     "doc": "NODE_DEBUG=doc doc -o README.md",
     "b": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar yarn dev src/depack.js -c -o build -a -p -s --hide_warnings_for node_modules/diff --hide_warnings_for node_modules/erte",
-    "depack": "build/depack.js src/depack -c -o build -a -p",
+    "depack": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar build/depack.js src/depack -c -o build -a -p -s --hide_warnings_for node_modules/diff --hide_warnings_for node_modules/erte",
     "build": "yarn-s d b doc",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "node example",
