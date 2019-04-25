@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@a-la/detect-jsx/-/detect-jsx-1.0.1.tgz#ef36b5f3c129e0901d5752a86999a9910f6b5e7a"
   integrity sha512-ZxWfYmzeFt0CUDylMM8ZiZwSDOrZHyDnf5iVkimZKOfB5VwNEhC52NZCv5zctMFI2y3H4+jsePq6fXHc46FrFw==
 
-"@a-la/fixture-babel@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@a-la/fixture-babel/-/fixture-babel-1.0.0.tgz#d8b4281833cc4865a54340fdc7373d8b5699fd19"
-  integrity sha512-cK1JTH5ZZ3/x2eZnDDqAJ7sk8YizhkMabRdDpqwNDEy8j9iAVggqUzRd0BdRJiG7jstBykt71+c5zL1/WCvifQ==
+"@a-la/fixture-babel@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@a-la/fixture-babel/-/fixture-babel-1.1.1.tgz#16bf577cd471ba3c71ae63b98451a7249a4c484d"
+  integrity sha512-av2Wjs6T2uTEqnmLcTJuxqIwDT1B0MAi987UoIM4z53wXKYt+RPl+C7hd5J9vFXrgZy5fdA2fIAnPZlestDV1g==
 
 "@a-la/jsx@^1.4.7":
   version "1.5.0"

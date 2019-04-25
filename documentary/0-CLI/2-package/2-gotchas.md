@@ -86,68 +86,35 @@ If the language out set to `ECMA2018`, the output will be hardly optimised, mean
 
 #### Babel-Compiled Dependencies Don't Work
 
-Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing so `src` where code is written as ES6 modules. This is a great step forward to move JavaScript language forward because `import`/`export` is what should be used instead of `require`. Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_.
+Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
+ <!-- This is a great step forward to move _JavaScript_ language forward because `import`/`export` is what should be used instead of `require`. -->
+
+<!-- Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_. -->
 
 <table>
 <tr>
-<th>Source</th><th>Babel-compiled</th>
+<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">`@a-la/fixture-babel`</a>)</th><th>Babel <a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
 </tr>
 <tr>
 <td>
 
-_[fixture-babel](https://github.com/a-la/fixture-babel/blob/master/src/index.js)_
-```js
-/**
- * A function that returns `erte`.
- */
-const erte = () => {
-  return 'erte'
-}
-
-/**
- * A function that returns `c`.
- */
-export const c = () => {
-  return 'c'
-}
-
-/**
- * A function that returns `b`.
- */
-export const b = () => {
-  return 'b'
-}
-
-export default erte
-```
+%EXAMPLE: node_modules/@a-la/fixture-babel/src%
 </td>
 <td>
 
-_node_modules/@a-la/fixture-babel_
-%EXAMPLE: node_modules/@a-la/fixture-babel/build/index.js%
+%EXAMPLE: node_modules/@a-la/fixture-babel/build%
 </td>
 </tr>
 </table>
 
 _Script to compile with GCC:_
 
-%EXAMPLE: example/babel.js%
+%EXAMPLE: example/babel%
 
 _Command:_
 
-```sh
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar
---compilation_level ADVANCED
---language_out ECMASCRIPT_2017
---formatting PRETTY_PRINT
---module_resolution NODE
---package_json_entry_names module,main
---externs externs/node.js
---process_common_js_modules
---js node_modules/@a-la/fixture-babel/package.json
-     node_modules/@a-la/fixture-babel/build/index.js
-     example/babel.js
-```
+%FORKERR src/bin/depack example/babel -c -a -p%
+%FORK-js src/bin/depack example/babel -c -a -p%
 
 _Trying to execute the output:_
 

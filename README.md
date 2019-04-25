@@ -203,7 +203,7 @@ depack example/example.js -c -V -a -w -p
 -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --warning_level QUIET --package_json_entry_names module,main --entry_point example/example.js --externs ../src/node_modules/@depack/externs/v8/fs.js --externs ../src/node_modules/@depack/externs/v8/stream.js --externs ../src/node_modules/@depack/externs/v8/events.js --externs ../src/node_modules/@depack/externs/v8/url.js --externs ../src/node_modules/@depack/externs/v8/global.js --externs ../src/node_modules/@depack/externs/v8/global/buffer.js --externs ../src/node_modules/@depack/externs/v8/nodejs.js --module_resolution NODE --output_wrapper #!/usr/bin/env node
 'use strict';
 const fs = require('fs');%output% --js node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js node_modules/fs/package.json node_modules/fs/index.js example/example.js
-Running Google Closure Compiler 20190325.           
+Running Google Closure Compiler 20190325...         
 ```
 ```js
 #!/usr/bin/env node
@@ -390,16 +390,14 @@ requiring a common js from ecma:
 
 #### Babel-Compiled Dependencies Don't Work
 
-Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing so `src` where code is written as ES6 modules. This is a great step forward to move JavaScript language forward because `import`/`export` is what should be used instead of `require`. Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_.
-
-<table>
+Babel-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
+ <table>
 <tr>
-<th>Source</th><th>Babel-compiled</th>
+<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">`@a-la/fixture-babel`</a>)</th><th>Babel <a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
 </tr>
 <tr>
 <td>
 
-_[fixture-babel](https://github.com/a-la/fixture-babel/blob/master/src/index.js)_
 ```js
 /**
  * A function that returns `erte`.
@@ -427,7 +425,6 @@ export default erte
 </td>
 <td>
 
-_node_modules/@a-la/fixture-babel_
 ```js
 "use strict";
 
@@ -481,28 +478,66 @@ console.log(b())
 
 _Command:_
 
-```sh
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar
---compilation_level ADVANCED
---language_out ECMASCRIPT_2017
---formatting PRETTY_PRINT
---module_resolution NODE
---package_json_entry_names module,main
---externs externs/node.js
---process_common_js_modules
---js node_modules/@a-la/fixture-babel/package.json
-     node_modules/@a-la/fixture-babel/build/index.js
-     example/babel.js
+```
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
+--package_json_entry_names module,main --entry_point example/babel.js --externs \
+../src/node_modules/@depack/externs/v8/global.js --externs \
+../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
+../src/node_modules/@depack/externs/v8/nodejs.js
+Dependencies: @a-la/fixture-babel
+example/babel.js:3: WARNING - {default: {           
+  b: function(): ?,
+  c: function(): ?,
+  default: (function(): ?|undefined)
+}} expressions are not callable
+console.log(erte())
+            ^^^^^^
+
+example/babel.js:4: WARNING - Property c never defined on module$node_modules$$a_la$fixture_babel$build$index
+console.log(c())
+            ^
+
+example/babel.js:5: WARNING - Property b never defined on module$node_modules$$a_la$fixture_babel$build$index
+console.log(b())
+            ^
+
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
+found   : undefined
+required: function(): ?
+exports.default = exports.b = exports.c = void 0;
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
+found   : undefined
+required: function(): ?
+exports.default = exports.b = exports.c = void 0;
+                              ^^^^^^^^^^^^^^^^^^
+
+0 error(s), 5 warning(s), 95.3% typed
+
+```
+```js
+'use strict';
+var a = {}, b = {};
+Object.defineProperty(a, "__esModule", {value:!0});
+a.default = a.a = a.b = void 0;
+a.b = () => "c";
+a.a = () => "b";
+a.default = () => "erte";
+console.log(b());
+console.log((0,b.b)());
+console.log((0,b.a)());
 ```
 
 _Trying to execute the output:_
 
 ```js
 /Users/zavr/depack/depack/example/babel-output.js:8
-console.log(a());
+console.log(b());
             ^
 
-TypeError: a is not a function
+TypeError: b is not a function
     at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-output.js:8:13)
     at Module._compile (module.js:653:30)
     at Module.r._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:836:20)
