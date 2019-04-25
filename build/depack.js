@@ -546,7 +546,7 @@ const U = async(a, b) => {
   });
   return {F:c, H:b, o:d, u:e, m:f, j:g};
 };
-const vb = {url:["querystring"], stream:["events"], net:["stream", "events", "dns"], fs:["stream", "events", "url"], ja:["crypto", "dns", "net", "stream"], ca:["events", "net", "stream", "url"], ea:["tls", "events", "http", "url"], da:"events fs net stream tls http url".split(" "), zlib:["stream"], child_process:["events", "stream", "net"], Z:["child_process", "events", "net"], ga:["events", "stream"], ha:["stream", "readline"], $:["events", "dns"], ia:["buffer"], domain:["events"], ka:["net"]}, 
+const vb = {url:["querystring"], stream:["events"], net:["stream", "events", "dns"], fs:["stream", "events", "url"], ia:["crypto", "dns", "net", "stream"], ba:["events", "net", "stream", "url"], da:["tls", "events", "http", "url"], ca:"events fs net stream tls http url".split(" "), zlib:["stream"], child_process:["events", "stream", "net"], Z:["child_process", "events", "net"], fa:["events", "stream"], ga:["stream", "readline"], $:["events", "dns"], ha:["buffer"], domain:["events"], ja:["net"]}, 
 wb = () => {
   const a = P("", N(require.resolve("@depack/externs/package.json")));
   return O(a, "v8");
@@ -632,7 +632,7 @@ const [Ib] = process.version.split(".", 1), Jb = (a = Ib) => P("", O(N(require.r
 const Kb = (a, b) => {
   b = b.split("\n\n").map(c => /^.+?:\d+:(?:\s*Originally at:\s*.+?)? WARNING -/.test(c) ? R(c, "grey") : R(c, "red")).join("\n\n");
   return `Exit code ${a}\n${b}`;
-}, [Lb] = process.version.split(".", 1), Nb = async({m:a, fa:b = "node_modules", force:c = !0}) => {
+}, [Lb] = process.version.split(".", 1), Nb = async({m:a, ea:b = "node_modules", force:c = !0}) => {
   const d = Jb(Lb);
   return (await Promise.all(a.map(async e => {
     const f = O(b, e), g = O(f, "package.json");
@@ -731,7 +731,7 @@ const Xb = async(a, b, c = []) => {
     throw Error("Source is not given.");
   }
   c = [...c, "--package_json_entry_names", "module,main", "--entry_point", d];
-  var k = await U(d, {fields:["externs"]}), h = k.reduce((z, {packageJson:L, aa:G = []}) => {
+  var k = await U(d, {fields:["externs"]}), h = k.reduce((z, {packageJson:L, externs:G = []}) => {
     if (!L) {
       return z;
     }
@@ -1310,7 +1310,7 @@ const Ec = async(a, b, c = []) => {
   m = Bb(c, m);
   console.error(m);
   c = [...c, "--js", ...b];
-  c = await Sb(c, {debug:h, compilerVersion:k, output:g, noSourceMap:l, ba:() => !1});
+  c = await Sb(c, {debug:h, compilerVersion:k, output:g, noSourceMap:l, aa:() => !1});
   !g && c && console.log(c);
   a && (g && !l && await Fb(g, e), await cb(e));
 };
