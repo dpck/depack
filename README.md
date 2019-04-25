@@ -612,8 +612,22 @@ console.log((0,b.a)());
 
 _Trying to execute the output:_
 
-```js
+```
+/Users/zavr/depack/depack/example/babel-normal-output.js:8
+console.log(b());
+            ^
 
+TypeError: b is not a function
+    at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-normal-output.js:8:13)
+    at Module._compile (module.js:653:30)
+    at Module.r._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:836:20)
+    at Module._extensions..js (module.js:664:10)
+    at Object.l.(anonymous function).E._extensions.(anonymous function) [as .js] (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:839:7)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
+    at Module.require (module.js:597:17)
+    at require (internal/module.js:11:18)
 ```
 
 Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_!

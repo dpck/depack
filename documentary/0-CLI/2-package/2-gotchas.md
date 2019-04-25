@@ -156,7 +156,7 @@ _Command & Generated JS:_
 
 _Trying to execute the output:_
 
-%FORK-js example/babel-normal-output%
+%FORKERR example/babel-normal-output%
 
 Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_!
 
