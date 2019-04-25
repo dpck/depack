@@ -9,30 +9,6 @@ export const argsConfig = {
     description: 'Where to save the output.\nPrints to `stdout` when not passed.',
     short: 'o',
   },
-  'compile': {
-    description: 'Set the _Depack_ mode to "compile" to create a Node.JS binray.',
-    boolean: true,
-    short: 'c',
-  },
-  'preact': {
-    description: 'Add the `import { h } from "preact"` to JSX files automatically.',
-    boolean: true,
-    short: 'H',
-  },
-  'temp': {
-    description: 'The path to the temp directory used to pre-transpile JSX files.',
-    default: 'depack-temp',
-  },
-  'library': {
-    description: 'Set the _Depack_ mode to "library" to create a Node.JS library.',
-    boolean: true,
-    short: 'l',
-  },
-  'iife': {
-    description: 'Add the IIFE flag to prevent global conflicts\n(OK Google prevent world conflict).',
-    boolean: true,
-    short: 'i',
-  },
   'debug': {
     description: 'The location of the file where to save sources after\neach pass.',
     short: 'd',
@@ -46,11 +22,6 @@ export const argsConfig = {
     description: 'Disable source maps.',
     boolean: true,
     short: 'S',
-  },
-  'no-strict': {
-    description: 'Whether to remove the `"use strict"` from the output.',
-    boolean: true,
-    short: 's',
   },
   'verbose': {
     description: 'Print the exact command.',
@@ -104,32 +75,6 @@ export const _source = /** @type {string} */ (args['source'])
 export const _output = /** @type {string} */ (args['output'])
 
 /**
- * Set the _Depack_ mode to "compile" to create a Node.JS binray.
- */
-export const _compile = /** @type {boolean} */ (args['compile'])
-
-/**
- * Add the `import { h } from "preact"` to JSX files automatically.
- */
-export const _preact = /** @type {boolean} */ (args['preact'])
-
-/**
- * The path to the temp directory used to pre-transpile JSX files. Default `depack-temp`.
- */
-export const _temp = /** @type {string} */ (args['temp']) || 'depack-temp'
-
-/**
- * Set the _Depack_ mode to "library" to create a Node.JS library.
- */
-export const _library = /** @type {boolean} */ (args['library'])
-
-/**
- * Add the IIFE flag to prevent global conflicts
-    (OK Google prevent world conflict).
- */
-export const _iife = /** @type {boolean} */ (args['iife'])
-
-/**
  * The location of the file where to save sources after
     each pass.
  */
@@ -144,11 +89,6 @@ export const _prettyPrint = /** @type {boolean} */ (args['pretty-print'])
  * Disable source maps.
  */
 export const _noSourcemap = /** @type {boolean} */ (args['no-sourcemap'])
-
-/**
- * Whether to remove the `"use strict"` from the output.
- */
-export const _noStrict = /** @type {boolean} */ (args['no-strict'])
 
 /**
  * Print the exact command.
@@ -192,7 +132,78 @@ export const _version = /** @type {boolean} */ (args['version'])
  */
 export const _help = /** @type {boolean} */ (args['help'])
 
+export const argsConfigBundle = {
+  'iife': {
+    description: 'Add the IIFE flag to prevent name clashes.',
+    boolean: true,
+    short: 'i',
+  },
+  'temp': {
+    description: 'The path to the temp directory used to transpile JSX files.',
+    default: 'depack-temp',
+  },
+  'preact': {
+    description: 'Add the `import { h } from "preact"` to JSX files automatically.',
+    boolean: true,
+    short: 'H',
+  },
+}
+const argsBundle = argufy(argsConfigBundle, [process.argv[0], process.argv[1], ...args._argv])
+
+/**
+ * Add the IIFE flag to prevent name clashes.
+ */
+export const _iife = /** @type {boolean} */ (argsBundle['iife'])
+
+/**
+ * The path to the temp directory used to transpile JSX files. Default `depack-temp`.
+ */
+export const _temp = /** @type {string} */ (argsBundle['temp'] || 'depack-temp')
+
+/**
+ * Add the `import { h } from "preact"` to JSX files automatically.
+ */
+export const _preact = /** @type {boolean} */ (argsBundle['preact'])
+
+export const argsConfigCompile = {
+  'compile': {
+    description: 'Set the _Depack_ mode to "compile" to create a Node.JS binary.\nAdds the `#!usr/bin/env node` at the top and sets +x permission.',
+    boolean: true,
+    short: 'c',
+  },
+  'library': {
+    description: 'Set the _Depack_ mode to "library" to create a Node.JS library.\nInitialises the `DEPACK_EXPORT` variable kept via an extern\nwhich is also exported as `module.exports`. The source code\nneeds to assign the library to this variable.',
+    boolean: true,
+    short: 'l',
+  },
+  'no-strict': {
+    description: 'Whether to remove the `"use strict"` from the output.',
+    boolean: true,
+    short: 's',
+  },
+}
+const argsCompile = argufy(argsConfigCompile, [process.argv[0], process.argv[1], ...argsBundle._argv])
+
+/**
+ * Set the _Depack_ mode to "compile" to create a Node.JS binary.
+    Adds the `#!usr/bin/env node` at the top and sets +x permission.
+ */
+export const _compile = /** @type {boolean} */ (argsCompile['compile'])
+
+/**
+ * Set the _Depack_ mode to "library" to create a Node.JS library.
+    Initialises the `DEPACK_EXPORT` variable kept via an extern
+    which is also exported as `module.exports`. The source code
+    needs to assign the library to this variable.
+ */
+export const _library = /** @type {boolean} */ (argsCompile['library'])
+
+/**
+ * Whether to remove the `"use strict"` from the output.
+ */
+export const _noStrict = /** @type {boolean} */ (argsCompile['no-strict'])
+
 /**
  * The additional arguments passed to the program.
  */
-export const _argv = /** @type {!Array<string>} */ (args._argv)
+export const _argv = /** @type {!Array<string>} */ (argsCompile._argv)

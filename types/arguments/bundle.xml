@@ -1,0 +1,11 @@
+<arguments name="Bundle">
+  <arg boolean name="iife" short="i">
+    Add the IIFE flag to prevent name clashes.
+  </arg>
+  <arg name="temp" default="depack-temp">
+    The path to the temp directory used to transpile JSX files.
+  </arg>
+  <arg boolean name="preact" short="H">
+    Add the `import { h } from "preact"` to JSX files automatically.
+  </arg>
+</arguments>

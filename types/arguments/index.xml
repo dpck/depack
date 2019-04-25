@@ -6,22 +6,6 @@
     Where to save the output.
     Prints to `stdout` when not passed.
   </arg>
-  <arg boolean name="compile" short="c">
-    Set the _Depack_ mode to "compile" to create a Node.JS binray.
-  </arg>
-  <arg boolean name="preact" short="H">
-    Add the `import { h } from "preact"` to JSX files automatically.
-  </arg>
-  <arg name="temp" default="depack-temp">
-    The path to the temp directory used to pre-transpile JSX files.
-  </arg>
-  <arg boolean name="library" short="l">
-    Set the _Depack_ mode to "library" to create a Node.JS library.
-  </arg>
-  <arg boolean name="iife" short="i">
-    Add the IIFE flag to prevent global conflicts
-    (OK Google prevent world conflict).
-  </arg>
   <arg name="debug" short="d">
     The location of the file where to save sources after
     each pass.
@@ -31,9 +15,6 @@
   </arg>
   <arg boolean name="no-sourcemap" short="S">
     Disable source maps.
-  </arg>
-  <arg boolean name="no-strict" short="s">
-    Whether to remove the `"use strict"` from the output.
   </arg>
   <arg boolean name="verbose" short="V">
     Print the exact command.

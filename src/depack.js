@@ -1,11 +1,17 @@
 #!/usr/bin/env node
-import { _source, _output, _version, _noWarnings, _compile, _argv, _level, _language_in, _language_out, _temp, _advanced, _noStrict, _verbose, _help, _noSourcemap, _prettyPrint, _preact, _debug, _iife, _library } from './get-args'
-import { GOOGLE_CLOSURE_COMPILER, run, Bundle, Compile, getOptions, getCompilerVersion, getOutput } from '@depack/depack/src'
+import {
+  _source, _advanced, _noSourcemap, _debug, _language_in, _language_out, _level, _noWarnings, _output, _prettyPrint, _verbose, _help, _version,  argsConfig,
+  _iife, _preact, _temp, argsConfigBundle,
+  _compile, _library, _noStrict, argsConfigCompile,
+  _argv } from './get-args'
+import { reduceUsage } from 'argufy'
+
+import { GOOGLE_CLOSURE_COMPILER, run, Bundle, Compile, getOptions, getCompilerVersion, getOutput } from '@depack/depack'
 import resolveDependency from 'resolve-dependency'
-import getUsage from './usage'
+import usage from './usage'
 
 if (_help) {
-  console.log(getUsage())
+  console.log(usage(reduceUsage(argsConfig), reduceUsage(argsConfigBundle), reduceUsage(argsConfigCompile)))
   process.exit(0)
 }
 
@@ -13,7 +19,7 @@ if (_help) {
   try {
     const compilerVersion = await getCompilerVersion()
     if (_version) {
-      const version = require('../../package.json')['version']
+      const version = require('../package.json')['version']
       console.log('Depack version: %s', version)
       const res = await run([
         ...getOptions({ compiler: GOOGLE_CLOSURE_COMPILER }),
@@ -22,7 +28,8 @@ if (_help) {
       return
     }
     const { path: src } = await resolveDependency(_source)
-    const output = _output ? getOutput(_output, src) : null
+    /** @type {string|undefined} */
+    const output = _output ? getOutput(_output, src) : undefined
     let languageOut = _language_out
     if (!_language_out && _compile) {
       languageOut = 2017
@@ -33,7 +40,7 @@ if (_help) {
     })
     const runOptions = {
       compilerVersion, output,
-      noSourceMap: _noSourcemap || _debug, debug: _debug,
+      noSourceMap: _noSourcemap || !!_debug, debug: _debug,
     }
     if (_compile || _library) {
       return await Compile({

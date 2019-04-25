@@ -2,6 +2,7 @@
   "extends": ["artdeco","plugin:react/recommended"],
   "rules": {
     "react/prop-types": 0,
-    "react/react-in-jsx-scope": 0
+    "react/react-in-jsx-scope": 0,
+    "quote-props": "off"
   }
 }

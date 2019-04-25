@@ -10,19 +10,15 @@
     "mask": "yarn t test/mask",
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "lint": "eslint .",
-    "dev": "node src/bin",
+    "dev": "node src",
     "doc": "NODE_DEBUG=doc doc -o README.md",
-    "b": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar yarn dev src/bin/depack.js -c -o build -a -p -s --hide_warnings_for node_modules/diff --hide_warnings_for node_modules/erte",
+    "b": "GOOGLE_CLOSURE_COMPILER=/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar yarn dev src/depack.js -c -o build -a -p -s --hide_warnings_for node_modules/diff --hide_warnings_for node_modules/erte",
     "depack": "DEBUG=1 node build/depack src/bin/depack.js -c 2017 -o depack2.js -a -w",
-    "d": "yarn-s d1 d2 d3",
-    "d1": "NODE_DEBUG=doc doc src/index.js -g",
-    "d2": "NODE_DEBUG=doc doc src/lib/closure.js -g",
-    "d3": "NODE_DEBUG=doc doc src/bin/commands/bundle.js -g",
     "build": "yarn-s d b doc",
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "node example",
     "example/": "yarn e example/example.js",
-    "args": "argufy -o src/bin/get-args.js"
+    "args": "argufy types/arguments/index.xml types/arguments/bundle.xml types/arguments/compile.xml -o src/get-args.js"
   },
   "files": [
     "build",
@@ -31,7 +27,7 @@
   ],
   "bin": {
     "depack": "build/depack.js",
-    "depack-dev": "src/bin/index.js"
+    "depack-dev": "src/index.js"
   },
   "repository": {
     "type": "git",
@@ -57,7 +53,7 @@
     "@a-la/jsx": "^1.6.0",
     "@depack/depack": "^1.1.0",
     "alamode": "^2.0.0",
-    "argufy": "^1.6.3",
+    "argufy": "^1.7.0",
     "catchment": "^3.3.0",
     "clearr": "^1.0.0",
     "documentary": "^1.26.0",
