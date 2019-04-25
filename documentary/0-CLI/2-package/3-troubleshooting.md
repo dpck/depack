@@ -50,12 +50,13 @@ We've found out that `spawnargs` was mangled because it was not defined in the e
 
 - firstly, incomplete externs. The solution in the first case is to fork and patch [_Depack/`externs`_](https://github.com/dpck/externs) and link them in your project. It is also possible to can create a separate externs file, where the API is extended, e.g.,
     ```js
+    // externs.js
     /** @type {!Array<string>} */
     child_process.ChildProcess.prototype.spawnargs;
     ```
-The program can then be compiled again by pointing to the externs file with the `--externs` flag:
+    The program can then be compiled again by pointing to the externs file with the `--externs` flag:
     ```sh
-    depack t/transform.js -c -a --externs ./externs
+    depack source.js -c -a --externs externs.js
     ```
 - secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation suck as `proc['spawnargs']`.
 
