@@ -115,7 +115,7 @@ _Script to compile Babel-compatible modules with GCC is now:_
 
 %EXAMPLE: example/babel%
 
-_Command:_
+_Command & Generated JS:_
 
 %FORKERR src/bin/depack example/babel -c -a -p --process_common_js_modules%
 %FORK-js src/bin/depack example/babel -c -a -p --process_common_js_modules%
@@ -123,5 +123,41 @@ _Command:_
 _Trying to execute the output:_
 
 %FORK-js example/babel-output%
+
+OK this is fine, but what happens when we actually try to execute the program with `@babel/register`? This is obviously needed for testing and development.
+
+```js
+console.log(_.default.default.default());
+                              ^
+
+TypeError: Cannot read property 'default' of undefined
+    at Object.default (/Users/zavr/a-la/fixture-babel/erte/erte.js:3:26)
+    at Module._compile (module.js:653:30)
+    at Module._compile (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:99:24)
+    at Module._extensions..js (module.js:664:10)
+    at Object.newLoader [as .js] (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:104:7)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
+    at Module.require (module.js:597:17)
+    at require (internal/module.js:11:18)
+```
+
+Nice. Superb compatibility. No IDE support, no dev support, only `default` `default` `default`.
+
+Suppose we wanted to do it like normal humans:
+
+%EXAMPLE: example/babel-normal%
+
+_Command & Generated JS:_
+
+%FORKERR src/bin/depack example/babel-normal -c -a -p --process_common_js_modules%
+%FORK-js src/bin/depack example/babel-normal -c -a -p --process_common_js_modules%
+
+_Trying to execute the output:_
+
+%FORK-js example/babel-normal-output%
+
+Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we. But presto it works with _Babel_!
 
 %~%

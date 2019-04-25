@@ -479,7 +479,7 @@ console.log(erte.default.c())
 console.log(erte.default.b())
 ```
 
-_Command:_
+_Command & Generated JS:_
 
 ```
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
@@ -524,6 +524,99 @@ erte
 c
 b
 ```
+
+OK this is fine, but what happens when we actually try to execute the program with `@babel/register`? This is obviously needed for testing and development.
+
+```js
+console.log(_.default.default.default());
+                              ^
+
+TypeError: Cannot read property 'default' of undefined
+    at Object.default (/Users/zavr/a-la/fixture-babel/erte/erte.js:3:26)
+    at Module._compile (module.js:653:30)
+    at Module._compile (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:99:24)
+    at Module._extensions..js (module.js:664:10)
+    at Object.newLoader [as .js] (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:104:7)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
+    at Module.require (module.js:597:17)
+    at require (internal/module.js:11:18)
+```
+
+Nice. Superb compatibility. No IDE support, no dev support, only `default` `default` `default`.
+
+Suppose we wanted to do it like normal humans:
+
+```js
+import erte, { c, b } from '@a-la/fixture-babel'
+
+console.log(erte())
+console.log(c())
+console.log(b())
+```
+
+_Command & Generated JS:_
+
+```
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
+--process_common_js_modules --package_json_entry_names module,main --entry_point \
+example/babel-normal.js --externs ../src/node_modules/@depack/externs/v8/global.js \
+--externs ../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
+../src/node_modules/@depack/externs/v8/nodejs.js
+Dependencies: @a-la/fixture-babel
+example/babel-normal.js:3: WARNING - {default: {    
+  b: function(): ?,
+  c: function(): ?,
+  default: (function(): ?|undefined)
+}} expressions are not callable
+console.log(erte())
+            ^^^^^^
+
+example/babel-normal.js:4: WARNING - Property c never defined on module$node_modules$$a_la$fixture_babel$build$index
+console.log(c())
+            ^
+
+example/babel-normal.js:5: WARNING - Property b never defined on module$node_modules$$a_la$fixture_babel$build$index
+console.log(b())
+            ^
+
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
+found   : undefined
+required: function(): ?
+exports.default = exports.b = exports.c = void 0;
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
+found   : undefined
+required: function(): ?
+exports.default = exports.b = exports.c = void 0;
+                              ^^^^^^^^^^^^^^^^^^
+
+0 error(s), 5 warning(s), 95.3% typed
+
+```
+```js
+'use strict';
+var a = {}, b = {};
+Object.defineProperty(a, "__esModule", {value:!0});
+a.default = a.a = a.b = void 0;
+a.b = () => "c";
+a.a = () => "b";
+a.default = () => "erte";
+console.log(b());
+console.log((0,b.b)());
+console.log((0,b.a)());
+```
+
+_Trying to execute the output:_
+
+```js
+
+```
+
+Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we. But presto it works with _Babel_!
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
 
