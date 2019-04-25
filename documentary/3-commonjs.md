@@ -1,4 +1,4 @@
-### CommonJS Compatibility
+## CommonJS Compatibility
 
 Depack works best with ES6 modules. All new code should be written with `import/export` statements because it's the standard that takes the implementations away from hacking assignments to `module.exports` which people used to use in a variety of possibly imaginable ways, e.g.,
 
@@ -50,7 +50,33 @@ const {formatters} = module.exports;
 
 No offense to the authors of this code, maybe it was fine before the modules were here. Since 2018 everyone absolutely must use modules when writing new JavaScript code. It makes the correct static analysis of programs possible since exports now are not some random object, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the _GCC_.
 
-#### Single Default Export
+### Enabling Processing Of CommonJS Modules
+
+The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
+
+%EXAMPLE: example/commonjs%
+%FORK src/bin example/commonjs -c -a -p%
+
+_Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as CommonJS module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
+
+```js
+const version = require('../package.json')['version']
+console.log(version)
+```
+
+And the compiler will leave the `require` call as it is because there was no `process_common_js_modules` flag. However, if there were packages in CommonJS format (required via the `main` field of their `package.json`), ALL requires will be processed. If _Depack_ didn't detect a CommonJS module when you know there is one, just add the flag manually. _Depack_ also assumes that all source code is in ES6 format.
+
+### Single Default Export
+
+> The idea is actually that you can do the following, but it's not working correctly at the moment.
+
+<em>
+```js
+import commonJs from 'common-js'
+commonJs('hello')
+commonJs.named('world')
+```
+</em>
 
 A CommonJS package required from an Ecma module will have only a single default export, accessible via the `default` property. There are no named exports. What you have to do is this:
 
@@ -84,7 +110,7 @@ If the language out set to `ECMA2018`, the output will be hardly optimised, mean
 
 ~~When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destructuring in `filter`, `map` and other array operations which produces incorrect code. E.g., `[{ entry: true }, { }].filter(({ entry}) => entry).map(({ entry }) => { ...entry, mapped: true })` will not work. This is rather unfortunate because destructuring is an essential language feature, and compiling for `ES2017` is the only alternative to `ES2018` which produces gigantic output. This bug [has been fixed](https://github.com/google/closure-compiler/commit/877e304fe69498189300238fedc6531b7d9bd126) but the patch has not been released, therefore you must compile the master branch closure compiler yourself and use `GOOGLE_CLOSURE_COMPILER` environment variable to set the compiler path. Hopefully, with the next release (after *`v20190121`*) the fix will be available.~~ -->
 
-#### Using Babel-Compiled CommonJS
+### Using Babel-Compiled CommonJS
 
 Having to write `default` and `default.named` is only half the trouble. Things get really rough when we want to reference packages that were compiled with _Babel_. If we actually follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, we run into interesting developments when trying to use _Babel_-compiled modules. See the examples below.
 

@@ -20,6 +20,14 @@
     "@a-la/detect-jsx" "^1.0.1"
     restream "^3.7.1"
 
+"@a-la/jsx@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@a-la/jsx/-/jsx-1.6.0.tgz#803a8debba9b1d589ad505c610b196096ae0772d"
+  integrity sha512-ybOpoq6pqt2L733csuR0LoUXoSpLH7t1qkIH2Gyxx77V4rcdzKB8fmC8Q60djA1ShS7YdIBR5a6hy03Trj1Gog==
+  dependencies:
+    "@a-la/detect-jsx" "^1.0.1"
+    restream "^3.7.1"
+
 "@artdeco/clean-stack@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.0.0.tgz#36ff9c9f66e6cb1eb0bfa90341be21cba70c7ea6"

@@ -54,6 +54,7 @@
   "homepage": "https://github.com/dpck/depack#readme",
   "devDependencies": {
     "@a-la/fixture-babel": "^1.1.1",
+    "@a-la/jsx": "^1.6.0",
     "@depack/depack": "^1.1.0",
     "alamode": "^2.0.0",
     "argufy": "^1.6.3",

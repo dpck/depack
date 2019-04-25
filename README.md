@@ -16,12 +16,13 @@ yarn add -E depack
 - [Bundle Mode](#bundle-mode)
 - [Compile Mode](#compile-mode)
   * [Usage](#usage)
-  * [CommonJS Compatibility](#commonjs-compatibility)
-    * [Single Default Export](#single-default-export)
-    * [Using Babel-Compiled CommonJS](#using-babel-compiled-commonjs)
   * [Troubleshooting](#troubleshooting)
     * [Bugs In GCC](#bugs-in-gcc)
     * [External APIs](#external-apis)
+- [CommonJS Compatibility](#commonjs-compatibility)
+  * [Enabling Processing Of CommonJS Modules](#enabling-processing-of-commonjs-modules)
+  * [Single Default Export](#single-default-export)
+  * [Using Babel-Compiled CommonJS](#using-babel-compiled-commonjs)
 - [API](#api)
 - [Known Bugs](#known-bugs)
 - [Org Structure](#org-structure)
@@ -111,7 +112,26 @@ _Depack_ supports the following flags for both modes. Any additional arguments t
 
 ## Bundle Mode
 
-The bundle mode is used to create front-end bundles. It discovers all imported dependencies in the project.
+_Depack_ comes packed with a [JSX transpiler](https://github.com/a-la/jsx) that is based on Regular Expressions transforms. There are some limitations like currently non working comments, or inability to place `{}` and `<>` strings and functions (although the arrow functions are supported), but it works. What is also important is that the parser will quote the properties intended for html elements, but leave the properties unquoted for the components. This means that the properties' names will get mangled by the compiler, and can be used in code correctly. If they were quoted, then the code wouldn't be able to reference them because the compiler would change the variable names in code. If the properties to html elements were not quoted then the compiler would mangle them which would result in not-working behaviour. For example:
+
+```jsx
+import { render } from 'preact'
+
+const Component = ({ hello, world }) => {
+  return <div onClick={() => {
+    console.log(hello)
+  }} id={world} />
+}
+
+render(<Component hello="world" world="jsx" />, document.body)
+```
+```
+
+```
+
+Moreover, _GCC_ does not recognise the JSX files as source files, and the module resolution like `import ExampleComponent from './example-component'` does not work. Therefore, _Depack_ will generate a temp directory with the source code where the extension is added to the files. In future, it would be easier if the compiler just allowed to pass supported recognised extensions, or added JSX to their list.
+
+Bundle mode is perfect for creating bundles for the web, be it JSX Preact components (we only focus on _Preact_ because our opinion is that Facebook is evil). _Depack_ was created exactly to avoid all the corporate tool-chains etc that the internet is full of, and _GCC_ is supported by `create-react-app` anyhow.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
 
@@ -203,7 +223,7 @@ depack example/example.js -c -V -a -w -p
 -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --warning_level QUIET --package_json_entry_names module,main --entry_point example/example.js --externs ../src/node_modules/@depack/externs/v8/fs.js --externs ../src/node_modules/@depack/externs/v8/stream.js --externs ../src/node_modules/@depack/externs/v8/events.js --externs ../src/node_modules/@depack/externs/v8/url.js --externs ../src/node_modules/@depack/externs/v8/global.js --externs ../src/node_modules/@depack/externs/v8/global/buffer.js --externs ../src/node_modules/@depack/externs/v8/nodejs.js --module_resolution NODE --output_wrapper #!/usr/bin/env node
 'use strict';
 const fs = require('fs');%output% --js node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js node_modules/fs/package.json node_modules/fs/index.js example/example.js
-Running Google Closure Compiler 20190325...         
+Running Google Closure Compiler 20190325            
 ```
 ```js
 #!/usr/bin/env node
@@ -262,7 +282,125 @@ There are _Depack_ specific flags that can be passed when compiling a Node.JS ex
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
 
-### CommonJS Compatibility
+### Troubleshooting
+
+There are going to be times when the program generated with _GCC_ does not work. The most common error that one would get is going to be similar to the following one:
+
+```js
+TypeError: Cannot read property 'join' of undefined
+    at Ub (/Users/zavr/depack/depack/build/depack.js:776:25)
+    at Zb (/Users/zavr/depack/depack/build/depack.js:816:13)
+    at <anonymous>
+```
+
+This means the compiler has mangled some property on either the built-in _Node.JS_ or external module that broke the contract with the API. This could have happened due to the incorrect/out-of-date externs that are used in _Depack_. In our case, we tried to access the `spawnargs` property on the _ChildProcess_ in the `spawncommand` package, but it was undocumented, therefore the externs did not contain a record of it.
+
+```js
+const proc = spawn(command, args, options)
+proc.spawnCommand = proc.spawnargs.join(' ')
+```
+
+The compiler will typically produce a warning when it does not know about referenced properties which is an indicator that you might end up with runtime errors:
+
+```js
+node_modules/@depack/depack/node_modules/spawncommand/src/index.js:54:
+WARNING - Property spawnargs never defined on _spawncommand.ChildProcessWithPromise
+  proc.spawnCommand = proc.spawnargs.join(' ')
+                           ^^^^^^^^^
+```
+
+It might be difficult to understand where the problem is coming from when the source is obfuscated, especially when using external packages that the developer is not familiar with. To uncover where the problem really happens, one needs to compile the file without the source map and with pretty-print formatting using the `-S -p` options, and setup the debug launch configuration to stop at the point where the error happens:
+
+```json
+{
+  "type": "node",
+  "request": "launch",
+  "name": "Launch Transform",
+  "program": "${workspaceFolder}/output/transform.js",
+  "console": "integratedTerminal",
+  "skipFiles": [
+    "<node_internals>/**/*.js"
+  ]
+},
+```
+
+![Depack Debug](doc/debug.gif)
+
+When the program is stopped there, it is required to hover over the parent of the object property that does not exist and see what class it belongs to. Once it's been identified, the source of the error should be understood which leads to the last step of updating the externs.
+
+> Compiling without source maps will show how the property was mangled, however adding the source maps will point to the location of the problem precisely. However, in this particular case the source maps didn't even work for us.
+
+We've found out that `spawnargs` was mangled because it was not defined in the externs files. There can be two reasons:
+
+- firstly, incomplete externs. The solution in the first case is to fork and patch [_Depack/`externs`_](https://github.com/dpck/externs) and link them in your project. It is also possible to can create a separate externs file, where the API is extended, e.g.,
+    ```js
+    // externs.js
+    /** @type {!Array<string>} */
+    child_process.ChildProcess.prototype.spawnargs;
+    ```
+    The program can then be compiled again by pointing to the externs file with the `--externs` flag:
+    ```sh
+    depack source.js -c -a --externs externs.js
+    ```
+- secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation suck as `proc['spawnargs']`.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
+
+#### Bugs In GCC
+
+In might be the case that externs are fine, but the _Google Closure Compiler_ has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `-d debug.txt` _Depack_ option when compiling that file to save the output of each pass to the `debug.txt` file, then pasting the code from each step in there to _Node.JS_ REPL and seeing if it outputs correct results.
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
+
+#### External APIs
+
+When reading and writing files from the filesystem such as a `package.json` files, or loading JSON data from the 3rd party APIs, their properties must be referred to using the quoted notation, e.g.,
+
+```js
+// reading
+const content = await read(packageJson)
+const {
+  'module': mod,
+  'version': version,
+} = JSON.parse(f)
+
+// writing
+await write('package.json', {
+  'module': 'test/index.mjs',
+})
+
+// loading API
+const { 'results': results } = await request('https://service.co/api')
+```
+
+because otherwise the properties' names get changed by the compiler and the result will not be what you expected it to be. In case of loading external APIs, it's a good idea to create an extern file and defining the known properties there:
+
+<table>
+<tr><th>Externs</th><th>Source</th></tr>
+<tr><td>
+
+```js
+// externs/api.js
+/** @const */
+var _externalAPI
+/** @type {!Array<string>} */
+_externalAPI.results
+```
+</td><td>
+
+```js
+// source.js
+const { results } = /** @type {_externalAPI} */ ( // cast the type
+  await request('https://service.co/api')
+)
+```
+</td>
+</table>
+
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+
+## CommonJS Compatibility
 
 Depack works best with ES6 modules. All new code should be written with `import/export` statements because it's the standard that takes the implementations away from hacking assignments to `module.exports` which people used to use in a variety of possibly imaginable ways, e.g.,
 
@@ -314,7 +452,47 @@ const {formatters} = module.exports;
 
 No offense to the authors of this code, maybe it was fine before the modules were here. Since 2018 everyone absolutely must use modules when writing new JavaScript code. It makes the correct static analysis of programs possible since exports now are not some random object, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the _GCC_.
 
-#### Single Default Export
+### Enabling Processing Of CommonJS Modules
+
+The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
+
+```js
+// ecma
+import commonJs from './common-js'
+
+console.log('requiring a common js from ecma:')
+console.log(commonJs)
+```
+```
+Exit code 1
+example/commonjs/index.js:2: ERROR - Requested module does not have an export "default".
+import commonJs from './common-js'
+^
+
+1 error(s), 0 warning(s)
+
+```
+
+_Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as CommonJS module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
+
+```js
+const version = require('../package.json')['version']
+console.log(version)
+```
+
+And the compiler will leave the `require` call as it is because there was no `process_common_js_modules` flag. However, if there were packages in CommonJS format (required via the `main` field of their `package.json`), ALL requires will be processed. If _Depack_ didn't detect a CommonJS module when you know there is one, just add the flag manually. _Depack_ also assumes that all source code is in ES6 format.
+
+### Single Default Export
+
+> The idea is actually that you can do the following, but it's not working correctly at the moment.
+
+<em>
+```js
+import commonJs from 'common-js'
+commonJs('hello')
+commonJs.named('world')
+```
+</em>
 
 A CommonJS package required from an Ecma module will have only a single default export, accessible via the `default` property. There are no named exports. What you have to do is this:
 
@@ -388,7 +566,7 @@ requiring a common js from ecma:
 { default: { [Function: default] named: [Function] } }
 ```
 
-#### Using Babel-Compiled CommonJS
+### Using Babel-Compiled CommonJS
 
 Having to write `default` and `default.named` is only half the trouble. Things get really rough when we want to reference packages that were compiled with _Babel_. If we actually follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, we run into interesting developments when trying to use _Babel_-compiled modules. See the examples below.
 
@@ -631,124 +809,6 @@ TypeError: b is not a function
 ```
 
 Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_!
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
-
-### Troubleshooting
-
-There are going to be times when the program generated with _GCC_ does not work. The most common error that one would get is going to be similar to the following one:
-
-```js
-TypeError: Cannot read property 'join' of undefined
-    at Ub (/Users/zavr/depack/depack/build/depack.js:776:25)
-    at Zb (/Users/zavr/depack/depack/build/depack.js:816:13)
-    at <anonymous>
-```
-
-This means the compiler has mangled some property on either the built-in _Node.JS_ or external module that broke the contract with the API. This could have happened due to the incorrect/out-of-date externs that are used in _Depack_. In our case, we tried to access the `spawnargs` property on the _ChildProcess_ in the `spawncommand` package, but it was undocumented, therefore the externs did not contain a record of it.
-
-```js
-const proc = spawn(command, args, options)
-proc.spawnCommand = proc.spawnargs.join(' ')
-```
-
-The compiler will typically produce a warning when it does not know about referenced properties which is an indicator that you might end up with runtime errors:
-
-```js
-node_modules/@depack/depack/node_modules/spawncommand/src/index.js:54:
-WARNING - Property spawnargs never defined on _spawncommand.ChildProcessWithPromise
-  proc.spawnCommand = proc.spawnargs.join(' ')
-                           ^^^^^^^^^
-```
-
-It might be difficult to understand where the problem is coming from when the source is obfuscated, especially when using external packages that the developer is not familiar with. To uncover where the problem really happens, one needs to compile the file without the source map and with pretty-print formatting using the `-S -p` options, and setup the debug launch configuration to stop at the point where the error happens:
-
-```json
-{
-  "type": "node",
-  "request": "launch",
-  "name": "Launch Transform",
-  "program": "${workspaceFolder}/output/transform.js",
-  "console": "integratedTerminal",
-  "skipFiles": [
-    "<node_internals>/**/*.js"
-  ]
-},
-```
-
-![Depack Debug](doc/debug.gif)
-
-When the program is stopped there, it is required to hover over the parent of the object property that does not exist and see what class it belongs to. Once it's been identified, the source of the error should be understood which leads to the last step of updating the externs.
-
-> Compiling without source maps will show how the property was mangled, however adding the source maps will point to the location of the problem precisely. However, in this particular case the source maps didn't even work for us.
-
-We've found out that `spawnargs` was mangled because it was not defined in the externs files. There can be two reasons:
-
-- firstly, incomplete externs. The solution in the first case is to fork and patch [_Depack/`externs`_](https://github.com/dpck/externs) and link them in your project. It is also possible to can create a separate externs file, where the API is extended, e.g.,
-    ```js
-    // externs.js
-    /** @type {!Array<string>} */
-    child_process.ChildProcess.prototype.spawnargs;
-    ```
-    The program can then be compiled again by pointing to the externs file with the `--externs` flag:
-    ```sh
-    depack source.js -c -a --externs externs.js
-    ```
-- secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation suck as `proc['spawnargs']`.
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
-
-#### Bugs In GCC
-
-In might be the case that externs are fine, but the _Google Closure Compiler_ has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `-d debug.txt` _Depack_ option when compiling that file to save the output of each pass to the `debug.txt` file, then pasting the code from each step in there to _Node.JS_ REPL and seeing if it outputs correct results.
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="20"></a></p>
-
-#### External APIs
-
-When reading and writing files from the filesystem such as a `package.json` files, or loading JSON data from the 3rd party APIs, their properties must be referred to using the quoted notation, e.g.,
-
-```js
-// reading
-const content = await read(packageJson)
-const {
-  'module': mod,
-  'version': version,
-} = JSON.parse(f)
-
-// writing
-await write('package.json', {
-  'module': 'test/index.mjs',
-})
-
-// loading API
-const { 'results': results } = await request('https://service.co/api')
-```
-
-because otherwise the properties' names get changed by the compiler and the result will not be what you expected it to be. In case of loading external APIs, it's a good idea to create an extern file and defining the known properties there:
-
-<table>
-<tr><th>Externs</th><th>Source</th></tr>
-<tr><td>
-
-```js
-// externs/api.js
-/** @const */
-var _externalAPI
-/** @type {!Array<string>} */
-_externalAPI.results
-```
-</td><td>
-
-```js
-// source.js
-const { results } = /** @type {_externalAPI} */ ( // cast the type
-  await request('https://service.co/api')
-)
-```
-</td>
-</table>
-
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
