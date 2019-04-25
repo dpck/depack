@@ -43,7 +43,7 @@ There is another step which involves patching the dependencies which specify the
 
 Put all together, to compile the following file that contains different kinds of modules:
 
-%EXAMPLE: example/example.js%
+%EXAMPLE: example/example%
 
 The next _Depack_ command can be used:
 

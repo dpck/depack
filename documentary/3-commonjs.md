@@ -55,7 +55,7 @@ No offense to the authors of this code, maybe it was fine before the modules wer
 The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
 
 %EXAMPLE: example/commonjs%
-%FORK src/bin example/commonjs -c -a -p%
+%FORK src/depack example/commonjs -c -a -p%
 
 _Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as CommonJS module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
 

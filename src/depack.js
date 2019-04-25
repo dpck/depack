@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 import {
-  _source, _advanced, _noSourcemap, _debug, _language_in, _language_out, _level, _noWarnings, _output, _prettyPrint, _verbose, _help, _version,  argsConfig,
-  _iife, _preact, _temp, argsConfigBundle,
-  _compile, _library, _noStrict, argsConfigCompile,
-  _argv } from './get-args'
-import { reduceUsage } from 'argufy'
-
+  _source, _advanced, _noSourcemap, _debug, _language_in, _language_out, _level, _noWarnings, _output, _prettyPrint, _verbose, _help, _version, _argv,
+  _iife, _preact, _temp, // bundle
+  _compile, _library, _noStrict, // compile
+} from './get-args'
 import { GOOGLE_CLOSURE_COMPILER, run, Bundle, Compile, getOptions, getCompilerVersion, getOutput } from '@depack/depack'
 import resolveDependency from 'resolve-dependency'
 import usage from './usage'
 
 if (_help) {
-  console.log(usage(reduceUsage(argsConfig), reduceUsage(argsConfigBundle), reduceUsage(argsConfigCompile)))
+  console.log(usage())
   process.exit(0)
 }
 
@@ -28,7 +26,6 @@ if (_help) {
       return
     }
     const { path: src } = await resolveDependency(_source)
-    /** @type {string|undefined} */
     const output = _output ? getOutput(_output, src) : undefined
     let languageOut = _language_out
     if (!_language_out && _compile) {

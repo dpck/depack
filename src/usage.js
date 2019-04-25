@@ -1,7 +1,13 @@
+import { argsConfig, argsConfigBundle, argsConfigCompile } from './get-args'
 import usually from 'usually'
 import { c } from 'erte'
+import { reduceUsage } from 'argufy'
 
-export default (index, bundle, compile) => {
+export default () => {
+  const index = reduceUsage(argsConfig)
+  const bundle = reduceUsage(argsConfigBundle)
+  const compile = reduceUsage(argsConfigCompile)
+
   const common = usually({
     line: 'depack SOURCE [-cl] [-o output.js] [-IO 2018] [-wVvh] [-lvl LEVEL -a] [... --generic-args]',
     usage: index,

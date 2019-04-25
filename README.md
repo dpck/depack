@@ -48,65 +48,110 @@ depack -h
 ```
 
 ```
-Google Closure Compiler-based packager for front and back-end.
-https://github.com/dpck/depack
-Performs static analysis on the source files to find out all dependencies.
+Google Closure Compiler-based packager for the web and Node.JS.
+https://artdecocode.com/depack/
 Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 
-  depack SOURCE [-c] [-o output.js] [-IO 2018] [-awVvh] [-l LEVEL] [... --generic-args]
+  depack SOURCE [-cl] [-o output.js] [-IO 2018] [-wVvh] [-lvl LEVEL -a] [... --generic-args]
 
-	SOURCE            	The source file to build.
-	--output, -o      	Where to save the output. STDOUT by default.
-	--language_in, -I 	Language Input. Can pass ECMA year.
-	--language_out, -O	Language Output. Can pass ECMA year.
-	--level, -l       	The optimisation level (generic -O).
-	                  	WHITESPACE, SIMPLE (default), ADVANCED
-	--advanced, -a    	Turn on advanced optimisation.
-	--no-warnings, -w 	Don't print warnings. Same as
-	                  	--warning_level QUIET
-	--compile, -c     	Set the mode to compilation.
-	--verbose, -V     	Print all compiler arguments.
-	--pretty-print, -p	Add --formatting=PRETTY_PRINT flag.
-	--debug, -d       	Set --print_source_after_each_pass
-	                  	and save stderr to the specified file.
-	--version, -v     	Show Depack and GCC versions.
-	--help, -h        	Print help information.
-	--no-sourcemap, -S	Do not add source maps.
+	source            	The source entry to build.
+	--output, -o      	Where to save the output.
+	                  	Prints to `stdout` when not passed.
+	--debug, -d       	The location of the file where to save sources after
+	                  	each pass.
+	--pretty-print, -p	Whether to apply the `--formatting=PRETTY_PRINT` flag.
+	--no-sourcemap, -S	Disable source maps.
+	--verbose, -V     	Print the exact command.
+	--language_in, -I 	The language of the input sources, years also accepted.
+	--language_out, -O	The language spec of the output, years accepted.
+	--level, -lvl     	The compilation level. Options:
+	                  	BUNDLE, WHITESPACE_ONLY, SIMPLE (default), ADVANCED.
+	--advanced, -a    	Whether to enable advanced optimisation.
+	--no-warnings, -w 	Do not print compiler's warnings by adding the
+	                  	`--warning_level QUIET` flag.
+	--version, -v     	Shows the current _Depack_ and _GCC_ versions.
+	--help, -h        	Prints the usage information.
 
-BACKEND: Creates a single executable file.
-  depack SOURCE -c [-o output.js] [-s]
+BACKEND: Creates a single executable Node.JS file or a library.
+  depack SOURCE -cl [-o output.js] [-s]
 
-	--no-strict -s	Remove "use strict" from the output.
+	--compile, -c  	Set the _Depack_ mode to "compile" to create a Node.JS binary.
+	               	Adds the `#!usr/bin/env node` at the top and sets +x permission.
+	--library, -l  	Set the _Depack_ mode to "library" to create a Node.JS library.
+	               	Initialises the `DEPACK_EXPORT` variable kept via an extern
+	               	which is also exported as `module.exports`. The source code
+	               	needs to assign the library to this variable.
+	--no-strict, -s	Whether to remove the `"use strict"` from the output.
 
   Example:
 
-    depack source.js -c -o bundle.js -I 2018 -O 2018
+    depack src/bin.js -c -a -o depack/bin.js -p
 
 FRONTEND: Creates a bundle for the web.
   depack SOURCE [-o output.js] [-H]
 
-	-H	Add import { h } from 'preact' to files.
+	--iife, -i  	Add the IIFE flag to prevent name clashes.
+	--temp      	The path to the temp directory used to transpile JSX files.
+	            	Default: depack-temp.
+	--preact, -H	Add the `import { h } from "preact"` to JSX files automatically.
 
   Example:
 
-    depack source.js -o bundle.js -I 2018 -H
+    depack source.js -o bundle.js -i -a -H
 ```
 
-_Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
+_Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler. For mode-specific arguments, see the appropriate section in this `README`.
 
-
-|       Flag       | Short |                                                                                    Description                                                                                    |
-| ---------------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--output`       | `-o`  | The output path. Will print to `STDOUT` when not specified.                                                                                         |
-| `--language_in`  | `-I`  | The version of the language of the input file. Analogues to the original Closure flag, but supports passing just the year to set the ECMA version, e.g., `-I 2018` is acceptable. |
-| `--language_out` | `-O`  | The version of the language of the output file. The year can also be passed.                                                                                                      |
-| `--level`        | `-l`  | The optimisation level, which is the same as passing the Closure's `-O` flag. Can be `WHITESPACE`, `SIMPLE` and `ADVANCED`. |
-| `--advanced`     | `-a`  | Sets the optimisation level to `ADVANCED`, i.e., the shortcut for `--level ADVANCED`                                            |
-| `--no-warnings`  | `-w`  | Suppresses the warnings.                                                                                                                                                          |
-| `--verbose`      | `-V`  | Prints the raw command line arguments passed to the compiler.                                                                                                                     |
-| `--no-sourcemap` | `-S`  | Disable generation of the source maps.                                                                                                                                            |
-| `--version`      | `-v`  | Displays the _Depack_ version.                                                                                                                                                    |
-| `--help`         | `-h`  | Show the help information about the usage.                                                                                                                                        |
+<table>
+  <tr><th>Argument</th><th>Short</th><th>Description</th></tr>
+  <tr><td>source</td><td></td><td>The source entry to build.</td></tr>
+  <tr><td>--output</td><td>-o</td><td>
+    Where to save the output.
+        Prints to <code>stdout</code> when not passed.
+  </td>
+  </tr>
+  <tr><td>--debug</td><td>-d</td><td>
+    The location of the file where to save sources after
+        each pass.
+  </td>
+  </tr>
+  <tr><td>--pretty-print</td><td>-p</td><td>
+    Whether to apply the <code>--formatting=PRETTY_PRINT</code> flag.
+  </td>
+  </tr>
+  <tr><td>--no-sourcemap</td><td>-S</td><td>Disable source maps.</td></tr>
+  <tr><td>--verbose</td><td>-V</td><td>Print the exact command.</td></tr>
+  <tr><td>--language_in</td><td>-I</td><td>
+    The language of the input sources, years also accepted.
+  </td>
+  </tr>
+  <tr><td>--language_out</td><td>-O</td><td>
+    The language spec of the output, years accepted.
+  </td>
+  </tr>
+  <tr>
+    <td>--level</td>
+    <td>-lvl</td>
+    <td>
+      The compilation level. Options:
+          BUNDLE, WHITESPACE_ONLY, SIMPLE (default), ADVANCED.
+    </td>
+  </tr>
+  <tr><td>--advanced</td><td>-a</td><td>Whether to enable advanced optimisation.</td></tr>
+  <tr>
+    <td>--no-warnings</td>
+    <td>-w</td>
+    <td>
+      Do not print compiler's warnings by adding the
+          <code>--warning_level QUIET</code> flag.
+    </td>
+  </tr>
+  <tr><td>--version</td><td>-v</td><td>
+    Shows the current <em>Depack</em> and <em>GCC</em> versions.
+  </td>
+  </tr>
+  <tr><td>--help</td><td>-h</td><td>Prints the usage information.</td></tr>
+</table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
@@ -220,9 +265,23 @@ depack example/example.js -c -V -a -w -p
 ```
 
 ```
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --warning_level QUIET --package_json_entry_names module,main --entry_point example/example.js --externs ../src/node_modules/@depack/externs/v8/fs.js --externs ../src/node_modules/@depack/externs/v8/stream.js --externs ../src/node_modules/@depack/externs/v8/events.js --externs ../src/node_modules/@depack/externs/v8/url.js --externs ../src/node_modules/@depack/externs/v8/global.js --externs ../src/node_modules/@depack/externs/v8/global/buffer.js --externs ../src/node_modules/@depack/externs/v8/nodejs.js --module_resolution NODE --output_wrapper #!/usr/bin/env node
+Modules' externs: node_modules/indicatrix/externs.js
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
+--warning_level QUIET --package_json_entry_names module,main --entry_point \
+example/example.js --externs ../src/node_modules/@depack/externs/v8/fs.js --externs \
+../src/node_modules/@depack/externs/v8/stream.js --externs \
+../src/node_modules/@depack/externs/v8/events.js --externs \
+../src/node_modules/@depack/externs/v8/url.js --externs \
+../src/node_modules/@depack/externs/v8/global.js --externs \
+../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
+../src/node_modules/@depack/externs/v8/nodejs.js --externs \
+node_modules/indicatrix/externs.js --module_resolution NODE --output_wrapper \
+#!/usr/bin/env node
 'use strict';
-const fs = require('fs');%output% --js node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js node_modules/fs/package.json node_modules/fs/index.js example/example.js
+const fs = require('fs');%output% --js \
+node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js \
+node_modules/fs/package.json node_modules/fs/index.js example/example.js
 Running Google Closure Compiler 20190325            
 ```
 ```js
@@ -274,11 +333,31 @@ async function h(a) {
 
 There are _Depack_ specific flags that can be passed when compiling a Node.JS executable. These are:
 
-
-|        Flag         |                      Description                       |
-| ------------------- | ------------------------------------------------------ |
-| `--compile`, `-c`   | Enables the compilation mode.                          |
-| `--no-strict`, `-s` | Removes the `'use strict';` statement from the output. |
+<table>
+  <tr><th>Argument</th><th>Short</th><th>Description</th></tr>
+  <tr>
+    <td>--compile</td>
+    <td>-c</td>
+    <td>
+      Set the <em>Depack</em> mode to "compile" to create a Node.JS binary.
+          Adds the <code>#!usr/bin/env node</code> at the top and sets +x permission.
+    </td>
+  </tr>
+  <tr>
+    <td>--library</td>
+    <td>-l</td>
+    <td>
+      Set the <em>Depack</em> mode to "library" to create a Node.JS library.
+          Initialises the <code>DEPACK_EXPORT</code> variable kept via an extern
+          which is also exported as <code>module.exports</code>. The source code
+          needs to assign the library to this variable.
+    </td>
+  </tr>
+  <tr><td>--no-strict</td><td>-s</td><td>
+    Whether to remove the <code>"use strict"</code> from the output.
+  </td>
+  </tr>
+</table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
 
@@ -342,7 +421,16 @@ We've found out that `spawnargs` was mangled because it was not defined in the e
     ```sh
     depack source.js -c -a --externs externs.js
     ```
-- secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation suck as `proc['spawnargs']`.
+- secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation such as `proc['spawnargs']`. However in this case, the `@suppress` annotation must be added
+    ```js
+    // Suppresses the warnings
+    // spawncommand/src/index.js:54: WARNING - Cannot do '[]' access on a struct
+    // proc.spawnCommand = proc['spawnargs'].join(' ')
+    //                          ^^^^^^^^^^^
+    /** @suppress {checkTypes} */
+    proc.spawnCommand = proc['spawnargs'].join(' ')
+    return proc
+    ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
 
@@ -798,9 +886,9 @@ console.log(b());
 TypeError: b is not a function
     at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-normal-output.js:8:13)
     at Module._compile (module.js:653:30)
-    at Module.r._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:836:20)
+    at Module.r._compile (/Users/zavr/adc/documentary/node_modules/alamode/depack/depack-lib.js:836:20)
     at Module._extensions..js (module.js:664:10)
-    at Object.l.(anonymous function).E._extensions.(anonymous function) [as .js] (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:839:7)
+    at Object.l.(anonymous function).E._extensions.(anonymous function) [as .js] (/Users/zavr/adc/documentary/node_modules/alamode/depack/depack-lib.js:839:7)
     at Module.load (module.js:566:32)
     at tryModuleLoad (module.js:506:12)
     at Function.Module._load (module.js:498:3)

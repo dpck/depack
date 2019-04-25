@@ -59,7 +59,7 @@
     "documentary": "^1.26.0",
     "erte": "^1.1.7",
     "eslint-config-artdeco": "1.0.1",
-    "indicatrix": "^1.1.0",
+    "indicatrix": "^1.2.0",
     "preact": "8.4.2",
     "resolve-dependency": "^1.0.3",
     "temp-context": "^2.1.3",

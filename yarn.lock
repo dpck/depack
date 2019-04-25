@@ -393,6 +393,11 @@ indicatrix@^1.1.0:
   resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.1.0.tgz#5041094a34947127381b73e57b44de9ac7217fde"
   integrity sha512-nYWT3M75oor46kkn1p5kPSEBYYaExyqXs6/q1+AnjDqTDi1wq4B0QIunIJqyR95vXHHGp9xdXQBBfiq9Yd5BbQ==
 
+indicatrix@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.2.0.tgz#4aad22b659dc3d84cded9e7c1914546cea4ce1d3"
+  integrity sha512-6FYw+MQjxAqz2mMnmtcMcMjpCRwdJRSVng0xG9unLH/CqYVbr2Xjf/9HXIFgA9JLmNpi1l+WzsmKRDMECcw+KA==
+
 json-diff@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/json-diff/-/json-diff-0.5.2.tgz#e0bc9e434cd2c4c6354487835e01bf3fed335cda"
