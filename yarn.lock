@@ -55,21 +55,21 @@
     resolve-dependency "^1.0.2"
     static-analysis "^1.3.3"
 
-"@depack/depack@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-1.1.0.tgz#dd8de1ef7341d71ca5202d64026b8b62f6953ef4"
-  integrity sha512-+qLO9WtxD8YKzVnwavbIfmY8Kini9n7tSzDx4jZu/ynUWeSbgD6+w7AntDrXUnCN/+o6joUfM+Mhn5hIikPdqw==
+"@depack/depack@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-1.2.1.tgz#5d2f0cf2b4ad36362c7af40977505825ad0cb527"
+  integrity sha512-5sGtFRALLfjOp9bk3hix1TQUx6joBX2frEsb9ohZ5f1WGQKXpd20WewRxV2llZ49Kjz173aGK95iEc08EKMYPQ==
   dependencies:
     "@depack/bundle" "^1.0.5"
-    "@depack/externs" "^1.2.2"
-    "@depack/nodejs" "^1.1.2"
-    "@wrote/wrote" "^1.2.2"
+    "@depack/externs" "^1.4.0"
+    "@depack/nodejs" "^1.1.3"
+    "@wrote/wrote" "^1.2.3"
     erte "^1.1.7"
-    frame-of-mind "^1.1.0"
-    indicatrix "^1.1.0"
+    frame-of-mind "^1.2.3"
+    indicatrix "^1.2.0"
     makepromise "^3.1.0"
-    spawncommand "^2.1.2"
-    static-analysis "^1.5.0"
+    spawncommand "^2.2.0"
+    static-analysis "^1.7.1"
 
 "@depack/detect@^1.0.2":
   version "1.0.2"
@@ -78,12 +78,12 @@
   dependencies:
     mismatch "^1.1.1"
 
-"@depack/externs@^1.2.2":
+"@depack/externs@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.4.0.tgz#cdf39386a90301500d9343864804441a8ca3d24e"
   integrity sha512-ZYsWZmrNFxYdhtePDF5SlZJigdcI+buzYqy8cr4m2R4pZ4T9vUimw+RgoinLAJ5oae9tJ5b/hVWU/yJ6Jah4Kg==
 
-"@depack/nodejs@^1.1.2":
+"@depack/nodejs@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.3.tgz#13fe2c6c9d8ebe459ba6c3a1169a9e4791d6ca21"
   integrity sha512-KXVqVr3iPM4ktKGk69Uhww3Jrr3YJBp7B0xovLVWU5MCdnMO3NMxeVodImNb+tv6pwy4lsvPvHiyoWY78uPvUg==
@@ -150,7 +150,7 @@
   dependencies:
     erotic "^2.1.0"
 
-"@wrote/wrote@^1.2.2":
+"@wrote/wrote@^1.2.2", "@wrote/wrote@^1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@wrote/wrote/-/wrote-1.2.3.tgz#aa55c50df4021a849432d466e398783b5daf730a"
   integrity sha512-cmjtSOjpZMGpT4shHHbeEgwcaYZn3xqI9xyHaAIW0qkDucBaKrwwaZqSSJq7KUnS9OAMxrqh9V7y9BA7YHZDhQ==
@@ -363,7 +363,7 @@ fpj@^1.1.0, fpj@^1.3.0:
     "@wrote/read" "^1.0.4"
     resolve-dependency "^1.0.3"
 
-frame-of-mind@^1.1.0:
+frame-of-mind@^1.1.0, frame-of-mind@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/frame-of-mind/-/frame-of-mind-1.2.3.tgz#a68d22c02539e1fe6d575fd169a5ac57f8b047fa"
   integrity sha512-dupw06bvFMVFJFTCYoa9b0BSNmHFQTxRNFbSjn/6m8jYa8t6ARqIL9h1hAZrtfsridbOx/J4QMtyAv6A8n/2mQ==
@@ -375,7 +375,7 @@ frame-of-mind@^1.1.0:
   resolved "https://registry.yarnpkg.com/heap/-/heap-0.2.6.tgz#087e1f10b046932fc8594dd9e6d378afc9d1e5ac"
   integrity sha1-CH4fELBGky/IWU3Z5tN4r8nR5aw=
 
-indicatrix@^1.1.0, indicatrix@^1.2.0:
+indicatrix@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/indicatrix/-/indicatrix-1.2.0.tgz#4aad22b659dc3d84cded9e7c1914546cea4ce1d3"
   integrity sha512-6FYw+MQjxAqz2mMnmtcMcMjpCRwdJRSVng0xG9unLH/CqYVbr2Xjf/9HXIFgA9JLmNpi1l+WzsmKRDMECcw+KA==
@@ -478,7 +478,7 @@ spawncommand@^2.1.2, spawncommand@^2.2.0:
   dependencies:
     catchment "^3.3.0"
 
-static-analysis@^1.3.3, static-analysis@^1.4.0, static-analysis@^1.5.0, static-analysis@^1.7.1:
+static-analysis@^1.3.3, static-analysis@^1.4.0, static-analysis@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/static-analysis/-/static-analysis-1.7.1.tgz#d5c58e0fd318a8db981616cdb7726003c93db999"
   integrity sha512-QTZGNqXoeEOFFTZmyeR10ai9sT8Hi/Xi7zDwr6LrFcZ9l4GEBT7qeWLyesaLf+2rAnpMDWkgLJ/ovRquJX01HA==

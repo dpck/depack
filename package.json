@@ -51,7 +51,7 @@
   "devDependencies": {
     "@a-la/fixture-babel": "^1.1.1",
     "@a-la/jsx": "^1.6.0",
-    "@depack/depack": "^1.1.0",
+    "@depack/depack": "^1.2.1",
     "alamode": "^2.0.0",
     "argufy": "^1.7.0",
     "catchment": "^3.3.0",
