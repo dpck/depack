@@ -326,7 +326,30 @@ commonJs.default.named('world')
 
 Yes it's crazy. Yes you know what you're doing when importing a package. But thank the _Node.JS_ authors for making this decision. I don't know how you are going to program now, because programming involves using IDE for hints, and then testing before the actual build process, and these 2 things are not satisfied, by either _VSCode_ which does not show hints for `commonJs.default` and `commonJs.default.named`, or _Babel_ which is usually setup for testing.
 
+%EXAMPLE example/commonjs%
+%EXAMPLE example/commonjs/common-js%
+%EXAMPLE example/commonjs/common-js2%
 
+```
+'use strict';
+var a = () => {
+  console.log("default common js export2");
+};
+a.named = () => {
+  console.log("named common js export2");
+};
+var b = {default:() => {
+  console.log("default common js export");
+}};
+b.default.named = () => {
+  console.log("named common js export");
+};
+console.log("requiring a common js from common js:");
+console.log(a);
+console.log("requiring a common js from ecma:");
+console.log(b);
+```
+%EXAMPLE example/commonjs/compiled%
 
 #### Babel-Compiled Dependencies Don't Work
 
