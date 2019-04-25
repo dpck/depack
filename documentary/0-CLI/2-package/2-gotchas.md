@@ -84,9 +84,11 @@ If the language out set to `ECMA2018`, the output will be hardly optimised, mean
 
 ~~When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destructuring in `filter`, `map` and other array operations which produces incorrect code. E.g., `[{ entry: true }, { }].filter(({ entry}) => entry).map(({ entry }) => { ...entry, mapped: true })` will not work. This is rather unfortunate because destructuring is an essential language feature, and compiling for `ES2017` is the only alternative to `ES2018` which produces gigantic output. This bug [has been fixed](https://github.com/google/closure-compiler/commit/877e304fe69498189300238fedc6531b7d9bd126) but the patch has not been released, therefore you must compile the master branch closure compiler yourself and use `GOOGLE_CLOSURE_COMPILER` environment variable to set the compiler path. Hopefully, with the next release (after *`v20190121`*) the fix will be available.~~ -->
 
-#### Babel-Compiled Dependencies Don't Work
+#### Using Babel-Compiled CommonJS
 
-Even if we follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, the _Babel_-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
+Having to write `default` and `default.named` is only half the trouble. Things get really rough when we want to reference packages that were compiled with _Babel_. If we actually follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, we run into interesting developments when trying to use _Babel_-compiled modules. See the examples below.
+
+<!-- therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules. -->
  <!-- This is a great step forward to move _JavaScript_ language forward because `import`/`export` is what should be used instead of `require`. -->
 
 <!-- Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_. -->
@@ -107,17 +109,19 @@ Even if we follow the standard set by _GCC_ where the the _CommonJS_ only has a 
 </tr>
 </table>
 
-_Script to compile with GCC which follows the single default export rule:_
+Because _Babel_ sets the `default` property on the `export` property (along with the `_esModule` flag so that other Babel-compiled packages can import it after the run-time evaluation from `_interopRequire`). What is actually happening now, is that to access the default export, we need to say `default.default`, and all named exports, `default.default.named`.
+
+_Script to compile Babel-compatible modules with GCC is now:_
 
 %EXAMPLE: example/babel%
 
 _Command:_
 
-%!FORKERR src/bin/depack example/babel -c -a -p%
-%!FORK-js src/bin/depack example/babel -c -a -p%
+%FORKERR src/bin/depack example/babel -c -a -p --process_common_js_modules%
+%FORK-js src/bin/depack example/babel -c -a -p --process_common_js_modules%
 
 _Trying to execute the output:_
 
-%!FORKERR-js example/babel-output%
+%FORK-js example/babel-output%
 
 %~%

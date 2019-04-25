@@ -18,7 +18,7 @@ yarn add -E depack
   * [Usage](#usage)
   * [CommonJS Compatibility](#commonjs-compatibility)
     * [Single Default Export](#single-default-export)
-    * [Babel-Compiled Dependencies Don't Work](#babel-compiled-dependencies-dont-work)
+    * [Using Babel-Compiled CommonJS](#using-babel-compiled-commonjs)
   * [Troubleshooting](#troubleshooting)
     * [Bugs In GCC](#bugs-in-gcc)
     * [External APIs](#external-apis)
@@ -388,9 +388,10 @@ requiring a common js from ecma:
 { default: { [Function: default] named: [Function] } }
 ```
 
-#### Babel-Compiled Dependencies Don't Work
+#### Using Babel-Compiled CommonJS
 
-Even if we follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, the _Babel_-compiled modules won't work, therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules.
+Having to write `default` and `default.named` is only half the trouble. Things get really rough when we want to reference packages that were compiled with _Babel_. If we actually follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, we run into interesting developments when trying to use _Babel_-compiled modules. See the examples below.
+
  <table>
 <tr>
 <th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">@a-la/fixture-babel</a>)</th><th>Babel-<a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
@@ -466,14 +467,16 @@ exports.default = _default;
 </tr>
 </table>
 
-_Script to compile with GCC which follows the single default export rule:_
+Because _Babel_ sets the `default` property on the `export` property (along with the `_esModule` flag so that other Babel-compiled packages can import it after the run-time evaluation from `_interopRequire`). What is actually happening now, is that to access the default export, we need to say `default.default`, and all named exports, `default.default.named`.
+
+_Script to compile Babel-compatible modules with GCC is now:_
 
 ```js
 import erte from '@a-la/fixture-babel'
 
-console.log(erte.default())
-console.log(erte.c())
-console.log(erte.b())
+console.log(erte.default.default())
+console.log(erte.default.c())
+console.log(erte.default.b())
 ```
 
 _Command:_
@@ -481,27 +484,11 @@ _Command:_
 ```
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
---package_json_entry_names module,main --entry_point example/babel.js --externs \
-../src/node_modules/@depack/externs/v8/global.js --externs \
+--process_common_js_modules --package_json_entry_names module,main --entry_point \
+example/babel.js --externs ../src/node_modules/@depack/externs/v8/global.js --externs \
 ../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
 ../src/node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-example/babel.js:3: WARNING - {                     
-  b: function(): ?,
-  c: function(): ?,
-  default: (function(): ?|undefined)
-} expressions are not callable
-console.log(erte.default())
-            ^^^^^^^^^^^^^^
-
-example/babel.js:4: WARNING - Property c never defined on module$node_modules$$a_la$fixture_babel$build$index
-console.log(erte.c())
-                 ^
-
-example/babel.js:5: WARNING - Property b never defined on module$node_modules$$a_la$fixture_babel$build$index
-console.log(erte.b())
-                 ^
-
 node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
 found   : undefined
 required: function(): ?
@@ -514,40 +501,28 @@ required: function(): ?
 exports.default = exports.b = exports.c = void 0;
                               ^^^^^^^^^^^^^^^^^^
 
-0 error(s), 5 warning(s), 95.4% typed
+0 error(s), 2 warning(s), 97.3% typed
 
 ```
 ```js
 'use strict';
-var a = {}, b = {};
+var a = {};
 Object.defineProperty(a, "__esModule", {value:!0});
 a.default = a.a = a.b = void 0;
 a.b = () => "c";
 a.a = () => "b";
 a.default = () => "erte";
-console.log(a());
-console.log(b.b());
-console.log(b.a());
+console.log(a.default());
+console.log(a.b());
+console.log(a.a());
 ```
 
 _Trying to execute the output:_
 
 ```js
-/Users/zavr/depack/depack/example/babel-output.js:8
-console.log(a());
-            ^
-
-TypeError: a is not a function
-    at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-output.js:8:13)
-    at Module._compile (module.js:653:30)
-    at Module.r._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:836:20)
-    at Module._extensions..js (module.js:664:10)
-    at Object.l.(anonymous function).E._extensions.(anonymous function) [as .js] (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:839:7)
-    at Module.load (module.js:566:32)
-    at tryModuleLoad (module.js:506:12)
-    at Function.Module._load (module.js:498:3)
-    at Module.require (module.js:597:17)
-    at require (internal/module.js:11:18)
+erte
+c
+b
 ```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
