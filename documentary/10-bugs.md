@@ -8,14 +8,14 @@ There are a few insignificant known issues with _Google Closure Compiler_.
     <details>
     <summary>Show Dot Error</summary>
 
-    %FORK src/bin/depack example/bugs/dot%
+    %FORK src/depack example/bugs/dot%
     </details>
 <!-- 1. Cannot destructure error in `catch` block.
     %EXAMPLE: example/bugs/catch%
     <details>
     <summary>Show Catch Error</summary>
 
-    %FORK src/bin/depack example/bugs/catch -c%
+    %FORK src/depack example/bugs/catch -c%
     </details> -->
 1. `node_modules` are not looked up higher than the `cwd`.
 1. Cannot import _json_ files. Use `require`.
@@ -23,7 +23,7 @@ There are a few insignificant known issues with _Google Closure Compiler_.
     <details>
     <summary>Show JSON Error</summary>
 
-    %FORK src/bin/depack example/bugs/json -c%
+    %FORK src/depack example/bugs/json -c%
     </details>
 
 %~%

@@ -6,7 +6,7 @@ _Depack_ can be used from the command line interface to create bundles or compil
 depack -h
 ```
 
-%FORK src/bin/depack --help%
+%FORK src/depack --help%
 
 _Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler.
 

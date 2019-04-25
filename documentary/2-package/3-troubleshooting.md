@@ -58,7 +58,16 @@ We've found out that `spawnargs` was mangled because it was not defined in the e
     ```sh
     depack source.js -c -a --externs externs.js
     ```
-- secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation suck as `proc['spawnargs']`.
+- secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation such as `proc['spawnargs']`. However in this case, the `@suppress` annotation must be added
+    ```js
+    // Suppresses the warnings
+    // spawncommand/src/index.js:54: WARNING - Cannot do '[]' access on a struct
+    // proc.spawnCommand = proc['spawnargs'].join(' ')
+    //                          ^^^^^^^^^^^
+    /** @suppress {checkTypes} */
+    proc.spawnCommand = proc['spawnargs'].join(' ')
+    return proc
+    ```
 
 %~ width="20"%
 

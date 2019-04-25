@@ -95,7 +95,7 @@ Yes it's crazy. Yes you know what you're doing when importing a package. But tha
 <details>
 <summary>Show Compiled Version</summary>
 
-%FORK-js src/bin/depack example/commonjs -a -c --process_common_js_modules -p%
+%FORK-js src/depack example/commonjs -a -c --process_common_js_modules -p%
 </details>
 
 %FORK-js example/commonjs/compiled%
@@ -143,8 +143,8 @@ _Script to compile Babel-compatible modules with GCC is now:_
 
 _Command & Generated JS:_
 
-%FORKERR src/bin/depack example/babel -c -a -p --process_common_js_modules%
-%FORK-js src/bin/depack example/babel -c -a -p --process_common_js_modules%
+%FORKERR src/depack example/babel -c -a -p --process_common_js_modules%
+%FORK-js src/depack example/babel -c -a -p --process_common_js_modules%
 
 _Trying to execute the output:_
 
@@ -177,8 +177,8 @@ Suppose we wanted to do it like normal humans:
 
 _Command & Generated JS:_
 
-%FORKERR src/bin/depack example/babel-normal -c -a -p --process_common_js_modules%
-%FORK-js src/bin/depack example/babel-normal -c -a -p --process_common_js_modules%
+%FORKERR src/depack example/babel-normal -c -a -p --process_common_js_modules%
+%FORK-js src/depack example/babel-normal -c -a -p --process_common_js_modules%
 
 _Trying to execute the output:_
 
