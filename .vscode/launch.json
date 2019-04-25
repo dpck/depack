@@ -9,17 +9,12 @@
       "request": "launch",
       "name": "Launch Zoroaster",
       "program": "${workspaceFolder}/node_modules/.bin/zoroaster",
-      "env": {
-        "NODE_DEBUG": "depack",
-      },
+      "env": { "NODE_DEBUG": "depack" },
       "console": "integratedTerminal",
       "args": [
-        "test/spec",
-        "test/mask",
-        "-a",
-        "-w",
-        "-t",
-        "9999999"
+        "test/spec", "test/mask",
+        "-a", "-w",
+        "-t", "9999999"
       ],
       "skipFiles": [
         "<node_internals>/**/*.js"
@@ -28,27 +23,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Example @2",
-      "program": "${workspaceFolder}/tt.js",
-      "env": {
-        "NODE_DEBUG": "depack",
-      },
-      "console": "integratedTerminal",
-      "args": [
-        "example/example.js"
-      ],
-      // "skipFiles": [
-      //   "<node_internals>/**/*.js"
-      // ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Testt",
+      "name": "Launch Depack Build",
       "program": "${workspaceFolder}/build/depack.js",
       "args": [
-        "src/bin/depack.js",
-        "-c", "-a", "-w",
+        "src/bin/depack",
+        "-c", "-a",
         "-o", "depack1.js"
       ],
       "env": { "DEBUG": "1" },
@@ -64,20 +43,10 @@
       "program": "${workspaceFolder}/src/bin/index.js",
       "args": [
         "frontend-admin/index.jsx",
-        "-o", "build/admin.js", "-I", "2018", "-a",
+        "-o", "build/admin.js", "-a",
         "-H", "--charset=UTF-8"
       ],
       "cwd": "${workspaceFolder}/../../artdecoweb/knedv.ru",
-      "console": "integratedTerminal",
-      "skipFiles": [
-        "<node_internals>/**/*.js"
-      ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Transform",
-      "program": "${workspaceFolder}/output/transform.js",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"
@@ -98,23 +67,7 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Compiled",
-      "program": "${workspaceFolder}/out/example2.js",
-      "env": {
-        "NODE_DEBUG": "depack",
-      },
-      "console": "integratedTerminal",
-      "args": [
-        // "example/example.js"
-      ],
-      "skipFiles": [
-        "<node_internals>/**/*.js"
-      ]
-    },
+    }
     {
       "type": "node",
       "request": "launch",
@@ -144,11 +97,7 @@
       "env": {"DEBUG": "1"},
       "args": [
         "src/bin/depack.js",
-        // "t/wrote/index.js",
-        "-c",
-        "-n",
-        "-O", "2017",
-        "-o", "depack.js",
+        "-c", "-a",
       ],
       "console": "integratedTerminal",
       "skipFiles": [
@@ -166,6 +115,55 @@
         "-c", "-o", "build/bin", "-a", "-p", "-S",
       ],
       "cwd": "${workspaceFolder}/../../adc/typal",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Debug",
+      "program": "${workspaceFolder}/../../depack/depack/src/bin/index.js",
+      "env": {"GOOGLE_CLOSURE_COMPILER": "/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar"},
+      "args": [
+        "depack", "--externs", "externs.js",
+        "-o", "depack/index_.js", "-a", "-p", "-l"
+      ],
+      "cwd": "${workspaceFolder}/../../idiocc/debug",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Koa",
+      "program": "${workspaceFolder}/../../depack/depack/src/bin/index.js",
+      "env": {"GOOGLE_CLOSURE_COMPILER": "/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar"},
+      "args": [
+        "tt/t",
+        "-o", "tt/t_.js", "-a", "-p", "-c",
+        "--process_common_js_modules"
+      ],
+      "cwd": "${workspaceFolder}/../../idiocc/koa",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Àlamode",
+      "program": "${workspaceFolder}/../../depack/depack/src/bin/index.js",
+      "env": {"GOOGLE_CLOSURE_COMPILER": "/Volumes/backup/closure-compiler/target/closure-compiler-1.0-SNAPSHOT.jar"},
+      "args": [
+        "src/bin/alamode",
+        "-a", "-p", "-c",
+      ],
+      "cwd": "${workspaceFolder}/../../a-la/alamode",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**/*.js"

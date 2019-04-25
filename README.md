@@ -22,6 +22,7 @@ yarn add -E depack
   * [Troubleshooting](#troubleshooting)
     * [Bugs In GCC](#bugs-in-gcc)
     * [External APIs](#external-apis)
+- [API](#api)
 - [Known Bugs](#known-bugs)
 - [Org Structure](#org-structure)
 - [Notes](#notes)
@@ -39,7 +40,7 @@ The other way to install _GCC_ is to set the `GOOGLE_CLOSURE_COMPILER` environme
 
 ## **CLI**
 
-The package `depack` can be used from the command line interface to create bundles or compiled packages for the given entry file.
+_Depack_ can be used from the command line interface to create bundles or compiled packages for the given entry file.
 
 ```sh
 depack -h
@@ -67,7 +68,7 @@ Generic flags: https://github.com/google/closure-compiler/wiki/Flags-and-Options
 	--pretty-print, -p	Add --formatting=PRETTY_PRINT flag.
 	--debug, -d       	Set --print_source_after_each_pass
 	                  	and save stderr to the specified file.
-	--version, -v     	Show version.
+	--version, -v     	Show Depack and GCC versions.
 	--help, -h        	Print help information.
 	--no-sourcemap, -S	Do not add source maps.
 
@@ -126,14 +127,14 @@ The main problem that _Depack_ solves is allowing to require internal Node.JS mo
 // node_modules/child_process/index.js
 export default child_process
 export const {
-  'ChildProcess': ChildProcess,
-  'exec': exec,
-  'execFile': execFile,
-  'execFileSync': execFileSync,
-  'execSync': execSync,
-  'fork': fork,
-  'spawn': spawn,
-  'spawnSync': spawnSync,
+  ChildProcess,
+  exec,
+  execFile,
+  execFileSync,
+  execSync,
+  fork,
+  spawn,
+  spawnSync,
 } = child_process
 ```
 
@@ -187,57 +188,59 @@ const run = async () => {
 The next _Depack_ command can be used:
 
 ```sh
-depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
+depack example/example.js -c -V -a -w -p
 # -c:      set mode to compile
 # -V:      verbose output to print all flags and options
-# -I 2018: set source code language to ECMA2018 (default)
-# -O 2017: set output language to ECMA2017 (the best)
 # -a:      allow for advanced compilation
 # -w:      don't print warnings
+# -p:      add formatting PRETTY_PRINT
+
+# [-I 2018]: (default) set source code language to ECMA2018
+# [-O 2017]: (default) set output language to ECMA2017
 ```
 
 ```
--jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --warning_level QUIET --module_resolution NODE --package_json_entry_names module,main --externs externs/fs.js --externs externs/events.js --externs externs/stream.js --externs externs/node.js --process_common_js_modules --output_wrapper #!/usr/bin/env node
-const fs = require('fs');
-%output% --js node_modules/indicatrix/package.json node_modules/indicatrix/build/index.js node_modules/fs/package.json node_modules/fs/index.js example/example.js
+-jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT --warning_level QUIET --package_json_entry_names module,main --entry_point example/example.js --externs ../src/node_modules/@depack/externs/v8/fs.js --externs ../src/node_modules/@depack/externs/v8/stream.js --externs ../src/node_modules/@depack/externs/v8/events.js --externs ../src/node_modules/@depack/externs/v8/url.js --externs ../src/node_modules/@depack/externs/v8/global.js --externs ../src/node_modules/@depack/externs/v8/global/buffer.js --externs ../src/node_modules/@depack/externs/v8/nodejs.js --module_resolution NODE --output_wrapper #!/usr/bin/env node
+'use strict';
+const fs = require('fs');%output% --js node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js node_modules/fs/package.json node_modules/fs/index.js example/example.js
+Running Google Closure Compiler 20190325.           
 ```
-
 ```js
 #!/usr/bin/env node
-const fs = require('fs');
 'use strict';
-async function g(a) {
-  const {interval:c = 250, writable:f = process.stdout} = {};
+const fs = require('fs');             
+const {createReadStream:g} = fs;
+async function h(a) {
+  const {interval:d = 250, writable:e = process.stdout} = {};
   a = "function" == typeof a ? a() : a;
-  const b = f.write.bind(f);
-  let d = 1, e = `${"Depack version is loading"}${".".repeat(d)}`;
-  b(e);
-  const h = setInterval(() => {
-    d = (d + 1) % 4;
-    e = `${"Depack version is loading"}${".".repeat(d)}`;
+  const b = e.write.bind(e);
+  let c = 1, f = `${"Depack version is loading"}${".".repeat(c)}`;
+  b(f);
+  const k = setInterval(() => {
+    c = (c + 1) % 4;
+    f = `${"Depack version is loading"}${".".repeat(c)}`;
     b(`\r${" ".repeat(28)}\r`);
-    b(e);
-  }, c);
+    b(f);
+  }, d);
   try {
     return await a;
   } finally {
-    clearInterval(h), b(`\r${" ".repeat(28)}\r`);
+    clearInterval(k), b(`\r${" ".repeat(28)}\r`);
   }
 }
-;const {createReadStream:k} = fs;
-const l = async() => {
+;const l = async() => {
   var a = require.resolve("depack/package.json");
-  const c = k(a);
-  a = await new Promise(a => {
+  const d = g(a);
+  a = await new Promise(e => {
     const b = [];
-    c.on("data", a => b.push(a));
-    c.on("close", () => a(b.join("")));
+    d.on("data", c => b.push(c));
+    d.on("close", () => e(b.join("")));
   });
   ({version:a} = JSON.parse(a));
   return a;
 }, m = async() => {
   var a = l();
-  a = await g(a);
+  a = await h(a);
   console.log(a);
 };
 (async() => {
@@ -388,9 +391,9 @@ console.log(a());
 TypeError: a is not a function
     at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-output.js:8:13)
     at Module._compile (module.js:653:30)
-    at Module._compile (/Users/zavr/adc/documentary/node_modules/pirates/lib/index.js:99:24)
+    at Module.r._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:836:20)
     at Module._extensions..js (module.js:664:10)
-    at Object.newLoader [as .js] (/Users/zavr/adc/documentary/node_modules/pirates/lib/index.js:104:7)
+    at Object.l.(anonymous function).E._extensions.(anonymous function) [as .js] (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:839:7)
     at Module.load (module.js:566:32)
     at tryModuleLoad (module.js:506:12)
     at Function.Module._load (module.js:498:3)
@@ -402,16 +405,32 @@ TypeError: a is not a function
 
 ### Troubleshooting
 
-There are going to be times when the program generated with GCC does not work. The most common error that one would get is going to be similar to the following one:
+There are going to be times when the program generated with _GCC_ does not work. The most common error that one would get is going to be similar to the following one:
 
 ```js
-console.log(b.a.join(" "));
-                ^
-
 TypeError: Cannot read property 'join' of undefined
+    at Ub (/Users/zavr/depack/depack/build/depack.js:776:25)
+    at Zb (/Users/zavr/depack/depack/build/depack.js:816:13)
+    at <anonymous>
 ```
 
-This means the compiler has mangled some property on the builtin module that broke the contract with the Node.JS API. This could have happened due to the incorrect/out-of-date externs that are used in _Depack_. The solution to this is to compile the file without the source map and with pretty-print formatting using the `-S -p` options, and setup the debug launch configuration to stop at the point where the error happens:
+This means the compiler has mangled some property on either the built-in _Node.JS_ or external module that broke the contract with the API. This could have happened due to the incorrect/out-of-date externs that are used in _Depack_. In our case, we tried to access the `spawnargs` property on the _ChildProcess_ in the `spawncommand` package, but it was undocumented, therefore the externs did not contain a record of it.
+
+```js
+const proc = spawn(command, args, options)
+proc.spawnCommand = proc.spawnargs.join(' ')
+```
+
+The compiler will typically produce a warning when it does not know about referenced properties which is an indicator that you might end up with runtime errors:
+
+```js
+node_modules/@depack/depack/node_modules/spawncommand/src/index.js:54:
+WARNING - Property spawnargs never defined on _spawncommand.ChildProcessWithPromise
+  proc.spawnCommand = proc.spawnargs.join(' ')
+                           ^^^^^^^^^
+```
+
+It might be difficult to understand where the problem is coming from when the source is obfuscated, especially when using external packages that the developer is not familiar with. To uncover where the problem really happens, one needs to compile the file without the source map and with pretty-print formatting using the `-S -p` options, and setup the debug launch configuration to stop at the point where the error happens:
 
 ```json
 {
@@ -426,34 +445,32 @@ This means the compiler has mangled some property on the builtin module that bro
 },
 ```
 
-![Depack Debug](doc/debug.jpg)
+![Depack Debug](doc/debug.gif)
 
-When the program is stopped there, it is required to hover over the parent of the object property that does not exist and see what class it belongs to. Once it's been identified, the source of error should be understood which leads to the last step of updating the externs. For this particular example, the program was:
+When the program is stopped there, it is required to hover over the parent of the object property that does not exist and see what class it belongs to. Once it's been identified, the source of the error should be understood which leads to the last step of updating the externs.
+
+> Compiling without source maps will show how the property was mangled, however adding the source maps will point to the location of the problem precisely. However, in this particular case the source maps didn't even work for us.
+
+Where `spawnargs` was not defined in the externs files. There can be two reasons: first, incomplete externs, and second, using the undocumented APIs. The solution is not use the undocumented APIs in the first case, and to submit a patch to [_Depack/`externs`_](https://github.com/dpck/externs) in the second case. Before the patch is accepted, you can create a separate externs file, where the API is extended, e.g.,
 
 ```js
-import { spawn } from 'child_process'
-
-const p = spawn('echo', ['hello world'])
-console.log(p.spawnargs.join(' '))
+/** @type {!Array<string>} */
+child_process.ChildProcess.prototype.spawnargs;
 ```
 
-Where `spawnargs` was not defined in the externs files. The solution is to submit a patch to _Depack_, and before its accepted, use the `--node-externs` flag that points to the location of Node.JS externs that will override the existing externs. Thus, if there is a problem in `child_process` externs, their contents should be copied from https://github.com/dpck/depack/blob/master/externs/child_process.js and updated in place. Then the program can be compiled again:
+The program can then be compiled again by pointing to the externs file with the `--externs` flag:
 
 ```sh
-depack t/transform.js -c -I 2018 -O 2017 -a
-  -o output/transform.js
-  --node-externs ./externs
+depack t/transform.js -c -a --externs ./externs
 ```
 
-If there are problems with global Node.JS externs, the `node.js` extern file should be overridden in your project (don't forget to submit the patch to _Depack_).
-
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
 
 #### Bugs In GCC
 
-In might be the case that externs are fine, but the Closure Compiler has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `--print_source_after_each_pass` Compiler option when compiling that file to see the output of each pass, then pasting the code to Node.JS REPL and seeing if it outputs correct results.
+In might be the case that externs are fine, but the _Google Closure Compiler_ has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `-d debug.txt` _Depack_ option when compiling that file to save the output of each pass to the `debug.txt` file, then pasting the code from each step in there to _Node.JS_ REPL and seeing if it outputs correct results.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true" width="20"></a></p>
 
 #### External APIs
 
@@ -476,21 +493,153 @@ await write('package.json', {
 const { 'results': results } = await request('https://service.co/api')
 ```
 
-because otherwise the properties' names get changed by the compiler and the result will not be what you expected it to be.
+because otherwise the properties' names get changed by the compiler and the result will not be what you expected it to be. In case of loading external APIs, it's a good idea to create an extern file and defining the known properties there:
+
+<table>
+<tr><th>Externs</th><th>Source</th></tr>
+<tr><td>
+
+```js
+// externs/api.js
+/** @const */
+var _externalAPI
+/** @type {!Array<string>} */
+_externalAPI.results
+```
+</td><td>
+
+```js
+// source.js
+const { results } = /** @type {_externalAPI} */ ( // cast the type
+  await request('https://service.co/api')
+)
+```
+</td>
+</table>
+
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
+## API
 
+This package only publishes a binary. The API is available via the [_@Depack/depack_](https://github.com/dpck/src) package.
+
+```js
+import { Bundle, Compile } from '@depack/depack'
+
+(async () => {
+  await Bundle(...)
+  await Compile(...)
+})
+```
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
 ## Known Bugs
 
-There are a number of known bugs with Google Closure Compiler.
+There are a few insignificant known issues with _Google Closure Compiler_.
 
-1. Cannot do `require('.')`.
-1. Cannot destructure error in `catch` block.
-1. node_modules are not looked up higher than the `cwd`.
+1. Cannot do `import '.'`: change to `import './'`.
+    ```js
+    // dot.js
+    import test from '.'
+    test()
+    ```
+    ```js
+    // index.js
+    export default () => {
+      console.log('test')
+    }
+    ```
+    <details>
+    <summary>Show Dot Error</summary>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
+    ```
+    Exit code 1
+    example/bugs/dot.js:2: ERROR - Failed to load module "."
+    import test from '.'
+    ^
+    
+    1 error(s), 0 warning(s)
+    
+    ```
+    </details>
+1. `node_modules` are not looked up higher than the `cwd`.
+1. Cannot import _json_ files. Use `require`.
+    ```js
+    import data from './data.json'
+    console.log(data)
+    ```
+    <details>
+    <summary>Show JSON Error</summary>
+
+    ```
+    Exit code 254
+    java.lang.RuntimeException: INTERNAL COMPILER ERROR.
+    Please report this problem.
+    
+    INTERNAL COMPILER ERROR.
+    Please report this problem.
+    
+    null
+      Node(NAME data): example/bugs/json.js:2:12
+    console.log(data)
+      Parent(CALL): example/bugs/json.js:2:0
+    console.log(data)
+    
+      Node(SCRIPT): example/bugs/json.js:1:0
+    import data from './data.json'
+      Parent(ROOT): [source unknown]
+    
+    	at com.google.javascript.jscomp.NodeUtil.newQName(NodeUtil.java:4014)
+    	at com.google.javascript.jscomp.ModuleRenaming.replace(ModuleRenaming.java:207)
+    	at com.google.javascript.jscomp.Es6RewriteModules$RenameGlobalVars.visit(Es6RewriteModules.java:867)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:887)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseChildren(NodeTraversal.java:999)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:883)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseChildren(NodeTraversal.java:999)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:883)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseChildren(NodeTraversal.java:999)
+    	at com.google.javascript.jscomp.NodeTraversal.handleScript(NodeTraversal.java:837)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:862)
+    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:371)
+    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:381)
+    	at com.google.javascript.jscomp.Es6RewriteModules.visitScript(Es6RewriteModules.java:549)
+    	at com.google.javascript.jscomp.Es6RewriteModules.visit(Es6RewriteModules.java:378)
+    	at com.google.javascript.jscomp.NodeTraversal.handleScript(NodeTraversal.java:839)
+    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:862)
+    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:371)
+    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:381)
+    	at com.google.javascript.jscomp.Es6RewriteModules.processFile(Es6RewriteModules.java:186)
+    	at com.google.javascript.jscomp.Es6RewriteModules.hotSwapScript(Es6RewriteModules.java:175)
+    	at com.google.javascript.jscomp.Es6RewriteModules.process(Es6RewriteModules.java:164)
+    	at com.google.javascript.jscomp.PhaseOptimizer$NamedPass.process(PhaseOptimizer.java:328)
+    	at com.google.javascript.jscomp.PhaseOptimizer.process(PhaseOptimizer.java:237)
+    	at com.google.javascript.jscomp.Compiler.check(Compiler.java:1021)
+    	at com.google.javascript.jscomp.Compiler.performChecksAndTranspilation(Compiler.java:829)
+    	at com.google.javascript.jscomp.Compiler.lambda$stage1Passes$0(Compiler.java:759)
+    	at com.google.javascript.jscomp.CompilerExecutor$2.call(CompilerExecutor.java:102)
+    	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+    	at java.lang.Thread.run(Thread.java:748)
+    Caused by: java.lang.RuntimeException: INTERNAL COMPILER ERROR.
+    Please report this problem.
+    
+    null
+      Node(NAME data): example/bugs/json.js:2:12
+    console.log(data)
+      Parent(CALL): example/bugs/json.js:2:0
+    console.log(data)
+    
+    	... 32 more
+    Caused by: java.lang.NullPointerException
+    	... 32 more
+    
+    ```
+    </details>
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## Org Structure
 
@@ -501,17 +650,33 @@ There are a number of known bugs with Google Closure Compiler.
 - [[@depack/render](https://github.com/dpck/render)] Render server-side HTML from JSX.
 - [[@depack/context](https://github.com/dpck/context)] Testing context for unit-testing.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## Notes
 
 - The static analysis might discover built-in and other modules even if they were not used, since no tree-shaking is performed.
 - [2 March 2019] Current bug does not let compile later `jsx` detection. Trying to compile front-end bundler with _Depack_.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## Copyright
 
-<table><tr><th><a href="https://artd.eco"><img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" /></a></th><th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th><th><a href="https://www.technation.sucks" title="Tech Nation Visa"><img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif" alt="Tech Nation Visa" /></a></th><th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th></tr></table>
+<table>
+  <tr>
+    <th>
+      <a href="https://artd.eco">
+        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" />
+      </a>
+    </th>
+    <th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th>
+    <th>
+      <a href="https://www.technation.sucks" title="Tech Nation Visa">
+        <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif"
+          alt="Tech Nation Visa" />
+      </a>
+    </th>
+    <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
+  </tr>
+</table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>

@@ -10,14 +10,14 @@ The main problem that _Depack_ solves is allowing to require internal Node.JS mo
 // node_modules/child_process/index.js
 export default child_process
 export const {
-  'ChildProcess': ChildProcess,
-  'exec': exec,
-  'execFile': execFile,
-  'execFileSync': execFileSync,
-  'execSync': execSync,
-  'fork': fork,
-  'spawn': spawn,
-  'spawnSync': spawnSync,
+  ChildProcess,
+  exec,
+  execFile,
+  execFileSync,
+  execSync,
+  fork,
+  spawn,
+  spawnSync,
 } = child_process
 ```
 
@@ -48,17 +48,18 @@ Put all together, to compile the following file that contains different kinds of
 The next _Depack_ command can be used:
 
 ```sh
-depack example/example.js -c -V -I 2018 -O 2017 -a -w --formatting PRETTY_PRINT
+depack example/example.js -c -V -a -w -p
 # -c:      set mode to compile
 # -V:      verbose output to print all flags and options
-# -I 2018: set source code language to ECMA2018 (default)
-# -O 2017: set output language to ECMA2017 (the best)
 # -a:      allow for advanced compilation
 # -w:      don't print warnings
+# -p:      add formatting PRETTY_PRINT
+
+# [-I 2018]: (default) set source code language to ECMA2018
+# [-O 2017]: (default) set output language to ECMA2017
 ```
 
-%FORKERR src/bin/depack example/example.js -c -V -O 2017 -a -w -p --_suppress-loading%
-
-%FORK-js src/bin/depack example/example.js -c -V -O 2017 -a -w -p --_suppress-loading%
+%FORKERR src/bin/depack example/example.js -c -V -O 2017 -a -w -p%
+%FORK-js src/bin/depack example/example.js -c -V -O 2017 -a -w -p%
 
 %~ width="15"%

@@ -1,25 +1,14 @@
-<!-- ## API
+## API
 
-The package is available by importing its default function:
+This package only publishes a binary. The API is available via the [_@Depack/depack_](https://github.com/dpck/src) package.
 
 ```js
-import depack from 'depack'
+import { Bundle, Compile } from '@depack/depack'
+
+(async () => {
+  await Bundle(...)
+  await Compile(...)
+})
 ```
 
 %~%
-
-```## depack
-[
-  ["arg1", "string"],
-  ["arg2?", "boolean"]
-]
-```
-
-Call this function to get the result you want.
-
-%TYPEDEF types/index.xml%
-
-%EXAMPLE: example/example.js, ../src => depack%
-%FORK example example/example%
-
-%~% -->
