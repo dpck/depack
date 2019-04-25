@@ -67,24 +67,20 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
-    }
+    },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Depack",
-      "program": "${workspaceFolder}/src/bin/index.js",
+      "program": "${workspaceFolder}/src/index.js",
       "env": {
         "NODE_DEBUG": "depack",
       },
       "console": "integratedTerminal",
       "args": [
-        // "src/cli/index.js",
-        "t/package.js",
-        "-a",
-        "-c"
-        //  "out/example2.js",
+        "src/index.js",
+        "-a", "-c"
       ],
-      // "cwd": "${workspaceFolder}/../../Downloads/kibana-6.5.0-SNAPSHOT-darwin-x86_64",
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]

@@ -2,7 +2,18 @@
 test/fixture/nodejs.js -c -a -p
 
 /* stderr */
--jar compiler.jar --compilation_level ADVANCED --create_source_map %outname%.map --formatting PRETTY_PRINT --js_output_file test/temp/result.js --module_resolution NODE --package_json_entry_names module,main --externs externs/v8/os.js --externs externs/v8/fs.js --externs externs/v8/stream.js --externs externs/v8/events.js --externs externs/v8/url.js --externs externs/v8/global.js --externs externs/v8/nodejs.js
+java -jar compiler.jar \
+--compilation_level ADVANCED --language_out ECMASCRIPT_2017 --create_source_map \
+%outname%.map --formatting PRETTY_PRINT --js_output_file test/temp/result.js \
+--package_json_entry_names module,main --entry_point test/fixture/nodejs.js --externs \
+../src/node_modules/@depack/externs/v8/os.js --externs \
+../src/node_modules/@depack/externs/v8/fs.js --externs \
+../src/node_modules/@depack/externs/v8/stream.js --externs \
+../src/node_modules/@depack/externs/v8/events.js --externs \
+../src/node_modules/@depack/externs/v8/url.js --externs \
+../src/node_modules/@depack/externs/v8/global.js --externs \
+../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
+../src/node_modules/@depack/externs/v8/nodejs.js
 Built-ins: os, fs
 /**/
 /* expected */
