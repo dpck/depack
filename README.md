@@ -451,18 +451,18 @@ When the program is stopped there, it is required to hover over the parent of th
 
 > Compiling without source maps will show how the property was mangled, however adding the source maps will point to the location of the problem precisely. However, in this particular case the source maps didn't even work for us.
 
-Where `spawnargs` was not defined in the externs files. There can be two reasons: first, incomplete externs, and second, using the undocumented APIs. The solution is not use the undocumented APIs in the first case, and to submit a patch to [_Depack/`externs`_](https://github.com/dpck/externs) in the second case. Before the patch is accepted, you can create a separate externs file, where the API is extended, e.g.,
+We've found out that `spawnargs` was mangled because it was not defined in the externs files. There can be two reasons:
 
-```js
-/** @type {!Array<string>} */
-child_process.ChildProcess.prototype.spawnargs;
-```
-
+- firstly, incomplete externs. The solution in the first case is to fork and patch [_Depack/`externs`_](https://github.com/dpck/externs) and link them in your project. It is also possible to can create a separate externs file, where the API is extended, e.g.,
+    ```js
+    /** @type {!Array<string>} */
+    child_process.ChildProcess.prototype.spawnargs;
+    ```
 The program can then be compiled again by pointing to the externs file with the `--externs` flag:
-
-```sh
-depack t/transform.js -c -a --externs ./externs
-```
+    ```sh
+    depack t/transform.js -c -a --externs ./externs
+    ```
+- secondly, using undocumented APIs. Fixed by not using these APIs, or to access the properties using the bracket notation suck as `proc['spawnargs']`.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
 
