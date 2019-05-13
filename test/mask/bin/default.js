@@ -42,10 +42,9 @@ export const compile = makeTestSuite('test/result/compile', {
     },
   },
   /**
-   * @param {string}
    * @param {Temp}
    */
-  async getResults(_, { read }){
+  async getResults({ read }){
     return read('result.js')
     // return s.length > 0
   },

@@ -17,14 +17,15 @@ Built-ins: os, fs
 /**/
 /* expected */
 #!/usr/bin/env node
+'use strict';
 const os = require('os');
-const fs = require('fs');
-var a = os.constants;
-var b = fs, c = b.createReadStream, d = b.createWriteStream;
+const fs = require('fs');             
+const {constants:a} = os;
+const {createReadStream:b, createWriteStream:c} = fs;
 console.log(process.version);
 console.log(a.errno.EACCES);
-var e = c(__filename), f = d(process.env.OUTPUT);
-e.pipe(f);
+const d = b(__filename), e = c(process.env.OUTPUT);
+d.pipe(e);
 
 
 //# sourceMappingURL=result.js.map
