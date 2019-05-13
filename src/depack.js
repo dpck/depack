@@ -28,7 +28,7 @@ if (_help) {
     const { path: src } = await resolveDependency(_source)
     const output = _output ? getOutput(_output, src) : undefined
     let languageOut = _language_out
-    if (!_language_out && _compile) {
+    if (!_language_out && (_compile || _library)) {
       languageOut = 2017
     }
     const options = getOptions({
