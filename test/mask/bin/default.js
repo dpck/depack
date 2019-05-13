@@ -2,9 +2,11 @@ import makeTestSuite from '@zoroaster/mask'
 import TempContext from 'temp-context'
 import { join } from 'path'
 import clearR from 'clearr'
+import { c } from 'erte'
 import Context from '../../context'
 
 const { BIN } = Context
+console.log(c(BIN, 'green'))
 
 class OutputContext extends TempContext {
   constructor() {

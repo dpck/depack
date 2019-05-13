@@ -25,10 +25,10 @@
   resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.1.1.tgz#0a68b9a061b5076ebaf948c150ea26d09c1e753f"
   integrity sha512-q5lO3vGUo0WgkSqzgzjL0HQdA9t2HzQqZISuVuQWMh9xqLuiLFP/ZTsxFc8vpMl7mNpGk7Mm0OeyFQ+Evrp0Cw==
 
-"@depack/bundle@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@depack/bundle/-/bundle-1.1.0.tgz#327864f3253b205f6fce9d197bd0f46a7649e41d"
-  integrity sha512-pfu1ZUtN0009Ef8OBoGG4SDSGuMVqoLitKZm0Ai1XUcXKFqFkvjpIV9JOcVoNhSwAL4hpdit8YkqlFTU6bZB4A==
+"@depack/bundle@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@depack/bundle/-/bundle-1.1.1.tgz#36b8855de7dfe0e2caab0c57f3aed73bf307b23f"
+  integrity sha512-wZ6m9kIi+M3vV0pVCB6RIPMslP2sT80eKeJl6npCJlanlgmW2ZOS1T0MN7TQWOnYJl8L1nRCZfQn5VwCyLwNOQ==
   dependencies:
     "@a-la/jsx" "^1.6.0"
     "@depack/split" "^1.0.0"
@@ -50,12 +50,12 @@
     resolve-dependency "^1.0.2"
     static-analysis "^1.3.3"
 
-"@depack/depack@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-1.3.0.tgz#93cae8a82f33c91090794d9fb05f0b24f0e4da1e"
-  integrity sha512-285ZYyv/OnPx5IS5Uq8zs1WW0icdO5SRsoPPX1O5Sn4zVt9iOUoZEqg7thCQ4f5cLXowYrIZ5MkgB3U8egT0VA==
+"@depack/depack@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-1.3.1.tgz#028472ab3ed5dd64c4acc27f8feb70718e7063de"
+  integrity sha512-tHZ4IV8+z2A2ZC5sDDnCOOJslhbnRZ1XQyfuMI4ZHi0gAwuzx/6o0GKKwOEdTx8MY8GZX/AMC46T3lgpdcRHIA==
   dependencies:
-    "@depack/bundle" "^1.1.0"
+    "@depack/bundle" "^1.1.1"
     "@depack/externs" "^1.4.1"
     "@depack/nodejs" "^1.1.3"
     "@wrote/wrote" "^1.2.3"
