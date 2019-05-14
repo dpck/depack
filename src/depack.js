@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 import {
   _source, _advanced, _noSourcemap, _debug, _language_in, _language_out, _level, _noWarnings, _output, _prettyPrint, _verbose, _help, _version, _argv,
-  _iife, _preact, _temp, // bundle
+  _iife, _preact, _temp, _external, // bundle
   _compile, _library, _noStrict, // compile
 } from './get-args'
 import { GOOGLE_CLOSURE_COMPILER, run, Bundle, Compile, getOptions, getCompilerVersion, getOutput } from '@depack/depack'
 import resolveDependency from 'resolve-dependency'
+import { renameSync, symlinkSync, unlinkSync } from 'fs'
+import { resolve } from 'path'
+import { c } from 'erte'
 import usage from './usage'
 
 if (_help) {
@@ -48,6 +51,15 @@ if (_help) {
         library: _library,
       }, runOptions, options)
     }
+    if (_external) {
+      console.error(c('monkey-patching preact', 'yellow'))
+      renameSync('node_modules/preact', 'node_modules/_preact')
+      symlinkSync(resolve(__dirname, '../preact'), 'node_modules/preact')
+
+      process.on('SIGINT', () => {})
+      process.on('SIGTERM', () => {})
+      process.on('beforeExit', restorePreact)
+    }
     await Bundle({
       src,
       tempDir: _temp,
@@ -57,3 +69,13 @@ if (_help) {
     process.env['DEBUG'] ? console.log(error.stack) : console.log(error.message)
   }
 })()
+
+const restorePreact = () => {
+  console.error(c('cleaning up preact patch', 'yellow'))
+  try {
+    unlinkSync('node_modules/preact')
+    renameSync('node_modules/_preact', 'node_modules/preact')
+  } catch (err) {
+    //
+  }
+}

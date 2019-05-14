@@ -22,8 +22,8 @@
   },
   "files": [
     "build",
-    "builtin-modules",
-    "externs"
+    "externs",
+    "preact"
   ],
   "bin": {
     "depack": "build/depack.js",
