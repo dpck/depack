@@ -143,9 +143,14 @@ export const argsConfigBundle = {
     default: 'depack-temp',
   },
   'preact': {
-    description: 'Add the `import { h } from "preact"` to JSX files automatically.',
+    description: 'Add the `import { h } from "preact"` to JSX files automatically.\nDoes not process files found in the `node_modules`, because\nthey are not placed in the temp, and must be built separately,\ne.g., with ÀLaMode transpiler.',
     boolean: true,
     short: 'H',
+  },
+  'external': {
+    description: 'The `preact` dependency in `node_modules` will be temprorary\nrenamed to `_preact`, and a monkey-patching package that\nimports `@externs/preact` will take its place. This is to allow\nbundles to import from _Preact_ installed as a script on a webpage,\nbut exclude it from compilation. `preact` will be restored at the end.',
+    boolean: true,
+    short: 'E',
   },
 }
 const argsBundle = argufy(argsConfigBundle, [process.argv[0], process.argv[1], ...args._argv])
@@ -162,8 +167,20 @@ export const _temp = /** @type {string} */ (argsBundle['temp'] || 'depack-temp')
 
 /**
  * Add the `import { h } from "preact"` to JSX files automatically.
+    Does not process files found in the `node_modules`, because
+    they are not placed in the temp, and must be built separately,
+    e.g., with ÀLaMode transpiler.
  */
 export const _preact = /** @type {boolean} */ (argsBundle['preact'])
+
+/**
+ * The `preact` dependency in `node_modules` will be temprorary
+    renamed to `_preact`, and a monkey-patching package that
+    imports `@externs/preact` will take its place. This is to allow
+    bundles to import from _Preact_ installed as a script on a webpage,
+    but exclude it from compilation. `preact` will be restored at the end.
+ */
+export const _external = /** @type {boolean} */ (argsBundle['external'])
 
 export const argsConfigCompile = {
   'compile': {
