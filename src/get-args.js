@@ -152,6 +152,11 @@ export const argsConfigBundle = {
     boolean: true,
     short: 'E',
   },
+  'patch': {
+    description: 'Patches the `preact` directory like in `external`, and waits for\nuser input to restore it. Useful when linking packages and wanting\nto them from other projects.',
+    boolean: true,
+    short: 'P',
+  },
 }
 const argsBundle = argufy(argsConfigBundle, [process.argv[0], process.argv[1], ...args._argv])
 
@@ -181,6 +186,13 @@ export const _preact = /** @type {boolean} */ (argsBundle['preact'])
     but exclude it from compilation. `preact` will be restored at the end.
  */
 export const _external = /** @type {boolean} */ (argsBundle['external'])
+
+/**
+ * Patches the `preact` directory like in `external`, and waits for
+    user input to restore it. Useful when linking packages and wanting
+    to them from other projects.
+ */
+export const _patch = /** @type {boolean} */ (argsBundle['patch'])
 
 export const argsConfigCompile = {
   'compile': {

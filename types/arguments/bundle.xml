@@ -18,4 +18,9 @@
     bundles to import from _Preact_ installed as a script on a webpage,
     but exclude it from compilation. `preact` will be restored at the end.
   </arg>
+  <arg boolean name="patch" short="P">
+    Patches the `preact` directory like in `external`, and waits for
+    user input to restore it. Useful when linking packages and wanting
+    to them from other projects.
+  </arg>
 </arguments>
