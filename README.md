@@ -23,6 +23,7 @@ yarn add -E depack
   * [Enabling Processing Of CommonJS Modules](#enabling-processing-of-commonjs-modules)
   * [Single Default Export](#single-default-export)
   * [Using Babel-Compiled CommonJS](#using-babel-compiled-commonjs)
+    * [Importing `{ named }` modules](#importing--named--modules)
 - [API](#api)
 - [Known Bugs](#known-bugs)
 - [Org Structure](#org-structure)
@@ -549,7 +550,7 @@ const {formatters} = module.exports;
 </summary>
 </details>
 
-No offense to the authors of this code, maybe it was fine before the modules were here. The infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
+Unlike the examples above, the infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the main static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
 
 _ES6 modules_ make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
 
@@ -564,9 +565,9 @@ import commonJs from './common-js'
 console.log('requiring a common js from ecma:')
 console.log(commonJs)
 ```
-```
+```js
 Exit code 1
-example/commonjs/index.js:2: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "default".
+e/2/index.js:2: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "default".
 import commonJs from './common-js'
 ^
 
@@ -574,7 +575,7 @@ import commonJs from './common-js'
 
 ```
 
-_Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as CommonJS module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
+_Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as _CommonJS_ module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
 
 ```js
 const version = require('../package.json')['version']
@@ -595,15 +596,13 @@ commonJs.named('world')
 ```
 </em>
 
-A CommonJS package required from an Ecma module will have only a single default export, accessible via the `default` property. There are no named exports. What you have to do is this:
+A _CommonJS_ package required from an Ecma module will have only a single default export, accessible via the `default` property. There are no named exports. What you have to do is this:
 
 ```js
 import commonJs from 'common-js'
 commonJs.default('hello')
 commonJs.default.named('world')
 ```
-
-Yes it's crazy. Yes you know what you're doing when importing a package. But thank the _Node.JS_ authors for making this decision. I don't know how you are going to program now, because programming involves using IDE for hints, and then testing before the actual build process, and these 2 things are not satisfied, by either _VSCode_ which does not show hints for `commonJs.default` and `commonJs.default.named`, or _Babel_ which is usually setup for testing.
 
 ```js
 // ecma
@@ -707,6 +706,9 @@ export default erte
 </td>
 <td>
 
+<details>
+<summary>Show Code</summary>
+
 ```js
 "use strict";
 
@@ -746,12 +748,13 @@ exports.b = b;
 var _default = erte;
 exports.default = _default;
 ```
+</details>
 </td>
 </tr>
 </table>
 
-Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working correctly as seen by the example below.
-_Script to compile Babel-compatible modules with GCC is now:_
+Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working semi-correctly as seen by the examples below.
+_The script to import Babel-compiled modules in Closure Compiler is now:_
 
 ```js
 import erte from '@a-la/fixture-babel'
@@ -761,7 +764,9 @@ console.log(erte.c(''))
 console.log(erte.b(''))
 ```
 
-_Command & Generated JS:_
+<table>
+<tr><th colspan="2"><em>Command & Generated JS</em></th></tr>
+<tr><td colspan="2">
 
 ```
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
@@ -786,6 +791,12 @@ exports.default = exports.b = exports.c = void 0;
 0 error(s), 2 warning(s), 96.2% typed
 
 ```
+</td></tr>
+<tr><td colspan="2">The command generates some warnings, but no errors.</td></tr>
+</table><table>
+<tr><th colspan="2"><em>The generated code and output</em></th></tr>
+<tr><td>
+
 ```js
 'use strict';
 var a = {};
@@ -799,41 +810,49 @@ console.log(a.b(""));
 console.log(a.a(""));
 ```
 
-_Trying to execute the output:_
+</td><td>
 
 ```js
 erte
 c
 b
 ```
-
-OK this is fine, but what happens when we actually try to execute the program with `@babel/register`? This is needed for testing and development.
+</td></tr>
+<tr><td colspan="2">_Trying to execute the output produces the correct result. OK, but what happens when we actually try to execute such program with <code>@babel/register</code>? This is needed for testing and development.</td></tr>
+<tr><td>
 
 ```ts
 MacBook:fixture-babel zavr$ node erte
-/Users/zavr/a-la/fixture-babel/erte/erte.js:7
+erte/erte.js:7
 console.log(_build.default.default());
                                   ^
 
 TypeError: _build.default.default is not a function
-    at Object.<anonymous> (/Users/zavr/a-la/fixture-babel/erte/erte.js:3:13)
+    at Object.<anonymous> (erte/erte.js:3:13)
     at Module._compile (module.js:653:30)
-    at Module._compile (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:99:24)
+    at Module._compile (node_modules/pirates/lib/index.js:99:24)
     at Module._extensions..js (module.js:664:10)
-    at Object.newLoader [as .js] (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:104:7)
+    at Object.newLoader [as .js] (node_modules/pirates/lib/index.js:104:7)
     at Module.load (module.js:566:32)
     at tryModuleLoad (module.js:506:12)
     at Function.Module._load (module.js:498:3)
     at Module.require (module.js:597:17)
     at require (internal/module.js:11:18)
 ```
+</td><td>
 
 **Conclusion**
 - [ ] no ide support
 - [ ] no development environment
 - [ ] default.default
 
-Importing `{ named }` modules on Babel-modules is not supported! The example below demonstrates what happens:
+</td></tr>
+<tr><td colspan="2">Because of referring to the default import as .default, the compatibility with <em>Babel</em> is broken. It's better to use <a href="https://github.com/a-la/alamode/"><em>ÀLaMode</em></a> which is compatible with Closure Compiler.</td></tr>
+</table>
+
+---
+
+> <a name="importing--named--modules">Importing `{ named }` modules</a> on Babel-modules is not supported! The example below demonstrates what happens:
 
 ```js
 import erte, { c, b } from '@a-la/fixture-babel'
@@ -843,8 +862,6 @@ console.log(c())
 console.log(b())
 ```
 
-
-
 <table>
 <tr><th><em>Command & Generated JS</em></th></tr>
 <tr><td>
@@ -852,12 +869,12 @@ console.log(b())
 ```
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
---process_common_js_modules --package_json_entry_names module,main --entry_point \
-example/babel-normal.js --externs node_modules/@depack/externs/v8/global.js --externs \
+--process_common_js_modules --package_json_entry_names module,main --entry_point e/1.js \
+--externs node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-Running Google Closure Compiler 20190709..          
+Running Google Closure Compiler 20190709            
 ```
 </td></tr>
 <tr><td><strong>stderr</strong></td></tr>
@@ -865,11 +882,11 @@ Running Google Closure Compiler 20190709..
 
 ```js
 Exit code 2
-example/babel-normal.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "b".
+e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "b".
 import erte, { c, b } from '@a-la/fixture-babel'
 ^
 
-example/babel-normal.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "c".
+e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "c".
 import erte, { c, b } from '@a-la/fixture-babel'
 ^
 
@@ -877,11 +894,13 @@ import erte, { c, b } from '@a-la/fixture-babel'
 
 ```
 </td></tr>
-<tr><td><strong>stdout</strong></td></tr>
+<tr><td><strong>stdout</strong>
+
+<code><EMPTY></code>
+
+The named import syntax on <em>CommonJS</em> modules is not supported unless there is an ECMA6 version of the script which will be detected by static analysis in the <code>module</code> field of the <em>package.json</em> file. Therefore it's good idea to publish the module also with the build for the compiler to include the source code of the package in another package being built.</td></tr>
 </table>
 
-
-The named import syntax on _CommonJS_ modules is not supported unless there is an ECMA6 version of the script. Therefore it's good idea to publish the module file also with the build.
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
 

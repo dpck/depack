@@ -48,7 +48,8 @@ const {formatters} = module.exports;
 </summary>
 </details>
 
-No offense to the authors of this code, maybe it was fine before the modules were here. The infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
+<!-- No offense to the authors of this code, maybe it was fine before the modules were here.  -->
+Unlike the examples above, the infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the main static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
 
 _ES6 modules_ make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
 
@@ -56,10 +57,10 @@ _ES6 modules_ make the correct static analysis of programs possible since export
 
 The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
 
-%EXAMPLE: example/commonjs%
-%FORK src/depack example/commonjs -c -a -p%
+%EXAMPLE: e/2%
+%FORK-js src/depack e/2 -c -a -p%
 
-_Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as CommonJS module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
+_Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as _CommonJS_ module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
 
 ```js
 const version = require('../package.json')['version']
@@ -80,7 +81,7 @@ commonJs.named('world')
 ```
 </em>
 
-A CommonJS package required from an Ecma module will have only a single default export, accessible via the `default` property. There are no named exports. What you have to do is this:
+A _CommonJS_ package required from an Ecma module will have only a single default export, accessible via the `default` property. There are no named exports. What you have to do is this:
 
 ```js
 import commonJs from 'common-js'
@@ -88,19 +89,19 @@ commonJs.default('hello')
 commonJs.default.named('world')
 ```
 
-Yes it's crazy. Yes you know what you're doing when importing a package. But thank the _Node.JS_ authors for making this decision. I don't know how you are going to program now, because programming involves using IDE for hints, and then testing before the actual build process, and these 2 things are not satisfied, by either _VSCode_ which does not show hints for `commonJs.default` and `commonJs.default.named`, or _Babel_ which is usually setup for testing.
+<!-- Yes it's crazy. Yes you know what you're doing when importing a package. But thank the _Node.JS_ authors for making this decision. I don't know how you are going to program now, because programming involves using IDE for hints, and then testing before the actual build process, and these 2 things are not satisfied, by either _VSCode_ which does not show hints for `commonJs.default` and `commonJs.default.named`, or _Babel_ which is usually setup for testing. -->
 
-%EXAMPLE: example/commonjs%
-%EXAMPLE: example/commonjs/common-js%
-%EXAMPLE: example/commonjs/common-js2%
+%EXAMPLE: e/2%
+%EXAMPLE: e/2/common-js%
+%EXAMPLE: e/2/common-js2%
 
 <details>
 <summary>Show Compiled Version</summary>
 
-%FORK-js src/depack example/commonjs -a -c --process_common_js_modules -p%
+%FORK-js src/depack e/2 -a -c --process_common_js_modules -p%
 </details>
 
-%FORK-js example/commonjs/compiled%
+%FORK-js e/2/compiled%
 
 <!-- There are a number of things to look out for when compiling a _Node.JS_ program. -->
 

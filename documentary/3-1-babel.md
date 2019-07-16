@@ -14,69 +14,110 @@
 <tr>
 <td>
 
+<!-- <details>
+<summary></summary> -->
+
 %EXAMPLE: node_modules/@a-la/fixture-babel/src%
+<!-- </details> -->
 </td>
 <td>
 
+<details>
+<summary>Show Code</summary>
+
 %EXAMPLE: node_modules/@a-la/fixture-babel/build%
+</details>
 </td>
 </tr>
 </table>
 
-Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working correctly as seen by the example below.
+Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working semi-correctly as seen by the examples below.
 <!-- Because _Babel_ sets the `default` property on the `export` property (along with the `_esModule` flag so that other Babel-compiled packages can import it after the run-time evaluation from `_interopRequire`). What is actually happening now, is that to access the default export, we need to say `default.default`, and all named exports, `default.default.named`. -->
 
-_Script to compile Babel-compatible modules with GCC is now:_
+_The script to import Babel-compiled modules in Closure Compiler is now:_
 
 %EXAMPLE: example/babel%
 
-_Command & Generated JS:_
+<table>
+<tr><th colspan="2"><em>Command & Generated JS</em></th></tr>
+<!-- block-start -->
+<tr><td colspan="2">
 
 %FORKERR src/depack example/babel -c -a -p --process_common_js_modules%
+</td></tr>
+<tr><td colspan="2"><md2html>
+
+The command generates some warnings, but no errors.
+
+</md2html></td></tr>
+</table><table>
+<tr><th colspan="2"><em>The generated code and output</em></th></tr>
+<!-- /block-end -->
+<!-- block-start -->
+<tr><td>
+
 %FORK-js src/depack example/babel -c -a -p --process_common_js_modules%
 
-_Trying to execute the output:_
+</td><td>
 
 %FORK-js example/babel-output%
+</td></tr>
+<tr><td colspan="2"><md2html>
 
-OK this is fine, but what happens when we actually try to execute the program with `@babel/register`? This is needed for testing and development.
+_Trying to execute the output produces the correct result. OK, but what happens when we actually try to execute such program with `@babel/register`? This is needed for testing and development.
+
+</md2html></td></tr>
+<!-- /block-end -->
+
+<!-- block-start -->
+<tr><td>
 
 ```ts
 MacBook:fixture-babel zavr$ node erte
-/Users/zavr/a-la/fixture-babel/erte/erte.js:7
+erte/erte.js:7
 console.log(_build.default.default());
                                   ^
 
 TypeError: _build.default.default is not a function
-    at Object.<anonymous> (/Users/zavr/a-la/fixture-babel/erte/erte.js:3:13)
+    at Object.<anonymous> (erte/erte.js:3:13)
     at Module._compile (module.js:653:30)
-    at Module._compile (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:99:24)
+    at Module._compile (node_modules/pirates/lib/index.js:99:24)
     at Module._extensions..js (module.js:664:10)
-    at Object.newLoader [as .js] (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:104:7)
+    at Object.newLoader [as .js] (node_modules/pirates/lib/index.js:104:7)
     at Module.load (module.js:566:32)
     at tryModuleLoad (module.js:506:12)
     at Function.Module._load (module.js:498:3)
     at Module.require (module.js:597:17)
     at require (internal/module.js:11:18)
 ```
+</td><td>
 
 **Conclusion**
 - [ ] no ide support
 - [ ] no development environment
 - [ ] default.default
 
-Importing `{ named }` modules on Babel-modules is not supported! The example below demonstrates what happens:
+</td></tr>
+<tr><td colspan="2"><md2html>
 
-%EXAMPLE: example/babel-normal%
+Because of referring to the default import as .default, the compatibility with _Babel_ is broken. It's better to use <a href="https://github.com/a-la/alamode/">_ÀLaMode_</a> which is compatible with Closure Compiler.
 
+</md2html></td></tr>
+<!-- /block-end -->
+</table>
 
+---
+
+> [Importing `{ named }` modules](t) on Babel-modules is not supported! The example below demonstrates what happens:
+
+%EXAMPLE: e/1%
 
 <table>
 <tr><th><em>Command & Generated JS</em></th></tr>
 <!-- block-start -->
 <tr><td>
 
-%FORKERR src/depack example/babel-normal -c -a -p --process_common_js_modules%
+%FORKERR src/depack e/1 -c -a -p --process_common_js_modules%
 </td></tr>
 <tr><td><md2html>
 **stderr**
@@ -86,11 +127,14 @@ Importing `{ named }` modules on Babel-modules is not supported! The example bel
 <!-- block-start -->
 <tr><td>
 
-%FORK-js src/depack example/babel-normal -c -a -p --process_common_js_modules%
+%FORK-js src/depack e/1 -c -a -p --process_common_js_modules%
 </td></tr>
 <tr><td><md2html>
 **stdout**
 
+`<EMPTY>`
+
+The named import syntax on _CommonJS_ modules is not supported unless there is an ECMA6 version of the script which will be detected by static analysis in the `module` field of the _package.json_ file. Therefore it's good idea to publish the module also with the build for the compiler to include the source code of the package in another package being built.
 </md2html></td></tr>
 <!-- /block-end -->
 </table>
@@ -100,7 +144,6 @@ Importing `{ named }` modules on Babel-modules is not supported! The example bel
 
 %FORKERR example/babel-normal-output% -->
 
-The named import syntax on _CommonJS_ modules is not supported unless there is an ECMA6 version of the script. Therefore it's good idea to publish the module file also with the build.
 
 <!-- Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_! -->
 
