@@ -293,7 +293,7 @@ node_modules/@depack/externs/v8/nodejs.js --externs node_modules/indicatrix/exte
 const fs = require('fs');%output% --js \
 node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js \
 node_modules/fs/package.json node_modules/fs/index.js example/example.js
-Running Google Closure Compiler 20190528.           
+Running Google Closure Compiler 20190709.           
 ```
 ```js
 #!/usr/bin/env node
@@ -551,7 +551,7 @@ const {formatters} = module.exports;
 
 No offense to the authors of this code, maybe it was fine before the modules were here. The infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
 
-ES6 modules make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
+_ES6 modules_ make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
 
 ### Enabling Processing Of CommonJS Modules
 
@@ -647,10 +647,10 @@ var a = () => {
 a.named = () => {
   console.log("named common js export2");
 };
-var b = {default:() => {
+var b = () => {
   console.log("default common js export");
-}};
-b.default.named = () => {
+};
+b.named = () => {
   console.log("named common js export");
 };
 console.log("requiring a common js from common js:");
@@ -667,9 +667,9 @@ requiring a common js from ecma:
 { default: { [Function: default] named: [Function] } }
 ```
 
-### Using Babel-Compiled CommonJS
 
-Having to write `default` and `default.named` is only half the trouble. Things get really rough when we want to reference packages that were compiled with _Babel_. If we actually follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, we run into interesting developments when trying to use _Babel_-compiled modules. See the examples below.
+
+### Using Babel-Compiled CommonJS
 
  <table>
 <tr>
@@ -750,16 +750,15 @@ exports.default = _default;
 </tr>
 </table>
 
-Because _Babel_ sets the `default` property on the `export` property (along with the `_esModule` flag so that other Babel-compiled packages can import it after the run-time evaluation from `_interopRequire`). What is actually happening now, is that to access the default export, we need to say `default.default`, and all named exports, `default.default.named`.
-
+Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working correctly as seen by the example below.
 _Script to compile Babel-compatible modules with GCC is now:_
 
 ```js
 import erte from '@a-la/fixture-babel'
 
-console.log(erte.default.default())
-console.log(erte.default.c(''))
-console.log(erte.default.b(''))
+console.log(erte.default())
+console.log(erte.c(''))
+console.log(erte.b(''))
 ```
 
 _Command & Generated JS:_
@@ -808,14 +807,16 @@ c
 b
 ```
 
-OK this is fine, but what happens when we actually try to execute the program with `@babel/register`? This is obviously needed for testing and development.
+OK this is fine, but what happens when we actually try to execute the program with `@babel/register`? This is needed for testing and development.
 
-```js
-console.log(_.default.default.default());
-                              ^
+```ts
+MacBook:fixture-babel zavr$ node erte
+/Users/zavr/a-la/fixture-babel/erte/erte.js:7
+console.log(_build.default.default());
+                                  ^
 
-TypeError: Cannot read property 'default' of undefined
-    at Object.default (/Users/zavr/a-la/fixture-babel/erte/erte.js:3:26)
+TypeError: _build.default.default is not a function
+    at Object.<anonymous> (/Users/zavr/a-la/fixture-babel/erte/erte.js:3:13)
     at Module._compile (module.js:653:30)
     at Module._compile (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:99:24)
     at Module._extensions..js (module.js:664:10)
@@ -827,9 +828,12 @@ TypeError: Cannot read property 'default' of undefined
     at require (internal/module.js:11:18)
 ```
 
-Nice. Superb compatibility. No IDE support, no dev support, only `default` `default` `default`.
+**Conclusion**
+- [ ] no ide support
+- [ ] no development environment
+- [ ] default.default
 
-Suppose we wanted to do it like normal humans:
+Importing `{ named }` modules on Babel-modules is not supported! The example below demonstrates what happens:
 
 ```js
 import erte, { c, b } from '@a-la/fixture-babel'
@@ -839,7 +843,11 @@ console.log(c())
 console.log(b())
 ```
 
-_Command & Generated JS:_
+
+
+<table>
+<tr><th><em>Command & Generated JS</em></th></tr>
+<tr><td>
 
 ```
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
@@ -849,71 +857,31 @@ example/babel-normal.js --externs node_modules/@depack/externs/v8/global.js --ex
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-example/babel-normal.js:3: WARNING - [JSC_NOT_FUNCTION_TYPE] {default: {
-  b: function(?): ?,
-  c: function(string): ?,
-  default: (function(): ?|undefined)
-}} expressions are not callable
-console.log(erte())
-            ^^^^^^
-
-example/babel-normal.js:4: WARNING - [JSC_INEXISTENT_PROPERTY] Property c never defined on module$node_modules$$a_la$fixture_babel$build$index
-console.log(c())
-            ^
-
-example/babel-normal.js:5: WARNING - [JSC_INEXISTENT_PROPERTY] Property b never defined on module$node_modules$$a_la$fixture_babel$build$index
-console.log(b())
-            ^
-
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
-found   : undefined
-required: function(?): ?
-exports.default = exports.b = exports.c = void 0;
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
-found   : undefined
-required: function(string): ?
-exports.default = exports.b = exports.c = void 0;
-                              ^^^^^^^^^^^^^^^^^^
-
-0 error(s), 5 warning(s), 94.3% typed
-
+Running Google Closure Compiler 20190709..          
 ```
+</td></tr>
+<tr><td><strong>stderr</strong></td></tr>
+<tr><td>
+
 ```js
-'use strict';
-var a = {}, c = {};
-Object.defineProperty(a, "__esModule", {value:!0});
-a.default = a.a = a.b = void 0;
-a.b = b => "c" + (b ? `-${b}` : "");
-a.a = b => "b" + (b ? `-${b}` : "");
-a.default = () => "erte";
-console.log(c());
-console.log((0,c.b)());
-console.log((0,c.a)());
-```
+Exit code 2
+example/babel-normal.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "b".
+import erte, { c, b } from '@a-la/fixture-babel'
+^
 
-_Trying to execute the output:_
+example/babel-normal.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "c".
+import erte, { c, b } from '@a-la/fixture-babel'
+^
+
+2 error(s), 0 warning(s)
 
 ```
-/Users/zavr/depack/depack/example/babel-normal-output.js:8
-console.log(b());
-            ^
+</td></tr>
+<tr><td><strong>stdout</strong></td></tr>
+</table>
 
-TypeError: b is not a function
-    at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-normal-output.js:8:13)
-    at Module._compile (module.js:653:30)
-    at Module.p._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:49:18)
-    at Module._extensions..js (module.js:664:10)
-    at Object.k.(anonymous function).y._extensions.(anonymous function) [as .js] (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:51:7)
-    at Module.load (module.js:566:32)
-    at tryModuleLoad (module.js:506:12)
-    at Function.Module._load (module.js:498:3)
-    at Module.require (module.js:597:17)
-    at require (internal/module.js:11:18)
-```
 
-Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_!
+The named import syntax on _CommonJS_ modules is not supported unless there is an ECMA6 version of the script. Therefore it's good idea to publish the module file also with the build.
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
 

@@ -50,7 +50,7 @@ const {formatters} = module.exports;
 
 No offense to the authors of this code, maybe it was fine before the modules were here. The infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
 
-ES6 modules make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
+_ES6 modules_ make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
 
 ### Enabling Processing Of CommonJS Modules
 
@@ -111,81 +111,3 @@ If the language out set to `ECMA2018`, the output will be hardly optimised, mean
 <!-- ~~**Patch Closure Compiler For Correct `ECMA2017`**~
 
 ~~When the language out set to `ECMA2017` or `ECMA2016`, there is a bug with destructuring in `filter`, `map` and other array operations which produces incorrect code. E.g., `[{ entry: true }, { }].filter(({ entry}) => entry).map(({ entry }) => { ...entry, mapped: true })` will not work. This is rather unfortunate because destructuring is an essential language feature, and compiling for `ES2017` is the only alternative to `ES2018` which produces gigantic output. This bug [has been fixed](https://github.com/google/closure-compiler/commit/877e304fe69498189300238fedc6531b7d9bd126) but the patch has not been released, therefore you must compile the master branch closure compiler yourself and use `GOOGLE_CLOSURE_COMPILER` environment variable to set the compiler path. Hopefully, with the next release (after *`v20190121`*) the fix will be available.~~ -->
-
-### Using Babel-Compiled CommonJS
-
-Having to write `default` and `default.named` is only half the trouble. Things get really rough when we want to reference packages that were compiled with _Babel_. If we actually follow the standard set by _GCC_ where the the _CommonJS_ only has a default export, we run into interesting developments when trying to use _Babel_-compiled modules. See the examples below.
-
-<!-- therefore it's a good idea to ping the package owners to publish the `module` property of their packages pointing to the `src` folder where the code is written as ES6 modules. -->
- <!-- This is a great step forward to move _JavaScript_ language forward because `import`/`export` is what should be used instead of `require`. -->
-
-<!-- Otherwise, modules can be compiled with [`alamode`](https://github.com/a-la/alamode) which the compiler can understand. There are cases such as using `export from` compiled with ÀLaMode which GCC does not accept, therefore it is always the best to fork a package and make sure that it exports the `module` field in its _package.json_. -->
-
-<table>
-<tr>
-<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">@a-la/fixture-babel</a>)</th><th>Babel-<a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
-</tr>
-<tr>
-<td>
-
-%EXAMPLE: node_modules/@a-la/fixture-babel/src%
-</td>
-<td>
-
-%EXAMPLE: node_modules/@a-la/fixture-babel/build%
-</td>
-</tr>
-</table>
-
-Because _Babel_ sets the `default` property on the `export` property (along with the `_esModule` flag so that other Babel-compiled packages can import it after the run-time evaluation from `_interopRequire`). What is actually happening now, is that to access the default export, we need to say `default.default`, and all named exports, `default.default.named`.
-
-_Script to compile Babel-compatible modules with GCC is now:_
-
-%EXAMPLE: example/babel%
-
-_Command & Generated JS:_
-
-%FORKERR src/depack example/babel -c -a -p --process_common_js_modules%
-%FORK-js src/depack example/babel -c -a -p --process_common_js_modules%
-
-_Trying to execute the output:_
-
-%FORK-js example/babel-output%
-
-OK this is fine, but what happens when we actually try to execute the program with `@babel/register`? This is obviously needed for testing and development.
-
-```js
-console.log(_.default.default.default());
-                              ^
-
-TypeError: Cannot read property 'default' of undefined
-    at Object.default (/Users/zavr/a-la/fixture-babel/erte/erte.js:3:26)
-    at Module._compile (module.js:653:30)
-    at Module._compile (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:99:24)
-    at Module._extensions..js (module.js:664:10)
-    at Object.newLoader [as .js] (/Users/zavr/a-la/fixture-babel/node_modules/pirates/lib/index.js:104:7)
-    at Module.load (module.js:566:32)
-    at tryModuleLoad (module.js:506:12)
-    at Function.Module._load (module.js:498:3)
-    at Module.require (module.js:597:17)
-    at require (internal/module.js:11:18)
-```
-
-Nice. Superb compatibility. No IDE support, no dev support, only `default` `default` `default`.
-
-Suppose we wanted to do it like normal humans:
-
-%EXAMPLE: example/babel-normal%
-
-_Command & Generated JS:_
-
-%FORKERR src/depack example/babel-normal -c -a -p --process_common_js_modules%
-%FORK-js src/depack example/babel-normal -c -a -p --process_common_js_modules%
-
-_Trying to execute the output:_
-
-%FORKERR example/babel-normal-output%
-
-Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_!
-
-%~%
