@@ -8,5 +8,5 @@ module.exports['named'] = () => {
   console.log('named common js export')
 }
 
-console.log('requiring a common js from common js:')
+console.log('requiring a cjs from cjs:')
 console.log(commonJs2)

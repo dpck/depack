@@ -71,29 +71,64 @@ And the compiler will leave the `require` call as it is because there was no `pr
 
 ### Single Default Export
 
-> The idea is actually that you can do the following, but it's not working correctly at the moment.
+> The idea is actually that you can do the following, but it's not working correctly at the moment (the default method has to be called with `.default`).<em>
+>    ```js
+>    import commonJs from 'common-js'
+>    commonJs('hello')
+>    commonJs.named('world')
+>    ```
 
-<em>
-```js
-import commonJs from 'common-js'
-commonJs('hello')
-commonJs.named('world')
-```
 </em>
 
-A _CommonJS_ package required from an Ecma module will have only a single default export, accessible via the `default` property. There are no named exports. What you have to do is this:
+<table>
+<tr><th colspan="2"><md2html>
+
+A _CommonJS_ package required from an ECMA module will have only a single default exported object. The default export will be accessible via the `default` property, and other methods via all other properties.
+</md2html>
+</th></tr>
+<!-- block-start -->
+<tr><td colspan="2">
 
 ```js
 import commonJs from 'common-js'
 commonJs.default('hello')
-commonJs.default.named('world')
+commonJs.named('world')
 ```
+</td></tr>
+<tr><td colspan="2"><md2html>
+
+There are no named exports to be used in destructuring of the `import` statement.
+</md2html></td></tr>
+<!-- /block-end -->
+<!-- block-start -->
+<tr><td colspan="2">
+
+%EXAMPLE: e/2%
+</td></tr>
+<tr><td><md2html>
+
+
+</md2html></td></tr>
+<!-- /block-end -->
+
+<!-- block-start -->
+<tr><td>
+
+%EXAMPLE: e/2/common-js%
+</td><td>
+
+%EXAMPLE: e/2/common-js2%
+</td></tr>
+<tr><td colspan="2"><md2html>
+
+The _CommonJS_ can be required by other _CommonJS_ modules in the standard `require` way.
+</md2html></td></tr>
+<!-- /block-end -->
+</table>
+
 
 <!-- Yes it's crazy. Yes you know what you're doing when importing a package. But thank the _Node.JS_ authors for making this decision. I don't know how you are going to program now, because programming involves using IDE for hints, and then testing before the actual build process, and these 2 things are not satisfied, by either _VSCode_ which does not show hints for `commonJs.default` and `commonJs.default.named`, or _Babel_ which is usually setup for testing. -->
 
-%EXAMPLE: e/2%
-%EXAMPLE: e/2/common-js%
-%EXAMPLE: e/2/common-js2%
 
 <details>
 <summary>Show Compiled Version</summary>
