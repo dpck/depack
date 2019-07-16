@@ -12,9 +12,9 @@
     e.g., with ÀLaMode transpiler.
   </arg>
   <arg boolean name="external" short="E">
-    The `preact` dependency in `node_modules` will be temprorary
+    The `preact` dependency in `node_modules` will be temporary
     renamed to `_preact`, and a monkey-patching package that
-    imports `@externs/preact` will take its place. This is to allow
+    imports `＠externs/preact` will take its place. This is to allow
     bundles to import from _Preact_ installed as a script on a webpage,
     but exclude it from compilation. `preact` will be restored at the end.
   </arg>

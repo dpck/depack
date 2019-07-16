@@ -40,10 +40,10 @@ const restorePreact = () => {
     process.on('SIGTERM', () => {})
     process.on('beforeExit', restorePreact)
 
-    const rl = createInterface({
+    const rl = createInterface(/** @type {!readline.ReadLineOptions} */({
       input: process.stdin,
       output: process.stdout,
-    })
+    }))
     rl.question('Press enter to continue', () => {
       rl.close()
     })

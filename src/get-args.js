@@ -148,7 +148,7 @@ export const argsConfigBundle = {
     short: 'H',
   },
   'external': {
-    description: 'The `preact` dependency in `node_modules` will be temprorary\nrenamed to `_preact`, and a monkey-patching package that\nimports `@externs/preact` will take its place. This is to allow\nbundles to import from _Preact_ installed as a script on a webpage,\nbut exclude it from compilation. `preact` will be restored at the end.',
+    description: 'The `preact` dependency in `node_modules` will be temporary\nrenamed to `_preact`, and a monkey-patching package that\nimports `＠externs/preact` will take its place. This is to allow\nbundles to import from _Preact_ installed as a script on a webpage,\nbut exclude it from compilation. `preact` will be restored at the end.',
     boolean: true,
     short: 'E',
   },
@@ -179,9 +179,9 @@ export const _temp = /** @type {string} */ (argsBundle['temp'] || 'depack-temp')
 export const _preact = /** @type {boolean} */ (argsBundle['preact'])
 
 /**
- * The `preact` dependency in `node_modules` will be temprorary
+ * The `preact` dependency in `node_modules` will be temporary
     renamed to `_preact`, and a monkey-patching package that
-    imports `@externs/preact` will take its place. This is to allow
+    imports `＠externs/preact` will take its place. This is to allow
     bundles to import from _Preact_ installed as a script on a webpage,
     but exclude it from compilation. `preact` will be restored at the end.
  */
