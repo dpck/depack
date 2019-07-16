@@ -48,7 +48,9 @@ const {formatters} = module.exports;
 </summary>
 </details>
 
-No offense to the authors of this code, maybe it was fine before the modules were here. Since 2018 everyone absolutely must use modules when writing new JavaScript code. It makes the correct static analysis of programs possible since exports now are not some random object, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the _GCC_.
+No offense to the authors of this code, maybe it was fine before the modules were here. The infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
+
+ES6 modules make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
 
 ### Enabling Processing Of CommonJS Modules
 
