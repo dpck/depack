@@ -4,8 +4,8 @@ There are going to be times when the program generated with _GCC_ does not work.
 
 ```js
 TypeError: Cannot read property 'join' of undefined
-    at Ub (/Users/zavr/depack/depack/build/depack.js:776:25)
-    at Zb (/Users/zavr/depack/depack/build/depack.js:816:13)
+    at Ub (/Users/zavr/depack/depack/compile/depack.js:776:25)
+    at Zb (/Users/zavr/depack/depack/compile/depack.js:816:13)
     at <anonymous>
 ```
 

@@ -59,7 +59,7 @@ depack example/example.js -c -V -a -w -p
 # [-O 2017]: (default) set output language to ECMA2017
 ```
 
-%FORKERR src/depack example/example.js -c -V -O 2017 -a -w -p%
-%FORK-js src/depack example/example.js -c -V -O 2017 -a -w -p%
+%FORKERR src/depack example/example.js -c -V -a -w -p%
+%FORK-js src/depack example/example.js -c -V -a -w -p%
 
 %~ width="15"%

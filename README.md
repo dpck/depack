@@ -29,7 +29,7 @@ yarn add -E depack
 - [Notes](#notes)
 - [Copyright](#copyright)
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/0.svg?sanitize=true"></a></p>
 
 ## GCC Installation
 
@@ -37,7 +37,7 @@ Depack has been built to contain no dependencies to prove its concept. [Google C
 
 The other way to install _GCC_ is to set the `GOOGLE_CLOSURE_COMPILER` environment variable to point to the compiler, either downloaded from the internet, or built yourself.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
 ## **CLI**
 
@@ -90,10 +90,21 @@ BACKEND: Creates a single executable Node.JS file or a library.
 FRONTEND: Creates a bundle for the web.
   depack SOURCE [-o output.js] [-H]
 
-	--iife, -i  	Add the IIFE flag to prevent name clashes.
-	--temp      	The path to the temp directory used to transpile JSX files.
-	            	Default: depack-temp.
-	--preact, -H	Add the `import { h } from "preact"` to JSX files automatically.
+	--iife, -i    	Add the IIFE flag to prevent name clashes.
+	--temp        	The path to the temp directory used to transpile JSX files.
+	              	Default: depack-temp.
+	--preact, -H  	Add the `import { h } from "preact"` to JSX files automatically.
+	              	Does not process files found in the `node_modules`, because
+	              	they are not placed in the temp, and must be built separately,
+	              	e.g., with ÀLaMode transpiler.
+	--external, -E	The `preact` dependency in `node_modules` will be temporary
+	              	renamed to `_preact`, and a monkey-patching package that
+	              	imports `＠externs/preact` will take its place. This is to allow
+	              	bundles to import from _Preact_ installed as a script on a webpage,
+	              	but exclude it from compilation. `preact` will be restored at the end.
+	--patch, -P   	Patches the `preact` directory like in `external`, and waits for
+	              	user input to restore it. Useful when linking packages and wanting
+	              	to them from other projects.
 
   Example:
 
@@ -153,7 +164,7 @@ _Depack_ supports the following flags for both modes. Any additional arguments t
   <tr><td>--help</td><td>-h</td><td>Prints the usage information.</td></tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
 ## Bundle Mode
 
@@ -178,7 +189,7 @@ Moreover, _GCC_ does not recognise the JSX files as source files, and the module
 
 Bundle mode is perfect for creating bundles for the web, be it JSX Preact components (we only focus on _Preact_ because our opinion is that Facebook is evil). _Depack_ was created exactly to avoid all the corporate tool-chains etc that the internet is full of, and _GCC_ is supported by `create-react-app` anyhow.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/3.svg?sanitize=true"></a></p>
 
 ## Compile Mode
 
@@ -269,20 +280,20 @@ Modules' externs: node_modules/indicatrix/externs.js
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --warning_level QUIET --package_json_entry_names module,main --entry_point \
-example/example.js --externs ../src/node_modules/@depack/externs/v8/fs.js --externs \
-../src/node_modules/@depack/externs/v8/stream.js --externs \
-../src/node_modules/@depack/externs/v8/events.js --externs \
-../src/node_modules/@depack/externs/v8/url.js --externs \
-../src/node_modules/@depack/externs/v8/global.js --externs \
-../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
-../src/node_modules/@depack/externs/v8/nodejs.js --externs \
-node_modules/indicatrix/externs.js --module_resolution NODE --output_wrapper \
+example/example.js --externs node_modules/@depack/externs/v8/fs.js --externs \
+node_modules/@depack/externs/v8/stream.js --externs \
+node_modules/@depack/externs/v8/events.js --externs \
+node_modules/@depack/externs/v8/url.js --externs \
+node_modules/@depack/externs/v8/global.js --externs \
+node_modules/@depack/externs/v8/global/buffer.js --externs \
+node_modules/@depack/externs/v8/nodejs.js --externs node_modules/indicatrix/externs.js \
+--module_resolution NODE --output_wrapper \
 #!/usr/bin/env node
 'use strict';
 const fs = require('fs');%output% --js \
 node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js \
 node_modules/fs/package.json node_modules/fs/index.js example/example.js
-Running Google Closure Compiler 20190325            
+Running Google Closure Compiler 20190528.           
 ```
 ```js
 #!/usr/bin/env node
@@ -327,7 +338,7 @@ async function h(a) {
 })();
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/4.svg?sanitize=true" width="15"></a></p>
 
 ### Usage
 
@@ -359,7 +370,7 @@ There are _Depack_ specific flags that can be passed when compiling a Node.JS ex
   </tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
 
 ### Troubleshooting
 
@@ -367,8 +378,8 @@ There are going to be times when the program generated with _GCC_ does not work.
 
 ```js
 TypeError: Cannot read property 'join' of undefined
-    at Ub (/Users/zavr/depack/depack/build/depack.js:776:25)
-    at Zb (/Users/zavr/depack/depack/build/depack.js:816:13)
+    at Ub (/Users/zavr/depack/depack/compile/depack.js:776:25)
+    at Zb (/Users/zavr/depack/depack/compile/depack.js:816:13)
     at <anonymous>
 ```
 
@@ -432,13 +443,13 @@ We've found out that `spawnargs` was mangled because it was not defined in the e
     return proc
     ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
 
 #### Bugs In GCC
 
 In might be the case that externs are fine, but the _Google Closure Compiler_ has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `-d debug.txt` _Depack_ option when compiling that file to save the output of each pass to the `debug.txt` file, then pasting the code from each step in there to _Node.JS_ REPL and seeing if it outputs correct results.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
 
 #### External APIs
 
@@ -486,7 +497,7 @@ const { results } = /** @type {_externalAPI} */ ( // cast the type
 </table>
 
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
 ## CommonJS Compatibility
 
@@ -553,7 +564,7 @@ console.log(commonJs)
 ```
 ```
 Exit code 1
-example/commonjs/index.js:2: ERROR - Requested module does not have an export "default".
+example/commonjs/index.js:2: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "default".
 import commonJs from './common-js'
 ^
 
@@ -675,16 +686,18 @@ const erte = () => {
 
 /**
  * A function that returns `c`.
+ * @param {string} input
  */
-export const c = () => {
-  return 'c'
+export const c = (input) => {
+  return 'c' + (input ? `-${input}` : '')
 }
 
 /**
  * A function that returns `b`.
+ * @param {number} times
  */
-export const b = () => {
-  return 'b'
+export const b = (times) => {
+  return 'b' + (times ? `-${times}` : '')
 }
 
 export default erte
@@ -708,21 +721,23 @@ const erte = () => {
 };
 /**
  * A function that returns `c`.
+ * @param {string} input
  */
 
 
-const c = () => {
-  return 'c';
+const c = input => {
+  return 'c' + (input ? `-${input}` : '');
 };
 /**
  * A function that returns `b`.
+ * @param {number} times
  */
 
 
 exports.c = c;
 
-const b = () => {
-  return 'b';
+const b = times => {
+  return 'b' + (times ? `-${times}` : '');
 };
 
 exports.b = b;
@@ -741,8 +756,8 @@ _Script to compile Babel-compatible modules with GCC is now:_
 import erte from '@a-la/fixture-babel'
 
 console.log(erte.default.default())
-console.log(erte.default.c())
-console.log(erte.default.b())
+console.log(erte.default.c(''))
+console.log(erte.default.b(''))
 ```
 
 _Command & Generated JS:_
@@ -751,23 +766,23 @@ _Command & Generated JS:_
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --process_common_js_modules --package_json_entry_names module,main --entry_point \
-example/babel.js --externs ../src/node_modules/@depack/externs/v8/global.js --externs \
-../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
-../src/node_modules/@depack/externs/v8/nodejs.js
+example/babel.js --externs node_modules/@depack/externs/v8/global.js --externs \
+node_modules/@depack/externs/v8/global/buffer.js --externs \
+node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
 found   : undefined
-required: function(): ?
+required: function(?): ?
 exports.default = exports.b = exports.c = void 0;
                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
 found   : undefined
-required: function(): ?
+required: function(string): ?
 exports.default = exports.b = exports.c = void 0;
                               ^^^^^^^^^^^^^^^^^^
 
-0 error(s), 2 warning(s), 97.3% typed
+0 error(s), 2 warning(s), 96.2% typed
 
 ```
 ```js
@@ -775,12 +790,12 @@ exports.default = exports.b = exports.c = void 0;
 var a = {};
 Object.defineProperty(a, "__esModule", {value:!0});
 a.default = a.a = a.b = void 0;
-a.b = () => "c";
-a.a = () => "b";
+a.b = b => "c" + (b ? `-${b}` : "");
+a.a = b => "b" + (b ? `-${b}` : "");
 a.default = () => "erte";
 console.log(a.default());
-console.log(a.b());
-console.log(a.a());
+console.log(a.b(""));
+console.log(a.a(""));
 ```
 
 _Trying to execute the output:_
@@ -828,52 +843,52 @@ _Command & Generated JS:_
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --process_common_js_modules --package_json_entry_names module,main --entry_point \
-example/babel-normal.js --externs ../src/node_modules/@depack/externs/v8/global.js \
---externs ../src/node_modules/@depack/externs/v8/global/buffer.js --externs \
-../src/node_modules/@depack/externs/v8/nodejs.js
+example/babel-normal.js --externs node_modules/@depack/externs/v8/global.js --externs \
+node_modules/@depack/externs/v8/global/buffer.js --externs \
+node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-example/babel-normal.js:3: WARNING - {default: {    
-  b: function(): ?,
-  c: function(): ?,
+example/babel-normal.js:3: WARNING - [JSC_NOT_FUNCTION_TYPE] {default: {
+  b: function(?): ?,
+  c: function(string): ?,
   default: (function(): ?|undefined)
 }} expressions are not callable
 console.log(erte())
             ^^^^^^
 
-example/babel-normal.js:4: WARNING - Property c never defined on module$node_modules$$a_la$fixture_babel$build$index
+example/babel-normal.js:4: WARNING - [JSC_INEXISTENT_PROPERTY] Property c never defined on module$node_modules$$a_la$fixture_babel$build$index
 console.log(c())
             ^
 
-example/babel-normal.js:5: WARNING - Property b never defined on module$node_modules$$a_la$fixture_babel$build$index
+example/babel-normal.js:5: WARNING - [JSC_INEXISTENT_PROPERTY] Property b never defined on module$node_modules$$a_la$fixture_babel$build$index
 console.log(b())
             ^
 
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
 found   : undefined
-required: function(): ?
+required: function(?): ?
 exports.default = exports.b = exports.c = void 0;
                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
+node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
 found   : undefined
-required: function(): ?
+required: function(string): ?
 exports.default = exports.b = exports.c = void 0;
                               ^^^^^^^^^^^^^^^^^^
 
-0 error(s), 5 warning(s), 95.3% typed
+0 error(s), 5 warning(s), 94.3% typed
 
 ```
 ```js
 'use strict';
-var a = {}, b = {};
+var a = {}, c = {};
 Object.defineProperty(a, "__esModule", {value:!0});
 a.default = a.a = a.b = void 0;
-a.b = () => "c";
-a.a = () => "b";
+a.b = b => "c" + (b ? `-${b}` : "");
+a.a = b => "b" + (b ? `-${b}` : "");
 a.default = () => "erte";
-console.log(b());
-console.log((0,b.b)());
-console.log((0,b.a)());
+console.log(c());
+console.log((0,c.b)());
+console.log((0,c.a)());
 ```
 
 _Trying to execute the output:_
@@ -886,9 +901,9 @@ console.log(b());
 TypeError: b is not a function
     at Object.<anonymous> (/Users/zavr/depack/depack/example/babel-normal-output.js:8:13)
     at Module._compile (module.js:653:30)
-    at Module.r._compile (/Users/zavr/adc/documentary/node_modules/alamode/depack/depack-lib.js:836:20)
+    at Module.p._compile (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:49:18)
     at Module._extensions..js (module.js:664:10)
-    at Object.l.(anonymous function).E._extensions.(anonymous function) [as .js] (/Users/zavr/adc/documentary/node_modules/alamode/depack/depack-lib.js:839:7)
+    at Object.k.(anonymous function).y._extensions.(anonymous function) [as .js] (/Users/zavr/depack/depack/node_modules/alamode/depack/depack-lib.js:51:7)
     at Module.load (module.js:566:32)
     at tryModuleLoad (module.js:506:12)
     at Function.Module._load (module.js:498:3)
@@ -898,7 +913,7 @@ TypeError: b is not a function
 
 Not working and not going to, because hey, we need to make sure that the CommonJS only exports a single `default` module don't we, Node.JS? But presto it works with _Babel_!
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
 
 ## API
 
@@ -913,7 +928,7 @@ import { Bundle, Compile } from '@depack/depack'
 })
 ```
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/10.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
 ## Known Bugs
 
@@ -936,7 +951,7 @@ There are a few insignificant known issues with _Google Closure Compiler_.
 
     ```
     Exit code 1
-    example/bugs/dot.js:2: ERROR - Failed to load module "."
+    example/bugs/dot.js:2: ERROR - [JSC_JS_MODULE_LOAD_WARNING] Failed to load module "."
     import test from '.'
     ^
     
@@ -954,72 +969,17 @@ There are a few insignificant known issues with _Google Closure Compiler_.
     <summary>Show JSON Error</summary>
 
     ```
-    Exit code 254
-    java.lang.RuntimeException: INTERNAL COMPILER ERROR.
-    Please report this problem.
-    
-    INTERNAL COMPILER ERROR.
-    Please report this problem.
-    
-    null
-      Node(NAME data): example/bugs/json.js:2:12
-    console.log(data)
-      Parent(CALL): example/bugs/json.js:2:0
-    console.log(data)
-    
-      Node(SCRIPT): example/bugs/json.js:1:0
+    Exit code 1
+    example/bugs/json.js:1: ERROR - [JSC_CANNOT_PATH_IMPORT_CLOSURE_FILE] Cannot import Closure files by path. Use either import goog:namespace or goog.require(namespace)
     import data from './data.json'
-      Parent(ROOT): [source unknown]
+    ^
     
-    	at com.google.javascript.jscomp.NodeUtil.newQName(NodeUtil.java:4014)
-    	at com.google.javascript.jscomp.ModuleRenaming.replace(ModuleRenaming.java:207)
-    	at com.google.javascript.jscomp.Es6RewriteModules$RenameGlobalVars.visit(Es6RewriteModules.java:867)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:887)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseChildren(NodeTraversal.java:999)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:883)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseChildren(NodeTraversal.java:999)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:883)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseChildren(NodeTraversal.java:999)
-    	at com.google.javascript.jscomp.NodeTraversal.handleScript(NodeTraversal.java:837)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:862)
-    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:371)
-    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:381)
-    	at com.google.javascript.jscomp.Es6RewriteModules.visitScript(Es6RewriteModules.java:549)
-    	at com.google.javascript.jscomp.Es6RewriteModules.visit(Es6RewriteModules.java:378)
-    	at com.google.javascript.jscomp.NodeTraversal.handleScript(NodeTraversal.java:839)
-    	at com.google.javascript.jscomp.NodeTraversal.traverseBranch(NodeTraversal.java:862)
-    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:371)
-    	at com.google.javascript.jscomp.NodeTraversal.traverse(NodeTraversal.java:381)
-    	at com.google.javascript.jscomp.Es6RewriteModules.processFile(Es6RewriteModules.java:186)
-    	at com.google.javascript.jscomp.Es6RewriteModules.hotSwapScript(Es6RewriteModules.java:175)
-    	at com.google.javascript.jscomp.Es6RewriteModules.process(Es6RewriteModules.java:164)
-    	at com.google.javascript.jscomp.PhaseOptimizer$NamedPass.process(PhaseOptimizer.java:328)
-    	at com.google.javascript.jscomp.PhaseOptimizer.process(PhaseOptimizer.java:237)
-    	at com.google.javascript.jscomp.Compiler.check(Compiler.java:1021)
-    	at com.google.javascript.jscomp.Compiler.performChecksAndTranspilation(Compiler.java:829)
-    	at com.google.javascript.jscomp.Compiler.lambda$stage1Passes$0(Compiler.java:759)
-    	at com.google.javascript.jscomp.CompilerExecutor$2.call(CompilerExecutor.java:102)
-    	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-    	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-    	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-    	at java.lang.Thread.run(Thread.java:748)
-    Caused by: java.lang.RuntimeException: INTERNAL COMPILER ERROR.
-    Please report this problem.
-    
-    null
-      Node(NAME data): example/bugs/json.js:2:12
-    console.log(data)
-      Parent(CALL): example/bugs/json.js:2:0
-    console.log(data)
-    
-    	... 32 more
-    Caused by: java.lang.NullPointerException
-    	... 32 more
+    1 error(s), 0 warning(s)
     
     ```
     </details>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## Org Structure
 
@@ -1030,14 +990,14 @@ There are a few insignificant known issues with _Google Closure Compiler_.
 - [[@depack/render](https://github.com/dpck/render)] Render server-side HTML from JSX.
 - [[@depack/context](https://github.com/dpck/context)] Testing context for unit-testing.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## Notes
 
 - The static analysis might discover built-in and other modules even if they were not used, since no tree-shaking is performed.
 - [2 March 2019] Current bug does not let compile later `jsx` detection. Trying to compile front-end bundler with _Depack_.
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/13.svg?sanitize=true"></a></p>
 
 ## Copyright
 
@@ -1045,18 +1005,18 @@ There are a few insignificant known issues with _Google Closure Compiler_.
   <tr>
     <th>
       <a href="https://artd.eco">
-        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" />
+        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco">
       </a>
     </th>
     <th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th>
     <th>
       <a href="https://www.technation.sucks" title="Tech Nation Visa">
         <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif"
-          alt="Tech Nation Visa" />
+          alt="Tech Nation Visa">
       </a>
     </th>
     <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
   </tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/-1.svg?sanitize=true"></a></p>

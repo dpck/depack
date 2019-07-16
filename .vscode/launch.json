@@ -24,7 +24,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Depack Build",
-      "program": "${workspaceFolder}/build/depack.js",
+      "program": "${workspaceFolder}/compile/depack.js",
       "args": [
         "src/depack",
         "-c", "-a",
