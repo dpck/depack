@@ -107,6 +107,7 @@ There are no named exports to be used in destructuring of the `import` statement
 </td></tr>
 <tr><td><md2html>
 
+ECMA modules' compatability
 
 </md2html></td></tr>
 <!-- /block-end -->
@@ -129,14 +130,22 @@ The _CommonJS_ can be required by other _CommonJS_ modules in the standard `requ
 
 <!-- Yes it's crazy. Yes you know what you're doing when importing a package. But thank the _Node.JS_ authors for making this decision. I don't know how you are going to program now, because programming involves using IDE for hints, and then testing before the actual build process, and these 2 things are not satisfied, by either _VSCode_ which does not show hints for `commonJs.default` and `commonJs.default.named`, or _Babel_ which is usually setup for testing. -->
 
+<table>
+<!-- block-start -->
+<tr><td>
 
 <details>
 <summary>Show Compiled Version</summary>
 
 %FORK-js src/depack e/2 -a -c --process_common_js_modules -p%
 </details>
+</td>
+<td>
 
 %FORK-js e/2/compiled%
+</td></tr>
+</table>
+
 
 <!-- There are a number of things to look out for when compiling a _Node.JS_ program. -->
 

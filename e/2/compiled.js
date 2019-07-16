@@ -5,14 +5,16 @@ var a = () => {
 a.named = () => {
   console.log("named common js export2");
 };
-var b = {default:() => {
+var b = () => {
   console.log("default common js export");
-}};
-b.default.named = () => {
+};
+b.named = () => {
   console.log("named common js export");
 };
-console.log("requiring a common js from common js:");
+console.log("requiring a cjs from cjs:");
 console.log(a);
 console.log("requiring a common js from ecma:");
 console.log(b);
 
+
+//# sourceMappingURL=compiled.js.map

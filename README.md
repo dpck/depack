@@ -617,7 +617,7 @@ console.log('requiring a common js from ecma:')
 console.log(commonJs)
 ```
 </td></tr>
-<tr><td></td></tr>
+<tr><td>ECMA modules' compatability</td></tr>
 <tr><td>
 
 ```js
@@ -650,6 +650,9 @@ module.exports['named'] = () => {
 </table>
 
 
+<table>
+<tr><td>
+
 <details>
 <summary>Show Compiled Version</summary>
 
@@ -673,13 +676,18 @@ console.log("requiring a common js from ecma:");
 console.log(b);
 ```
 </details>
+</td>
+<td>
 
 ```js
-requiring a common js from common js:
+requiring a cjs from cjs:
 { [Function: a] named: [Function] }
 requiring a common js from ecma:
-{ default: { [Function: default] named: [Function] } }
+{ [Function: b] named: [Function] }
 ```
+</td></tr>
+</table>
+
 
 
 
