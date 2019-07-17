@@ -819,8 +819,8 @@ exports.default = _default;
 </tr>
 </table>
 
-Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working semi-correctly as seen by the examples below.
-_The script to import Babel-compiled modules in Closure Compiler is now:_
+Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working semi-correctly, because the default import is not compatible with the way that the default object is exported (see below).
+ _The script to import Babel-compiled modules in Closure Compiler is now:_
 
 ```js
 import erte from '@fixture/babel'
@@ -909,19 +909,29 @@ console.log(b())
 <tr><th><em>Command & Generated JS</em></th></tr>
 <tr><td>
 
-%/FORKERR src/depack e/1 -c -a -p --process_common_js_modules%
+```
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
+--process_common_js_modules --package_json_entry_names module,main --entry_point e/1.js \
+--externs node_modules/@depack/externs/v8/global.js --externs \
+node_modules/@depack/externs/v8/global/buffer.js --externs \
+node_modules/@depack/externs/v8/nodejs.js
+Dependencies: @a-la/fixture-babel
+Running Google Closure Compiler 20190709...         
+```
 </td></tr>
-<tr><td><strong>stderr</strong></td></tr>
+<tr><td><code>depack e/1 -c -a -p --process_common_js_modules</code>
+<strong>stderr</strong></td></tr>
 <tr><td>
 
 ```js
 Exit code 2
 e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "b".
-import erte, { c, b } from 'b'
+import erte, { c, b } from '@a-la/fixture-babel'
 ^
 
 e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "c".
-import erte, { c, b } from 'b'
+import erte, { c, b } from '@a-la/fixture-babel'
 ^
 
 2 error(s), 0 warning(s)

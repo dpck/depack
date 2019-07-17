@@ -31,7 +31,8 @@
 </tr>
 </table>
 
-Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working semi-correctly as seen by the examples below.
+Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working semi-correctly, because the default import is not compatible with the way that the default object is exported (see below).
+ <!-- as seen by the examples below. -->
 <!-- Because _Babel_ sets the `default` property on the `export` property (along with the `_esModule` flag so that other Babel-compiled packages can import it after the run-time evaluation from `_interopRequire`). What is actually happening now, is that to access the default export, we need to say `default.default`, and all named exports, `default.default.named`. -->
 
 _The script to import Babel-compiled modules in Closure Compiler is now:_
@@ -110,16 +111,17 @@ Because of referring to the default import as .default, the compatibility with _
 
 > [Importing `{ named }` modules](t) on Babel-compiled modules is not supported because they are still _require.js_ modules! The example below demonstrates what happens:
 
-%EXAMPLE: e/1, ../b => @fixture/babel%
+%EXAMPLE: e/1, @a-la/fixture-babel => @fixture/babel%
 
 <table>
 <tr><th><em>Command & Generated JS</em></th></tr>
 <!-- block-start -->
 <tr><td>
 
-%/FORKERR src/depack e/1 -c -a -p --process_common_js_modules%
+%FORKERR src/depack e/1 -c -a -p --process_common_js_modules%
 </td></tr>
 <tr><td><md2html>
+`depack e/1 -c -a -p --process_common_js_modules`
 **stderr**
 
 </md2html></td></tr>
