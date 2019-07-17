@@ -71,7 +71,8 @@ And the compiler will leave the `require` call as it is because there was no `pr
 
 ### Single Default Export
 
-> The idea is actually that you can do the following, but it's not working correctly at the moment (the default method has to be called with `.default`).<em>
+> The idea is actually that you can do the following, <em>
+<!-- but it's not working correctly at the moment (the default method has to be called with `.default`). -->
 >    ```js
 >    import commonJs from 'common-js'
 >    commonJs('hello')
@@ -91,7 +92,7 @@ A _CommonJS_ package required from an ECMA module will have only a single defaul
 
 ```js
 import commonJs from 'common-js'
-commonJs.default('hello')
+commonJs('hello')
 commonJs.named('world')
 ```
 </td></tr>
@@ -105,9 +106,9 @@ There are no named exports to be used in destructuring of the `import` statement
 
 %EXAMPLE: e/2%
 </td></tr>
-<tr><td><md2html>
+<tr><td colspan="2"><md2html>
 
-ECMA modules' compatability
+_ECMA modules'_ compatibility works by calling the default export from code, and named exports from within the imported object's namespace, i.e., without named imports but by referencing the imported object.
 
 </md2html></td></tr>
 <!-- /block-end -->
@@ -131,6 +132,7 @@ The _CommonJS_ can be required by other _CommonJS_ modules in the standard `requ
 <!-- Yes it's crazy. Yes you know what you're doing when importing a package. But thank the _Node.JS_ authors for making this decision. I don't know how you are going to program now, because programming involves using IDE for hints, and then testing before the actual build process, and these 2 things are not satisfied, by either _VSCode_ which does not show hints for `commonJs.default` and `commonJs.default.named`, or _Babel_ which is usually setup for testing. -->
 
 <table>
+<tr><th colspan="2">Default importing of CommonJS module works by assigning the default export to the default import and named exports as its properties.</th></tr>
 <!-- block-start -->
 <tr><td>
 

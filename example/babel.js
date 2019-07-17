@@ -1,4 +1,4 @@
-import erte from '@a-la/fixture-babel'
+import erte from 'b'
 
 console.log(erte.default())
 console.log(erte.c(''))

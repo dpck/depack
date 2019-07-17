@@ -586,7 +586,7 @@ And the compiler will leave the `require` call as it is because there was no `pr
 
 ### Single Default Export
 
-> The idea is actually that you can do the following, but it's not working correctly at the moment (the default method has to be called with `.default`).<em>
+> The idea is actually that you can do the following, <em>
 >    ```js
 >    import commonJs from 'common-js'
 >    commonJs('hello')
@@ -602,7 +602,7 @@ And the compiler will leave the `require` call as it is because there was no `pr
 
 ```js
 import commonJs from 'common-js'
-commonJs.default('hello')
+commonJs('hello')
 commonJs.named('world')
 ```
 </td></tr>
@@ -617,7 +617,7 @@ console.log('requiring a common js from ecma:')
 console.log(commonJs)
 ```
 </td></tr>
-<tr><td>ECMA modules' compatability</td></tr>
+<tr><td colspan="2"><em>ECMA modules'</em> compatibility works by calling the default export from code, and named exports from within the imported object's namespace, i.e., without named imports but by referencing the imported object.</td></tr>
 <tr><td>
 
 ```js
@@ -637,13 +637,18 @@ console.log(commonJs2)
 </td><td>
 
 ```js
-// common-js
+// common-js2.js
 module.exports = () => {
   console.log('default common js export2')
 }
 module.exports['named'] = () => {
   console.log('named common js export2')
 }
+
+​
+​
+​
+​
 ```
 </td></tr>
 <tr><td colspan="2">The <em>CommonJS</em> can be required by other <em>CommonJS</em> modules in the standard <code>require</code> way.</td></tr>
@@ -651,6 +656,7 @@ module.exports['named'] = () => {
 
 
 <table>
+<tr><th colspan="2">Default importing of CommonJS module works by assigning the default export to the default import and named exports as its properties.</th></tr>
 <tr><td>
 
 <details>
@@ -780,7 +786,7 @@ Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working 
 _The script to import Babel-compiled modules in Closure Compiler is now:_
 
 ```js
-import erte from '@a-la/fixture-babel'
+import erte from 'b'
 
 console.log(erte.default())
 console.log(erte.c(''))
@@ -878,7 +884,7 @@ TypeError: _build.default.default is not a function
 > <a name="importing--named--modules">Importing `{ named }` modules</a> on Babel-modules is not supported! The example below demonstrates what happens:
 
 ```js
-import erte, { c, b } from '@a-la/fixture-babel'
+import erte, { c, b } from 'b'
 
 console.log(erte())
 console.log(c())
