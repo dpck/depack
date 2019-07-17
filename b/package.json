@@ -1,0 +1,51 @@
+{
+  "name": "@a-la/fixture-babel",
+  "version": "1.2.2",
+  "description": "Source code transpiled with babel.",
+  "main": "build/index.js",
+  "scripts": {
+    "t": "zoroaster -b",
+    "test": "yarn t test/spec test/mask",
+    "spec": "yarn t test/spec",
+    "mask": "yarn t test/mask",
+    "test-build": "ALAMODE_ENV=test-build yarn test",
+    "lint": "eslint .",
+    "doc": "NODE_DEBUG=doc doc -o README.md",
+    "b": "babel src -d build",
+    "d": "yarn-s d1",
+    "d1": "NODE_DEBUG=doc doc src/index.js -g",
+    "build": "yarn-s d b doc",
+    "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
+    "e": "node example",
+    "example/": "yarn e example/example.js"
+  },
+  "files": [
+    "build",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/a-la/fixture-babel.git"
+  },
+  "keywords": [
+    "fixture-babel",
+    "a-la"
+  ],
+  "author": "Anton <anton@adc.sh>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/a-la/fixture-babel/issues"
+  },
+  "homepage": "https://github.com/a-la/fixture-babel#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/register": "^7.4.4",
+    "alamode": "^2.2.0",
+    "documentary": "^1.27.3",
+    "eslint-config-artdeco": "1.0.1",
+    "yarn-s": "1.1.0",
+    "zoroaster": "^4.1.1-alpha"
+  }
+}
