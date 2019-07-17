@@ -835,15 +835,7 @@ console.log(erte.b(''))
 <tr><td colspan="2">
 
 ```
-java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
---compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
---process_common_js_modules --package_json_entry_names module,main --entry_point \
-example/babel.js --externs node_modules/@depack/externs/v8/global.js --externs \
-node_modules/@depack/externs/v8/global/buffer.js --externs \
-node_modules/@depack/externs/v8/nodejs.js
-Dependencies: @a-la/fixture-babel
-CommonJS: b/build/index.js
-Running Google Closure Compiler 20190709..          
+
 ```
 </td></tr>
 <tr><td colspan="2">The command generates some warnings, but no errors.</td></tr>
@@ -853,7 +845,7 @@ Running Google Closure Compiler 20190709..
 
 ```js
 Exit code 1
-example/babel.js:1: ERROR - [JSC_JS_MODULE_LOAD_WARNING] Failed to load module "../b"
+e/b.js:1: ERROR - [JSC_JS_MODULE_LOAD_WARNING] Failed to load module "../b"
 import erte from '../b'
 ^
 
@@ -903,10 +895,10 @@ TypeError: _build.default.default is not a function
 
 ---
 
-> <a name="importing--named--modules">Importing `{ named }` modules</a> on Babel-modules is not supported! The example below demonstrates what happens:
+> <a name="importing--named--modules">Importing `{ named }` modules</a> on Babel-compiled modules is not supported because they are still _require.js_ modules! The example below demonstrates what happens:
 
 ```js
-import erte, { c, b } from 'b'
+import erte, { c, b } from '@fixture/babel'
 
 console.log(erte())
 console.log(c())
@@ -917,16 +909,7 @@ console.log(b())
 <tr><th><em>Command & Generated JS</em></th></tr>
 <tr><td>
 
-```
-java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
---compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
---process_common_js_modules --package_json_entry_names module,main --entry_point e/1.js \
---externs node_modules/@depack/externs/v8/global.js --externs \
-node_modules/@depack/externs/v8/global/buffer.js --externs \
-node_modules/@depack/externs/v8/nodejs.js
-Dependencies: @a-la/fixture-babel
-Running Google Closure Compiler 20190709..          
-```
+%/FORKERR src/depack e/1 -c -a -p --process_common_js_modules%
 </td></tr>
 <tr><td><strong>stderr</strong></td></tr>
 <tr><td>

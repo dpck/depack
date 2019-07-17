@@ -56,7 +56,7 @@ The command generates some warnings, but no errors.
 <!-- block-start -->
 <tr><td>
 
-%FORK-js src/depack example/babel -c -a -p --process_common_js_modules%
+%FORK-js src/depack e/b -c -a -p --process_common_js_modules%
 
 </td><td>
 
@@ -108,16 +108,16 @@ Because of referring to the default import as .default, the compatibility with _
 
 ---
 
-> [Importing `{ named }` modules](t) on Babel-modules is not supported! The example below demonstrates what happens:
+> [Importing `{ named }` modules](t) on Babel-compiled modules is not supported because they are still _require.js_ modules! The example below demonstrates what happens:
 
-%EXAMPLE: e/1%
+%EXAMPLE: e/1, ../b => @fixture/babel%
 
 <table>
 <tr><th><em>Command & Generated JS</em></th></tr>
 <!-- block-start -->
 <tr><td>
 
-%FORKERR src/depack e/1 -c -a -p --process_common_js_modules%
+%/FORKERR src/depack e/1 -c -a -p --process_common_js_modules%
 </td></tr>
 <tr><td><md2html>
 **stderr**

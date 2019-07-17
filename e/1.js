@@ -1,4 +1,4 @@
-import erte, { c, b } from 'b'
+import erte, { c, b } from '../b'
 
 console.log(erte())
 console.log(c())
