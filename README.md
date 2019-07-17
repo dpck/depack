@@ -558,13 +558,42 @@ _ES6 modules_ make the correct static analysis of programs possible since export
 
 The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
 
+<table>
+<tr><th colspan="2"></th></tr>
+<tr><td>
+
 ```js
-// ecma
+// ecma.js
 import commonJs from './common-js'
 
 console.log('requiring a common js from ecma:')
 console.log(commonJs)
+
+
+
+// The default import using the import keyword 🙏🏾
+// 2018+ JavaScript <3
 ```
+</td><td>
+
+```js
+// common-js
+const commonJs2 = require('./common-js2')
+
+module.exports = () => {
+  console.log('default common js export')
+}
+module.exports['named'] = () => {
+  console.log('named common js export')
+}
+
+console.log('requiring a cjs from cjs:')
+console.log(commonJs2)
+```
+</td></tr>
+<tr><td  colspan="2"></td></tr>
+<tr><td colspan="2">
+
 ```js
 Exit code 1
 e/2/index.js:2: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "default".
@@ -574,6 +603,9 @@ import commonJs from './common-js'
 1 error(s), 0 warning(s)
 
 ```
+</td></tr>
+<tr><td colspan="2"></td></tr>
+</table>
 
 _Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as _CommonJS_ module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
 
@@ -610,11 +642,16 @@ commonJs.named('world')
 <tr><td colspan="2">
 
 ```js
-// ecma
+// ecma.js
 import commonJs from './common-js'
 
 console.log('requiring a common js from ecma:')
 console.log(commonJs)
+
+
+
+// The default import using the import keyword 🙏🏾
+// 2018+ JavaScript <3
 ```
 </td></tr>
 <tr><td colspan="2"><em>ECMA modules'</em> compatibility works by calling the default export from code, and named exports from within the imported object's namespace, i.e., without named imports but by referencing the imported object.</td></tr>
@@ -645,10 +682,10 @@ module.exports['named'] = () => {
   console.log('named common js export2')
 }
 
-​
-​
-​
-​
+
+
+
+// standard node require way to import
 ```
 </td></tr>
 <tr><td colspan="2">The <em>CommonJS</em> can be required by other <em>CommonJS</em> modules in the standard <code>require</code> way.</td></tr>
@@ -676,7 +713,7 @@ var b = () => {
 b.named = () => {
   console.log("named common js export");
 };
-console.log("requiring a common js from common js:");
+console.log("requiring a cjs from cjs:");
 console.log(a);
 console.log("requiring a common js from ecma:");
 console.log(b);
@@ -786,7 +823,7 @@ Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working 
 _The script to import Babel-compiled modules in Closure Compiler is now:_
 
 ```js
-import erte from 'b'
+import erte from '@fixture/babel'
 
 console.log(erte.default())
 console.log(erte.c(''))
@@ -805,20 +842,8 @@ example/babel.js --externs node_modules/@depack/externs/v8/global.js --externs \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property b of module$node_modules$$a_la$fixture_babel$build$index.default
-found   : undefined
-required: function(?): ?
-exports.default = exports.b = exports.c = void 0;
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-node_modules/@a-la/fixture-babel/build/index.js:6: WARNING - [JSC_TYPE_MISMATCH] assignment to property c of module$node_modules$$a_la$fixture_babel$build$index.default
-found   : undefined
-required: function(string): ?
-exports.default = exports.b = exports.c = void 0;
-                              ^^^^^^^^^^^^^^^^^^
-
-0 error(s), 2 warning(s), 96.2% typed
-
+CommonJS: b/build/index.js
+Running Google Closure Compiler 20190709..          
 ```
 </td></tr>
 <tr><td colspan="2">The command generates some warnings, but no errors.</td></tr>
@@ -827,16 +852,13 @@ exports.default = exports.b = exports.c = void 0;
 <tr><td>
 
 ```js
-'use strict';
-var a = {};
-Object.defineProperty(a, "__esModule", {value:!0});
-a.default = a.a = a.b = void 0;
-a.b = b => "c" + (b ? `-${b}` : "");
-a.a = b => "b" + (b ? `-${b}` : "");
-a.default = () => "erte";
-console.log(a.default());
-console.log(a.b(""));
-console.log(a.a(""));
+Exit code 1
+example/babel.js:1: ERROR - [JSC_JS_MODULE_LOAD_WARNING] Failed to load module "../b"
+import erte from '../b'
+^
+
+1 error(s), 0 warning(s)
+
 ```
 
 </td><td>
@@ -903,7 +925,7 @@ java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 node_modules/@depack/externs/v8/global/buffer.js --externs \
 node_modules/@depack/externs/v8/nodejs.js
 Dependencies: @a-la/fixture-babel
-Running Google Closure Compiler 20190709            
+Running Google Closure Compiler 20190709..          
 ```
 </td></tr>
 <tr><td><strong>stderr</strong></td></tr>
@@ -912,11 +934,11 @@ Running Google Closure Compiler 20190709
 ```js
 Exit code 2
 e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "b".
-import erte, { c, b } from '@a-la/fixture-babel'
+import erte, { c, b } from 'b'
 ^
 
 e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "c".
-import erte, { c, b } from '@a-la/fixture-babel'
+import erte, { c, b } from 'b'
 ^
 
 2 error(s), 0 warning(s)

@@ -36,7 +36,7 @@ Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working 
 
 _The script to import Babel-compiled modules in Closure Compiler is now:_
 
-%EXAMPLE: example/babel%
+%EXAMPLE: e/b, ../b => @fixture/babel%
 
 <table>
 <tr><th colspan="2"><em>Command & Generated JS</em></th></tr>

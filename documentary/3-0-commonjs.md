@@ -57,8 +57,32 @@ _ES6 modules_ make the correct static analysis of programs possible since export
 
 The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
 
-%EXAMPLE: e/2%
+<table>
+<tr><th colspan="2"></th></tr>
+<!-- block-start -->
+<tr><td>
+
+%EXAMPLE: e/2/ecma%
+</td><td>
+
+%EXAMPLE: e/2/common-js%
+</td></tr>
+<tr><td  colspan="2"><md2html>
+
+
+</md2html></td></tr>
+<!-- /block-end -->
+<!-- block-start -->
+<tr><td colspan="2">
+
 %FORK-js src/depack e/2 -c -a -p%
+</td></tr>
+<tr><td colspan="2"><md2html>
+
+
+</md2html></td></tr>
+<!-- /block-end -->
+</table>
 
 _Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as _CommonJS_ module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
 
@@ -104,7 +128,7 @@ There are no named exports to be used in destructuring of the `import` statement
 <!-- block-start -->
 <tr><td colspan="2">
 
-%EXAMPLE: e/2%
+%EXAMPLE: e/2/ecma%
 </td></tr>
 <tr><td colspan="2"><md2html>
 

@@ -6,7 +6,7 @@ module.exports['named'] = () => {
   console.log('named common js export2')
 }
 
-​
-​
-​
-​
+
+
+
+// standard node require way to import
