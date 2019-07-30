@@ -1,5 +1,3 @@
-## Known Bugs
-
 There are a few insignificant known issues with _Google Closure Compiler_.
 
 1. Cannot do `import '.'`: change to `import './'`.

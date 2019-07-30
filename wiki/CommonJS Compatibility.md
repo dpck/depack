@@ -51,7 +51,7 @@ Unlike the examples above, the infrastructure built with _Depack_ always uses mo
 
 _ES6 modules_ make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
 
-### Enabling Processing Of CommonJS Modules
+## Enabling Processing Of CommonJS Modules
 
 The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
 
@@ -91,7 +91,7 @@ console.log(version)
 
 And the compiler will leave the `require` call as it is because there was no `process_common_js_modules` flag. However, if there were packages in CommonJS format (required via the `main` field of their `package.json`), ALL requires will be processed. If _Depack_ didn't detect a CommonJS module when you know there is one, just add the flag manually. _Depack_ also assumes that all source code is in ES6 format.
 
-### Single Default Export
+## Single Default Export
 
 > The idea is actually that you can do the following, <em>
 <!-- but it's not working correctly at the moment (the default method has to be called with `.default`). -->

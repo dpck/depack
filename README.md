@@ -21,7 +21,6 @@ yarn add -E depack
     * [External APIs](#external-apis)
 - [API](#api)
 - [Wiki](#wiki)
-- [Known Bugs](#known-bugs)
 - [Org Structure](#org-structure)
 - [Notes](#notes)
 - [Copyright](#copyright)
@@ -545,59 +544,9 @@ Our Wiki contains the following pages:
 
 <kbd>🗼[Babel Modules](../../wiki/Babel-Modules)</kbd>: Talks about importing _Babel_-compiled modules from ES6 code.
 <kbd>🎭[CommonJS Compatibility](../../wiki/CommonJS-Compatibility)</kbd>: Discusses how to import _CommonJS_ modules from ES6 code.
+<kbd>🐞[Bugs](../../wiki/Bugs)</kbd>: Lists some of the minor known bugs in the compiler.
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true"></a></p>
-
-## Known Bugs
-
-There are a few insignificant known issues with _Google Closure Compiler_.
-
-1. Cannot do `import '.'`: change to `import './'`.
-    ```js
-    // dot.js
-    import test from '.'
-    test()
-    ```
-    ```js
-    // index.js
-    export default () => {
-      console.log('test')
-    }
-    ```
-    <details>
-    <summary>Show Dot Error</summary>
-
-    ```
-    Exit code 1
-    example/bugs/dot.js:2: ERROR - [JSC_JS_MODULE_LOAD_WARNING] Failed to load module "."
-    import test from '.'
-    ^
-    
-    1 error(s), 0 warning(s)
-    
-    ```
-    </details>
-1. `node_modules` are not looked up higher than the `cwd`.
-1. Cannot import _json_ files. Use `require`.
-    ```js
-    import data from './data.json'
-    console.log(data)
-    ```
-    <details>
-    <summary>Show JSON Error</summary>
-
-    ```
-    Exit code 1
-    example/bugs/json.js:1: ERROR - [JSC_CANNOT_PATH_IMPORT_CLOSURE_FILE] Cannot import Closure files by path. Use either import goog:namespace or goog.require(namespace)
-    import data from './data.json'
-    ^
-    
-    1 error(s), 0 warning(s)
-    
-    ```
-    </details>
-
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## Org Structure
 
@@ -608,14 +557,14 @@ There are a few insignificant known issues with _Google Closure Compiler_.
 - [[@depack/render](https://github.com/dpck/render)] Render server-side HTML from JSX.
 - [[@depack/context](https://github.com/dpck/context)] Testing context for unit-testing.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true"></a></p>
 
 ## Notes
 
 - The static analysis might discover built-in and other modules even if they were not used, since no tree-shaking is performed.
 - [2 March 2019] Current bug does not let compile later `jsx` detection. Trying to compile front-end bundler with _Depack_.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/13.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true"></a></p>
 
 ## Copyright
 
