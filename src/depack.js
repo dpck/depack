@@ -95,6 +95,6 @@ const restorePreact = () => {
       preact: _preact,
     }, runOptions, options)
   } catch (error) {
-    process.env['DEBUG'] ? console.log(error.stack) : console.log(error.message)
+    process.env.DEBUG ? console.log(error.stack) : console.log(error.message)
   }
 })()
