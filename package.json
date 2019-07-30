@@ -73,6 +73,6 @@
   },
   "dependencies": {
     "@depack/externs": "^1.4.4",
-    "@depack/nodejs": "^1.1.3"
+    "@depack/nodejs": "^1.1.4"
   }
 }
