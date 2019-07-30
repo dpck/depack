@@ -1,6 +1,4 @@
-## CommonJS Compatibility
-
-Depack works best with ES6 modules. All new code should be written with `import/export` statements because it's the standard that takes the implementations away from hacking assignments to `module.exports` which people used to use in a variety of possibly imaginable ways, e.g.,
+Depack works best with _ES6_ modules. All new code should be written with `import/export` statements because it's the standard that takes the implementations away from hacking assignments to `module.exports` which people used to use in a variety of possibly imaginable ways, e.g.,
 
 <details>
 <summary><md2html>Show `lazyProperty` use from `depd`</md2html></summary>

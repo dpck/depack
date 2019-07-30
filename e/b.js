@@ -1,4 +1,4 @@
-import erte from '../b'
+import erte from '../b/i'
 
 console.log(erte.default())
 console.log(erte.c(''))

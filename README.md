@@ -19,12 +19,8 @@ yarn add -E depack
   * [Troubleshooting](#troubleshooting)
     * [Bugs In GCC](#bugs-in-gcc)
     * [External APIs](#external-apis)
-- [CommonJS Compatibility](#commonjs-compatibility)
-  * [Enabling Processing Of CommonJS Modules](#enabling-processing-of-commonjs-modules)
-  * [Single Default Export](#single-default-export)
-  * [Using Babel-Compiled CommonJS](#using-babel-compiled-commonjs)
-    * [Importing `{ named }` modules](#importing--named--modules)
 - [API](#api)
+- [Wiki](#wiki)
 - [Known Bugs](#known-bugs)
 - [Org Structure](#org-structure)
 - [Notes](#notes)
@@ -115,54 +111,82 @@ FRONTEND: Creates a bundle for the web.
 _Depack_ supports the following flags for both modes. Any additional arguments that are not recognised, will be passed directly to the compiler. For mode-specific arguments, see the appropriate section in this `README`.
 
 <table>
-  <tr><th>Argument</th><th>Short</th><th>Description</th></tr>
-  <tr><td>source</td><td></td><td>The source entry to build.</td></tr>
-  <tr><td>--output</td><td>-o</td><td>
-    Where to save the output.
-        Prints to <code>stdout</code> when not passed.
-  </td>
+ <thead>
+  <tr>
+   <th>Argument</th> 
+   <th>Short</th>
+   <th>Description</th>
   </tr>
-  <tr><td>--debug</td><td>-d</td><td>
-    The location of the file where to save sources after
-        each pass.
-  </td>
-  </tr>
-  <tr><td>--pretty-print</td><td>-p</td><td>
-    Whether to apply the <code>--formatting=PRETTY_PRINT</code> flag.
-  </td>
-  </tr>
-  <tr><td>--no-sourcemap</td><td>-S</td><td>Disable source maps.</td></tr>
-  <tr><td>--verbose</td><td>-V</td><td>Print the exact command.</td></tr>
-  <tr><td>--language_in</td><td>-I</td><td>
-    The language of the input sources, years also accepted.
-  </td>
-  </tr>
-  <tr><td>--language_out</td><td>-O</td><td>
-    The language spec of the output, years accepted.
-  </td>
+ </thead>
+  <tr>
+   <td>source</td>
+   <td></td>
+   <td>The source entry to build.</td>
   </tr>
   <tr>
-    <td>--level</td>
-    <td>-lvl</td>
-    <td>
-      The compilation level. Options:
-          BUNDLE, WHITESPACE_ONLY, SIMPLE (default), ADVANCED.
-    </td>
+   <td>--output</td>
+   <td>-o</td>
+   <td>Where to save the output.
+    Prints to <code>stdout</code> when not passed.</td>
   </tr>
-  <tr><td>--advanced</td><td>-a</td><td>Whether to enable advanced optimisation.</td></tr>
   <tr>
-    <td>--no-warnings</td>
-    <td>-w</td>
-    <td>
-      Do not print compiler's warnings by adding the
-          <code>--warning_level QUIET</code> flag.
-    </td>
+   <td>--debug</td>
+   <td>-d</td>
+   <td>The location of the file where to save sources after
+    each pass.</td>
   </tr>
-  <tr><td>--version</td><td>-v</td><td>
-    Shows the current <em>Depack</em> and <em>GCC</em> versions.
-  </td>
+  <tr>
+   <td>--pretty-print</td>
+   <td>-p</td>
+   <td>Whether to apply the <code>--formatting=PRETTY_PRINT</code> flag.</td>
   </tr>
-  <tr><td>--help</td><td>-h</td><td>Prints the usage information.</td></tr>
+  <tr>
+   <td>--no-sourcemap</td>
+   <td>-S</td>
+   <td>Disable source maps.</td>
+  </tr>
+  <tr>
+   <td>--verbose</td>
+   <td>-V</td>
+   <td>Print the exact command.</td>
+  </tr>
+  <tr>
+   <td>--language_in</td>
+   <td>-I</td>
+   <td>The language of the input sources, years also accepted.</td>
+  </tr>
+  <tr>
+   <td>--language_out</td>
+   <td>-O</td>
+   <td>The language spec of the output, years accepted.</td>
+  </tr>
+  <tr>
+   <td>--level</td>
+   <td>-lvl</td>
+   <td>The compilation level. Options:
+    BUNDLE, WHITESPACE_ONLY, SIMPLE (default), ADVANCED.</td>
+  </tr>
+  <tr>
+   <td>--advanced</td>
+   <td>-a</td>
+   <td>Whether to enable advanced optimisation.</td>
+  </tr>
+  <tr>
+   <td>--no-warnings</td>
+   <td>-w</td>
+   <td>Do not print compiler's warnings by adding the
+    <code>--warning_level QUIET</code> flag.</td>
+  </tr>
+  <tr>
+   <td>--version</td>
+   <td>-v</td>
+   <td>Shows the current <em>Depack</em> and <em>GCC</em> versions.</td>
+  </tr>
+  <tr>
+   <td>--help</td>
+   <td>-h</td>
+   <td>Prints the usage information.</td>
+  </tr>
 </table>
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/2.svg?sanitize=true"></a></p>
@@ -281,20 +305,17 @@ Modules' externs: node_modules/indicatrix/externs.js
 java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
 --warning_level QUIET --package_json_entry_names module,main --entry_point \
-example/example.js --externs node_modules/@depack/externs/v8/fs.js --externs \
-node_modules/@depack/externs/v8/stream.js --externs \
-node_modules/@depack/externs/v8/events.js --externs \
-node_modules/@depack/externs/v8/url.js --externs \
-node_modules/@depack/externs/v8/global.js --externs \
-node_modules/@depack/externs/v8/global/buffer.js --externs \
-node_modules/@depack/externs/v8/nodejs.js --externs node_modules/indicatrix/externs.js \
---module_resolution NODE --output_wrapper \
+example/example.js --externs ../externs/v8/fs.js --externs ../externs/v8/stream.js \
+--externs ../externs/v8/events.js --externs ../externs/v8/url.js --externs \
+../externs/v8/global.js --externs ../externs/v8/global/buffer.js --externs \
+../externs/v8/nodejs.js --externs node_modules/indicatrix/externs.js --module_resolution \
+NODE --output_wrapper \
 #!/usr/bin/env node
 'use strict';
 const fs = require('fs');%output% --js \
 node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js \
 node_modules/fs/package.json node_modules/fs/index.js example/example.js
-Running Google Closure Compiler 20190709.           
+Running Google Closure Compiler 20190709..          
 ```
 ```js
 #!/usr/bin/env node
@@ -346,28 +367,31 @@ async function h(a) {
 There are _Depack_ specific flags that can be passed when compiling a Node.JS executable. These are:
 
 <table>
-  <tr><th>Argument</th><th>Short</th><th>Description</th></tr>
+ <thead>
   <tr>
-    <td>--compile</td>
-    <td>-c</td>
-    <td>
-      Set the <em>Depack</em> mode to "compile" to create a Node.JS binary.
-          Adds the <code>#!usr/bin/env node</code> at the top and sets +x permission.
-    </td>
+   <th>Argument</th> 
+   <th>Short</th>
+   <th>Description</th>
+  </tr>
+ </thead>
+  <tr>
+   <td>--compile</td>
+   <td>-c</td>
+   <td>Set the <em>Depack</em> mode to "compile" to create a Node.JS binary.
+    Adds the <code>#!usr/bin/env node</code> at the top and sets +x permission.</td>
   </tr>
   <tr>
-    <td>--library</td>
-    <td>-l</td>
-    <td>
-      Set the <em>Depack</em> mode to "library" to create a Node.JS library.
-          Initialises the <code>DEPACK_EXPORT</code> variable kept via an extern
-          which is also exported as <code>module.exports</code>. The source code
-          needs to assign the library to this variable.
-    </td>
+   <td>--library</td>
+   <td>-l</td>
+   <td>Set the <em>Depack</em> mode to "library" to create a Node.JS library.
+    Initialises the <code>DEPACK_EXPORT</code> variable kept via an extern
+    which is also exported as <code>module.exports</code>. The source code
+    needs to assign the library to this variable.</td>
   </tr>
-  <tr><td>--no-strict</td><td>-s</td><td>
-    Whether to remove the <code>"use strict"</code> from the output.
-  </td>
+  <tr>
+   <td>--no-strict</td>
+   <td>-s</td>
+   <td>Whether to remove the <code>"use strict"</code> from the output.</td>
   </tr>
 </table>
 
@@ -500,454 +524,6 @@ const { results } = /** @type {_externalAPI} */ ( // cast the type
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true"></a></p>
 
-## CommonJS Compatibility
-
-Depack works best with ES6 modules. All new code should be written with `import/export` statements because it's the standard that takes the implementations away from hacking assignments to `module.exports` which people used to use in a variety of possibly imaginable ways, e.g.,
-
-<details>
-<summary>Show <code>lazyProperty</code> use from <code>depd</code></summary>
-
-```js
-lazyProperty(module.exports, 'eventListenerCount', function eventListenerCount () {
-  return EventEmitter.listenerCount || require('./event-listener-count')
-})
-
-/**
- * Define a lazy property.
- */
-
-function lazyProperty (obj, prop, getter) {
-  function get () {
-    var val = getter()
-
-    Object.defineProperty(obj, prop, {
-      configurable: true,
-      enumerable: true,
-      value: val
-    })
-
-    return val
-  }
-
-  Object.defineProperty(obj, prop, {
-    configurable: true,
-    enumerable: true,
-    get: get
-  })
-}
-```
-</summary>
-</details>
-
-<details>
-<summary>Show <code>module.exports</code> use from <code>debug</code></summary>
-
-```js
-module.exports = require('./common')(exports);
-
-const {formatters} = module.exports;
-```
-</summary>
-</details>
-
-Unlike the examples above, the infrastructure built with _Depack_ always uses modules when writing JavaScript, because that's the main static analysis method supported by _Depack_. The require statements are also supported, but when a require is broken up by a comment like `require(/*depack*/)`, it is kept and the module will be statically loaded.
-
-_ES6 modules_ make the correct static analysis of programs possible since exports now are not some random object that can change at runtime in code, but a set of APIs, i.e., `default` and `named` exports. When every single dependency of the compiled file is a module, there are no issues or special things to think about. However, when a package tries to use a CommonJS module, there are the following compatibility rules dictated by the current version of _GCC_.
-
-### Enabling Processing Of CommonJS Modules
-
-The Closure Compiler requires a special flag `--process_common_js_modules` to enable processing CommonJS modules, otherwise, files will be treated as ES6 modules and when trying to make an import, there would be a warning saying "The package does not export the required module":
-
-<table>
-<tr><th colspan="2"></th></tr>
-<tr><td>
-
-```js
-// ecma.js
-import commonJs from './common-js'
-
-console.log('requiring a common js from ecma:')
-console.log(commonJs)
-
-
-
-// The default import using the import keyword 🙏🏾
-// 2018+ JavaScript <3
-```
-</td><td>
-
-```js
-// common-js
-const commonJs2 = require('./common-js2')
-
-module.exports = () => {
-  console.log('default common js export')
-}
-module.exports['named'] = () => {
-  console.log('named common js export')
-}
-
-console.log('requiring a cjs from cjs:')
-console.log(commonJs2)
-```
-</td></tr>
-<tr><td  colspan="2"></td></tr>
-<tr><td colspan="2">
-
-```js
-Exit code 1
-e/2/index.js:2: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "default".
-import commonJs from './common-js'
-^
-
-1 error(s), 0 warning(s)
-
-```
-</td></tr>
-<tr><td colspan="2"></td></tr>
-</table>
-
-_Depack_ will perform static analysis by looking at all dependencies recursively. When it sees an import (or require statement) that references an external package, it will find its `package.json` to find out the `main` and `module` fields. If the `main` field is found, the package is marked as _CommonJS_ module, and the flag will be added. Having a `require` statement in the source code on its own does not trigger the addition of the flag, so that packages can be imported dynamically with `require` if that is what is required. This can be used, for example, to get the current version of the package:
-
-```js
-const version = require('../package.json')['version']
-console.log(version)
-```
-
-And the compiler will leave the `require` call as it is because there was no `process_common_js_modules` flag. However, if there were packages in CommonJS format (required via the `main` field of their `package.json`), ALL requires will be processed. If _Depack_ didn't detect a CommonJS module when you know there is one, just add the flag manually. _Depack_ also assumes that all source code is in ES6 format.
-
-### Single Default Export
-
-> The idea is actually that you can do the following, <em>
->    ```js
->    import commonJs from 'common-js'
->    commonJs('hello')
->    commonJs.named('world')
->    ```
-
-</em>
-
-<table>
-<tr><th colspan="2">A <em>CommonJS</em> package required from an ECMA module will have only a single default exported object. The default export will be accessible via the <code>default</code> property, and other methods via all other properties.
-</th></tr>
-<tr><td colspan="2">
-
-```js
-import commonJs from 'common-js'
-commonJs('hello')
-commonJs.named('world')
-```
-</td></tr>
-<tr><td colspan="2">There are no named exports to be used in destructuring of the <code>import</code> statement.</td></tr>
-<tr><td colspan="2">
-
-```js
-// ecma.js
-import commonJs from './common-js'
-
-console.log('requiring a common js from ecma:')
-console.log(commonJs)
-
-
-
-// The default import using the import keyword 🙏🏾
-// 2018+ JavaScript <3
-```
-</td></tr>
-<tr><td colspan="2"><em>ECMA modules'</em> compatibility works by calling the default export from code, and named exports from within the imported object's namespace, i.e., without named imports but by referencing the imported object.</td></tr>
-<tr><td>
-
-```js
-// common-js
-const commonJs2 = require('./common-js2')
-
-module.exports = () => {
-  console.log('default common js export')
-}
-module.exports['named'] = () => {
-  console.log('named common js export')
-}
-
-console.log('requiring a cjs from cjs:')
-console.log(commonJs2)
-```
-</td><td>
-
-```js
-// common-js2.js
-module.exports = () => {
-  console.log('default common js export2')
-}
-module.exports['named'] = () => {
-  console.log('named common js export2')
-}
-
-
-
-
-// standard node require way to import
-```
-</td></tr>
-<tr><td colspan="2">The <em>CommonJS</em> can be required by other <em>CommonJS</em> modules in the standard <code>require</code> way.</td></tr>
-</table>
-
-
-<table>
-<tr><th colspan="2">Default importing of CommonJS module works by assigning the default export to the default import and named exports as its properties.</th></tr>
-<tr><td>
-
-<details>
-<summary>Show Compiled Version</summary>
-
-```js
-'use strict';
-var a = () => {
-  console.log("default common js export2");
-};
-a.named = () => {
-  console.log("named common js export2");
-};
-var b = () => {
-  console.log("default common js export");
-};
-b.named = () => {
-  console.log("named common js export");
-};
-console.log("requiring a cjs from cjs:");
-console.log(a);
-console.log("requiring a common js from ecma:");
-console.log(b);
-```
-</details>
-</td>
-<td>
-
-```js
-requiring a cjs from cjs:
-{ [Function: a] named: [Function] }
-requiring a common js from ecma:
-{ [Function: b] named: [Function] }
-```
-</td></tr>
-</table>
-
-
-
-
-### Using Babel-Compiled CommonJS
-
- <table>
-<tr>
-<th>Source (<a href="https://github.com/a-la/fixture-babel/blob/master/src/index.js">@a-la/fixture-babel</a>)</th><th>Babel-<a href="https://github.com/a-la/fixture-babel/blob/master/build/index.js">compiled</a></th>
-</tr>
-<tr>
-<td>
-
-```js
-/**
- * A function that returns `erte`.
- */
-const erte = () => {
-  return 'erte'
-}
-
-/**
- * A function that returns `c`.
- * @param {string} input
- */
-export const c = (input) => {
-  return 'c' + (input ? `-${input}` : '')
-}
-
-/**
- * A function that returns `b`.
- * @param {number} times
- */
-export const b = (times) => {
-  return 'b' + (times ? `-${times}` : '')
-}
-
-export default erte
-```
-</td>
-<td>
-
-<details>
-<summary>Show Code</summary>
-
-```js
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.b = exports.c = void 0;
-
-/**
- * A function that returns `erte`.
- */
-const erte = () => {
-  return 'erte';
-};
-/**
- * A function that returns `c`.
- * @param {string} input
- */
-
-
-const c = input => {
-  return 'c' + (input ? `-${input}` : '');
-};
-/**
- * A function that returns `b`.
- * @param {number} times
- */
-
-
-exports.c = c;
-
-const b = times => {
-  return 'b' + (times ? `-${times}` : '');
-};
-
-exports.b = b;
-var _default = erte;
-exports.default = _default;
-```
-</details>
-</td>
-</tr>
-</table>
-
-Since _Compiler_`v20190709`, the modules imports from _Babel_ have been working semi-correctly, because the default import is not compatible with the way that the default object is exported (see below).
- _The script to import Babel-compiled modules in Closure Compiler is now:_
-
-```js
-import erte from '@fixture/babel'
-
-console.log(erte.default())
-console.log(erte.c(''))
-console.log(erte.b(''))
-```
-
-<table>
-<tr><th colspan="2"><em>Command & Generated JS</em></th></tr>
-<tr><td colspan="2">
-
-```
-
-```
-</td></tr>
-<tr><td colspan="2">The command generates some warnings, but no errors.</td></tr>
-</table><table>
-<tr><th colspan="2"><em>The generated code and output</em></th></tr>
-<tr><td>
-
-```js
-Exit code 1
-e/b.js:1: ERROR - [JSC_JS_MODULE_LOAD_WARNING] Failed to load module "../b"
-import erte from '../b'
-^
-
-1 error(s), 0 warning(s)
-
-```
-
-</td><td>
-
-```js
-erte
-c
-b
-```
-</td></tr>
-<tr><td colspan="2">_Trying to execute the output produces the correct result. OK, but what happens when we actually try to execute such program with <code>@babel/register</code>? This is needed for testing and development.</td></tr>
-<tr><td>
-
-```ts
-MacBook:fixture-babel zavr$ node erte
-erte/erte.js:7
-console.log(_build.default.default());
-                                  ^
-
-TypeError: _build.default.default is not a function
-    at Object.<anonymous> (erte/erte.js:3:13)
-    at Module._compile (module.js:653:30)
-    at Module._compile (node_modules/pirates/lib/index.js:99:24)
-    at Module._extensions..js (module.js:664:10)
-    at Object.newLoader [as .js] (node_modules/pirates/lib/index.js:104:7)
-    at Module.load (module.js:566:32)
-    at tryModuleLoad (module.js:506:12)
-    at Function.Module._load (module.js:498:3)
-    at Module.require (module.js:597:17)
-    at require (internal/module.js:11:18)
-```
-</td><td>
-
-**Conclusion**
-- [ ] no ide support
-- [ ] no development environment
-- [ ] default.default
-
-</td></tr>
-<tr><td colspan="2">Because of referring to the default import as .default, the compatibility with <em>Babel</em> is broken. It's better to use <a href="https://github.com/a-la/alamode/"><em>ÀLaMode</em></a> which is compatible with Closure Compiler.</td></tr>
-</table>
-
----
-
-> <a name="importing--named--modules">Importing `{ named }` modules</a> on Babel-compiled modules is not supported because they are still _require.js_ modules! The example below demonstrates what happens:
-
-```js
-import erte, { c, b } from '@fixture/babel'
-
-console.log(erte())
-console.log(c())
-console.log(b())
-```
-
-<table>
-<tr><th><em>Command & Generated JS</em></th></tr>
-<tr><td>
-
-```
-java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
---compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
---process_common_js_modules --package_json_entry_names module,main --entry_point e/1.js \
---externs node_modules/@depack/externs/v8/global.js --externs \
-node_modules/@depack/externs/v8/global/buffer.js --externs \
-node_modules/@depack/externs/v8/nodejs.js
-Dependencies: @a-la/fixture-babel
-Running Google Closure Compiler 20190709...         
-```
-</td></tr>
-<tr><td><code>depack e/1 -c -a -p --process_common_js_modules</code>
-<strong>stderr</strong></td></tr>
-<tr><td>
-
-```js
-Exit code 2
-e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "b".
-import erte, { c, b } from '@a-la/fixture-babel'
-^
-
-e/1.js:1: ERROR - [JSC_DOES_NOT_HAVE_EXPORT] Requested module does not have an export "c".
-import erte, { c, b } from '@a-la/fixture-babel'
-^
-
-2 error(s), 0 warning(s)
-
-```
-</td></tr>
-<tr><td><strong>stdout</strong>
-
-<code><EMPTY></code>
-
-The named import syntax on <em>CommonJS</em> modules is not supported unless there is an ECMA6 version of the script which will be detected by static analysis in the <code>module</code> field of the <em>package.json</em> file. Therefore it's good idea to publish the module also with the build for the compiler to include the source code of the package in another package being built.</td></tr>
-</table>
-
-
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
-
 ## API
 
 This package only publishes a binary. The API is available via the [_@Depack/depack_](https://github.com/dpck/src) package.
@@ -960,6 +536,15 @@ import { Bundle, Compile } from '@depack/depack'
   await Compile(...)
 })
 ```
+
+<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
+
+## Wiki
+
+Our Wiki contains the following pages:
+
+<kbd>🗼[Babel Modules](../../wiki/Babel-Modules)</kbd>: Talks about importing _Babel_-compiled modules from ES6 code.
+<kbd>🎭[CommonJS Compatibility](../../wiki/CommonJS-Compatibility)</kbd>: Discusses how to import _CommonJS_ modules from ES6 code.
 
 <p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true"></a></p>
 
@@ -1038,13 +623,14 @@ There are a few insignificant known issues with _Google Closure Compiler_.
   <tr>
     <th>
       <a href="https://artd.eco">
-        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco">
+        <img width="100" src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png"
+          alt="Art Deco">
       </a>
     </th>
     <th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th>
     <th>
       <a href="https://www.technation.sucks" title="Tech Nation Visa">
-        <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif"
+        <img width="100" src="https://raw.githubusercontent.com/idiocc/cookies/master/wiki/arch4.jpg"
           alt="Tech Nation Visa">
       </a>
     </th>

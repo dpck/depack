@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "dev": "node src",
     "doc": "NODE_DEBUG=doc doc -o README.md",
+    "wiki": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc wiki -W ../depack.wiki",
     "compile": "yarn dev src/depack -c -o compile -a -p -s",
     "depack": "compile/depack.js src/depack -c -o build -a -p -s",
     "build": "yarn-s d b doc",
