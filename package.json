@@ -51,12 +51,12 @@
   "devDependencies": {
     "@a-la/fixture-babel": "^1.2.2",
     "@a-la/jsx": "^1.6.0",
-    "@depack/depack": "^1.3.2",
-    "alamode": "^2.3.4",
+    "@depack/depack": "^1.3.3",
+    "alamode": "^2.3.6",
     "argufy": "^1.7.1",
     "catchment": "^3.3.0",
     "clearr": "^1.0.0",
-    "documentary": "^1.27.4",
+    "documentary": "^1.28.2",
     "erte": "^1.2.0",
     "eslint-config-artdeco": "1.0.1",
     "indicatrix": "^1.2.0",
@@ -71,7 +71,7 @@
     "google-closure-compiler-java": "*"
   },
   "dependencies": {
-    "@depack/externs": "^1.4.3",
+    "@depack/externs": "^1.4.4",
     "@depack/nodejs": "^1.1.3"
   }
 }

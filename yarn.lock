@@ -50,13 +50,13 @@
     resolve-dependency "^1.0.2"
     static-analysis "^1.3.3"
 
-"@depack/depack@^1.3.2":
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-1.3.2.tgz#b6d1b48a597b915923c2262d1322998d2fa4a530"
-  integrity sha512-Es06UFF9UwNzqdbSvN5Tsl7L0oDGk2eZKpO3y5l01oVFLzftgrEN/56RBrkmj9oVdUmpMzghQOcyHv0WCHRCXg==
+"@depack/depack@^1.3.3":
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-1.3.3.tgz#75d47a20bdc574545988bafe16bf39c5e3a3a028"
+  integrity sha512-r55/DU3BzHIbfDB8Q6kPogyU+5GZDhvbh8el/w6My1cl7S1KnogU5QvC3dh8yQlKa1cpgBT4livPARt0HK05Eg==
   dependencies:
     "@depack/bundle" "^1.1.1"
-    "@depack/externs" "^1.4.2"
+    "@depack/externs" "^1.4.4"
     "@depack/nodejs" "^1.1.3"
     "@wrote/wrote" "^1.2.3"
     erte "^1.2.0"
@@ -73,30 +73,30 @@
   dependencies:
     mismatch "^1.2.0"
 
-"@depack/externs@^1.4.2", "@depack/externs@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.4.3.tgz#ee9bd8b7219ddf557b9737cf4162268190bd25e5"
-  integrity sha512-rfnRgW1G8CN9+yXM5tjuiyBqSHLQLEhIRZlWg//2c3nA7McHYnQ4VeAQ037lHBpHlTrYDM3apz0Gj4Cyjeay5w==
+"@depack/externs@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@depack/externs/-/externs-1.4.4.tgz#d75493858dd590421931b67395800d57cf0ae063"
+  integrity sha512-+xYILsIcH+k8QiBMKUVPpa6wwwsXMgL8nQaqpeQoBu9yXG0o4nVszDU07PMxw0N/q/3lb2NeJo/Uesj/eWkPvA==
 
 "@depack/nodejs@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.3.tgz#13fe2c6c9d8ebe459ba6c3a1169a9e4791d6ca21"
   integrity sha512-KXVqVr3iPM4ktKGk69Uhww3Jrr3YJBp7B0xovLVWU5MCdnMO3NMxeVodImNb+tv6pwy4lsvPvHiyoWY78uPvUg==
 
-"@depack/render@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@depack/render/-/render-1.2.0.tgz#014fb920195f207f2697d1533616faf46988a228"
-  integrity sha512-XfegLkYLxXBJLTZ4brXsU51tKFv8l1cuF4RGMYpnS48pXC+AUYw99kbws0/gbCNyFy3/H23rDSCHakVvh49zug==
+"@depack/render@^1.2.0", "@depack/render@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@depack/render/-/render-1.2.1.tgz#c8454b2b39721b30656afdade764fee3f0ea90e0"
+  integrity sha512-c14hQdLYFncLJTp20Rk4tWgG4RqCVC1wqfik3liOEYlN2XE56yJCqiKhoQhg+LxKCQlARwKz5+bP3+/fTNRc9g==
 
 "@depack/split@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@depack/split/-/split-1.0.0.tgz#37fea28d9bc6f01e5a2da87d393f402781bb7e99"
   integrity sha512-PNJPl01VFMKtyN7qBZ2cds4N/lO2KvzLrR7JamODFiuuL2X8mGoTKp1SI8fxlT2MwLV8mScCUKn55QPwsUX7iA==
 
-"@typedefs/parser@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.3.0.tgz#f920d85654c72ce9b41c45e9ee762f0161c567da"
-  integrity sha512-WTH390S8kD3h8j+GjvyAYRYVNp6WSnZb3/yi1bFPW3DSWy15AhD1fnb4yZxmzQPniJICKGpexGBNOGUEjXqMlQ==
+"@typedefs/parser@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@typedefs/parser/-/parser-1.3.2.tgz#38f25cc0d2f01c1c5306c9ae7db00a4ba8affef2"
+  integrity sha512-gb6kBAl6qbrUPGJyEDfU7v87WjVfanfRaACRhccbs4JuIYNWl5fugovy3ftMnenXHuIuGu/dOHt+s+XIhdC2KA==
 
 "@wrote/clone@^1.1.1", "@wrote/clone@^1.2.1":
   version "1.2.1"
@@ -107,7 +107,7 @@
     "@wrote/read-dir-structure" "^1.2.0"
     makepromise "^3.1.0"
 
-"@wrote/ensure-path@^1.0.6", "@wrote/ensure-path@^1.0.8":
+"@wrote/ensure-path@^1.0.6", "@wrote/ensure-path@^1.0.8", "@wrote/ensure-path@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@wrote/ensure-path/-/ensure-path-1.1.0.tgz#2b5875dd4e215f209329c9c774702e4e67c3e07f"
   integrity sha512-yZigiFQhgAMAVrec9BoPdJzqjSBdHuCyDrAacWSHIUByxiMcmY9i/1dGM4RbGZg/bN8XWrxDDmcWLuPUmsJYFg==
@@ -172,12 +172,12 @@
   resolved "https://registry.yarnpkg.com/@zoroaster/mask/-/mask-2.2.0.tgz#fecdcb6f863440519b91b51f09549b1e981e84da"
   integrity sha512-/k9B/ofxE4x9Vs6EOjXQjcsltraJzNLg/uxEwzfCZUN+foiJxK/j+YBiyJmN3Gwpnry2D3Qs0D3Qm+SMkLqkTg==
 
-alamode@^2.1.2, alamode@^2.3.4:
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.3.4.tgz#b5c12e17458b38ba7611c6539cbf23fb59ce6ded"
-  integrity sha512-fQSQU0zW1kDGH5d/BmJq74UIpkGmpnh9mqoQVArkBJ04AbVUpkETrHqXENtNmxDWp0HNwI5HHE70YVNchpkkdg==
+alamode@^2.1.2, alamode@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/alamode/-/alamode-2.3.6.tgz#694aec4d7233c2832cc54cbf6c5b8662b2c17ad3"
+  integrity sha512-iHvP3Qic5Zk3I/CjIUlEthqnpwj7MykOn5sDVqXdhURdGhk7fwsykWff1vCurcp+thmMnHyzQ+Nw5T8I6W9LNA==
 
-argufy@^1.7.0, argufy@^1.7.1:
+argufy@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/argufy/-/argufy-1.7.1.tgz#9ce00778d9d404e083c5e5dd0ac1677c950d4d4b"
   integrity sha512-xsy9ooVGfFn0V2J7IbsCPg5Hx6Qw93jnBMl/I35qt9lRS+53ioLdAOvStYSdI6sdCCTnrw1fZFR5m16FIcfPCg==
@@ -209,18 +209,18 @@ competent@^1.7.0:
     restream "^3.7.1"
     rexml "^2.0.0"
 
-documentary@^1.27.4:
-  version "1.27.4"
-  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.27.4.tgz#5dcf9b6e75c4e142e4bc1e867799a940ce07418e"
-  integrity sha512-Z5g3T8xWTsmmqxmt0XwREcOc6LCpnJP/cb5UjhrATIDu+exd+LUHll2ZuxsT1ZxKa9awpbe5Yh05BPhOKZs2Aw==
+documentary@^1.28.2:
+  version "1.28.2"
+  resolved "https://registry.yarnpkg.com/documentary/-/documentary-1.28.2.tgz#26eda72a44b4ee4a85b6b8b5eb61232e34d51664"
+  integrity sha512-L1dAPvYS4BJSyhkEEwDg5FtW+BiA3eiiNh543Kj8BGNSKalveDPHkDVSZy+hQcXzoikw1Bvydv6nj278B19yTA==
   dependencies:
     "@depack/cache" "^1.0.0"
-    "@depack/render" "^1.2.0"
+    "@depack/render" "^1.2.1"
     "@wrote/clone" "^1.2.1"
-    "@wrote/ensure-path" "^1.0.8"
+    "@wrote/ensure-path" "^1.1.0"
     "@wrote/write" "^1.0.4"
-    alamode "^2.3.4"
-    argufy "^1.7.0"
+    alamode "^2.3.6"
+    argufy "^1.7.1"
     catchment "^3.3.0"
     clearr "^1.0.0"
     competent "^1.7.0"
@@ -230,11 +230,11 @@ documentary@^1.27.4:
     pedantry "^2.4.0"
     preact "8.4.2"
     resolve-dependency "^1.0.3"
-    restream "^3.7.1"
-    rexml "^2.0.2"
+    restream "^3.7.2"
+    rexml "^2.0.3"
     spawncommand "^2.2.0"
     static-analysis "^1.7.1"
-    typal "^1.14.0"
+    typal "^1.17.0"
     usually "^1.2.0"
     which-stream "^1.1.0"
 
@@ -312,18 +312,18 @@ resolve-dependency@^1.0.2, resolve-dependency@^1.0.3:
   dependencies:
     "@wrote/exists" "^1.0.3"
 
-restream@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/restream/-/restream-3.7.1.tgz#4ffefbd2a008965413e90d50fa7f0898889b3a61"
-  integrity sha512-OZLcbqwcZ1VMW3MziEjE4xaeqXvl8r367pBmgviRNl3dywyzdi+ueKFW5p1qPaYaZwIRvaR/TqAlB0XKJVX90g==
+restream@^3.7.1, restream@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/restream/-/restream-3.7.2.tgz#657e06c1944161c190dcede2d688af0be207b859"
+  integrity sha512-nVffinRmO+TEdS6YlkyVeBKHTF2Qv1BU7ML02y3IlosDx0n7zsGUBMNydkVFMgJs/RHl4a4u/X1wNduh1dD1SQ==
   dependencies:
     "@artdeco/clean-stack" "^1.1.1"
     catchment "^3.3.0"
 
-rexml@^2.0.0, rexml@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/rexml/-/rexml-2.0.2.tgz#e1e6b04aab7d26c72f5f732887c1d6abf0a1d92b"
-  integrity sha512-dfMmsI2M5x0xZdT9FhOieHcajXvcGrT9/RRkg/RvWUm055+srQoGuBJwhEYYeBe+zygmtN33lS5hGnxaqwCT4g==
+rexml@^2.0.0, rexml@^2.0.2, rexml@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/rexml/-/rexml-2.0.3.tgz#46094ba42380ffd1a57882169d13d8e9e87dd993"
+  integrity sha512-1jaTvAfuj+Pa72sOcfTJsI8PU2mY64RqCRIRdyGxSSLF5WEWjnFoh3i1BbS7otyh/N+FjalfHAy2NVocA38Low==
   dependencies:
     mismatch "^1.2.0"
 
@@ -368,12 +368,12 @@ temp-context@^2.1.3:
     makepromise "^3.0.3"
     pedantry "^2.3.1"
 
-typal@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/typal/-/typal-1.14.0.tgz#bc01f8065d497ca5f517de133993016b5c789061"
-  integrity sha512-buvfq0zwg1OdiTF30ui6Sc0HMxnCoeLNmSke5YXxWZ1cRdygTBTBV4KZkdDIp+OMMNcKAW8Z3EVgqXyhDzyQqw==
+typal@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/typal/-/typal-1.17.0.tgz#5ae75e090e1bb6b27c41025c2e770aaaf70f2b2d"
+  integrity sha512-/o79V+rd9UiAAqOKB3rT2SQqtZaWHrqZXxbHYta2l1uXR7kBYwgNAuOna2ELLqfC9AaI2PvlFgy/QrcdyHbpTw==
   dependencies:
-    "@typedefs/parser" "^1.3.0"
+    "@typedefs/parser" "^1.3.2"
     mismatch "^1.2.0"
     rexml "^2.0.2"
 
