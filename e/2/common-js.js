@@ -2,11 +2,12 @@
 const commonJs2 = require('./common-js2')
 
 module.exports = () => {
-  console.log('default common js export')
+  console.log('Def CJS')
 }
 module.exports['named'] = () => {
-  console.log('named common js export')
+  console.log('Named CJS')
 }
 
-console.log('requiring a cjs from cjs:')
+console.log('Requiring CJS '
+  + 'from CJS:')
 console.log(commonJs2)

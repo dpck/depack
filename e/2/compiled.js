@@ -1,19 +1,20 @@
 'use strict';
-var a = () => {
-  console.log("default common js export2");
+var a = {};
+a = () => {
+  console.log("Def CJS2");
 };
-a.named = () => {
-  console.log("named common js export2");
+a.a = () => {
+  console.log("Named CJS2");
 };
 var b = () => {
-  console.log("default common js export");
+  console.log("Def CJS");
 };
 b.named = () => {
-  console.log("named common js export");
+  console.log("Named CJS");
 };
-console.log("requiring a cjs from cjs:");
+console.log("Requiring CJS from CJS:");
 console.log(a);
-console.log("requiring a common js from ecma:");
+console.log("Requiring a CommonJS from ecma:");
 console.log(b);
 
 

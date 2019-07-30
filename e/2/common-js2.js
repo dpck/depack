@@ -1,12 +1,13 @@
 // common-js2.js
 module.exports = () => {
-  console.log('default common js export2')
+  console.log('Def CJS2')
 }
-module.exports['named'] = () => {
-  console.log('named common js export2')
+exports.named = () => {
+  console.log('Named CJS2')
 }
 
 
 
 
-// standard node require way to import
+
+// standard Node require
