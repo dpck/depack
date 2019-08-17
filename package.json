@@ -24,7 +24,8 @@
   "files": [
     "compile",
     "externs",
-    "preact"
+    "preact",
+    "inject-css.js"
   ],
   "bin": {
     "depack": "compile/depack.js",
