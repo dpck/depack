@@ -1,7 +1,7 @@
 {
   "name": "depack",
   "version": "0.0.1-alpha",
-  "description": "Front-End Code and Node.js Package Bundler With Google Closure Compiler.",
+  "description": "Front-End Code Bundler and Proper Node.js Package Compiler With Closure Compiler. Can create a single executable JS file and merge and optimise all dependencies.",
   "main": "compile/index.js",
   "scripts": {
     "t": "zoroaster -a -t 60000",
