@@ -537,9 +537,9 @@ _externalAPI.results
 
 ```js
 // source.js
-const { results } = /** @type {_externalAPI} */ ( // cast the type
+const { results } = /** @type {_externalAPI} */ (
   await request('https://service.co/api')
-)
+) // cast the type by surrounding it with ( )
 ```
 </td>
 </table>
