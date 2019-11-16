@@ -1,6 +1,6 @@
 # depack
 
-[![npm version](https://badge.fury.io/js/depack.svg)](https://npmjs.org/package/depack)
+[![npm version](https://badge.fury.io/js/depack.svg)](https://www.npmjs.com/package/depack)
 
 `depack` Is The Bundler To Create Front-End (JS) Bundles And Back-End (Node.JS) Compiled Packages With Google Closure Compiler.
 
@@ -25,7 +25,9 @@ yarn add -E depack
 - [Notes](#notes)
 - [Copyright](#copyright)
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/0.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/0.svg?sanitize=true">
+</a></p>
 
 ## GCC Installation
 
@@ -33,7 +35,9 @@ Depack has been built to contain no dependencies to prove its concept. [Google C
 
 The other way to install _GCC_ is to set the `GOOGLE_CLOSURE_COMPILER` environment variable to point to the compiler, either downloaded from the internet, or built yourself.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/1.svg?sanitize=true">
+</a></p>
 
 ## **CLI**
 
@@ -73,10 +77,6 @@ BACKEND: Creates a single executable Node.JS file or a library.
 
 	--compile, -c  	Set the _Depack_ mode to "compile" to create a Node.JS binary.
 	               	Adds the `#!usr/bin/env node` at the top and sets +x permission.
-	--library, -l  	Set the _Depack_ mode to "library" to create a Node.JS library.
-	               	Initialises the `DEPACK_EXPORT` variable kept via an extern
-	               	which is also exported as `module.exports`. The source code
-	               	needs to assign the library to this variable.
 	--no-strict, -s	Whether to remove the `"use strict"` from the output.
 
   Example:
@@ -188,7 +188,9 @@ _Depack_ supports the following flags for both modes. Any additional arguments t
   </tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/2.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/2.svg?sanitize=true">
+</a></p>
 
 ## Bundle Mode
 
@@ -213,7 +215,9 @@ Moreover, _GCC_ does not recognise the JSX files as source files, and the module
 
 Bundle mode is perfect for creating bundles for the web, be it JSX Preact components (we only focus on _Preact_ because our opinion is that Facebook is evil). _Depack_ was created exactly to avoid all the corporate tool-chains etc that the internet is full of, and _GCC_ is supported by `create-react-app` anyhow.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/3.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/3.svg?sanitize=true">
+</a></p>
 
 ## Compile Mode
 
@@ -299,49 +303,56 @@ depack example/example.js -c -V -a -w -p
 # [-O 2017]: (default) set output language to ECMA2017
 ```
 
-```
-Modules' externs: node_modules/indicatrix/externs.js
-java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
---compilation_level ADVANCED --language_out ECMASCRIPT_2017 --formatting PRETTY_PRINT \
---warning_level QUIET --package_json_entry_names module,main --entry_point \
-example/example.js --externs ../externs/v8/fs.js --externs ../externs/v8/stream.js \
---externs ../externs/v8/events.js --externs ../externs/v8/url.js --externs \
-../externs/v8/global.js --externs ../externs/v8/global/buffer.js --externs \
-../externs/v8/nodejs.js --externs node_modules/indicatrix/externs.js --module_resolution \
-NODE --output_wrapper \
+<pre>Modules' externs: node_modules/indicatrix/types/externs.js
+java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
+--compilation_level ADVANCED --language_out ECMASCRIPT_2018 --create_source_map \
+%outname%.map --formatting PRETTY_PRINT --warning_level QUIET --js_output_file \
+example/generated-1.js --package_json_entry_names module,main --entry_point \
+example/example.js --externs node_modules/@externs/nodejs/v8/fs.js --externs \
+node_modules/@externs/nodejs/v8/stream.js --externs \
+node_modules/@externs/nodejs/v8/events.js --externs \
+node_modules/@externs/nodejs/v8/url.js --externs \
+node_modules/@externs/nodejs/v8/global.js --externs \
+node_modules/@externs/nodejs/v8/global/buffer.js --externs \
+node_modules/@externs/nodejs/v8/nodejs.js --externs \
+node_modules/indicatrix/types/externs.js --module_resolution NODE --output_wrapper \
 #!/usr/bin/env node
 'use strict';
 const fs = require('fs');%output% --js \
 node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js \
 node_modules/fs/package.json node_modules/fs/index.js example/example.js
-Running Google Closure Compiler 20190709..          
-```
+Running Google Closure Compiler 20190929<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+</pre>
 ```js
 #!/usr/bin/env node
 'use strict';
 const fs = require('fs');             
-const {createReadStream:g} = fs;
-async function h(a) {
+const {createReadStream:h} = fs;
+async function k(a) {
   const {interval:d = 250, writable:e = process.stdout} = {};
   a = "function" == typeof a ? a() : a;
   const b = e.write.bind(e);
-  let c = 1, f = `${"Depack version is loading"}${".".repeat(c)}`;
-  b(f);
-  const k = setInterval(() => {
-    c = (c + 1) % 4;
-    f = `${"Depack version is loading"}${".".repeat(c)}`;
+  var {INDICATRIX_PLACEHOLDER:c} = process.env;
+  if (c && "0" != c) {
+    return b("Depack version is loading<INDICATRIX_PLACEHOLDER>"), await a;
+  }
+  let f = 1, g = `${"Depack version is loading"}${".".repeat(f)}`;
+  b(g);
+  c = setInterval(() => {
+    f = (f + 1) % 4;
+    g = `${"Depack version is loading"}${".".repeat(f)}`;
     b(`\r${" ".repeat(28)}\r`);
-    b(f);
+    b(g);
   }, d);
   try {
     return await a;
   } finally {
-    clearInterval(k), b(`\r${" ".repeat(28)}\r`);
+    clearInterval(c), b(`\r${" ".repeat(28)}\r`);
   }
 }
 ;const l = async() => {
   var a = require.resolve("depack/package.json");
-  const d = g(a);
+  const d = h(a);
   a = await new Promise(e => {
     const b = [];
     d.on("data", c => b.push(c));
@@ -351,15 +362,20 @@ async function h(a) {
   return a;
 }, m = async() => {
   var a = l();
-  a = await h(a);
+  a = await k(a);
   console.log(a);
 };
 (async() => {
   await m();
 })();
+
+
+//# sourceMappingURL=generated-1.js.map
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/4.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/4.svg?sanitize=true" width="15">
+</a></p>
 
 ### Usage
 
@@ -380,21 +396,15 @@ There are _Depack_ specific flags that can be passed when compiling a Node.JS ex
     Adds the <code>#!usr/bin/env node</code> at the top and sets +x permission.</td>
   </tr>
   <tr>
-   <td>--library</td>
-   <td>-l</td>
-   <td>Set the <em>Depack</em> mode to "library" to create a Node.JS library.
-    Initialises the <code>DEPACK_EXPORT</code> variable kept via an extern
-    which is also exported as <code>module.exports</code>. The source code
-    needs to assign the library to this variable.</td>
-  </tr>
-  <tr>
    <td>--no-strict</td>
    <td>-s</td>
    <td>Whether to remove the <code>"use strict"</code> from the output.</td>
   </tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/5.svg?sanitize=true" width="15"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/5.svg?sanitize=true" width="15">
+</a></p>
 
 ### Troubleshooting
 
@@ -467,13 +477,17 @@ We've found out that `spawnargs` was mangled because it was not defined in the e
     return proc
     ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/6.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/6.svg?sanitize=true" width="20">
+</a></p>
 
 #### Bugs In GCC
 
 In might be the case that externs are fine, but the _Google Closure Compiler_ has a bug in it which leads to incorrect optimisation and breaking of the program. These cases are probably rare, but might happen. If this is so, you need to compile without `-a` (ADVANCED optimisation) flag, which will mean that the output is very large. Then you can try to investigate what went wrong with the compiler by narrowing down on the area where the error happens and trying to replicate it in a separate file, and using `-d debug.txt` _Depack_ option when compiling that file to save the output of each pass to the `debug.txt` file, then pasting the code from each step in there to _Node.JS_ REPL and seeing if it outputs correct results.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/7.svg?sanitize=true" width="20"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/7.svg?sanitize=true" width="20">
+</a></p>
 
 #### External APIs
 
@@ -521,7 +535,9 @@ const { results } = /** @type {_externalAPI} */ ( // cast the type
 </table>
 
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/8.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/8.svg?sanitize=true">
+</a></p>
 
 ## API
 
@@ -536,7 +552,9 @@ import { Bundle, Compile } from '@depack/depack'
 })
 ```
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/9.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/9.svg?sanitize=true">
+</a></p>
 
 ## Wiki
 
@@ -546,7 +564,9 @@ Our Wiki contains the following pages:
 - <kbd>🎭[CommonJS Compatibility](../../wiki/CommonJS-Compatibility)</kbd>: Discusses how to import _CommonJS_ modules from ES6 code.
 - <kbd>🐞[Bugs](../../wiki/Bugs)</kbd>: Lists some of the minor known bugs in the compiler.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/10.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/10.svg?sanitize=true">
+</a></p>
 
 ## Org Structure
 
@@ -557,14 +577,18 @@ Our Wiki contains the following pages:
 - [[@depack/render](https://github.com/dpck/render)] Render server-side HTML from JSX.
 - [[@depack/context](https://github.com/dpck/context)] Testing context for unit-testing.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/11.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/11.svg?sanitize=true">
+</a></p>
 
 ## Notes
 
 - The static analysis might discover built-in and other modules even if they were not used, since no tree-shaking is performed.
 - [2 March 2019] Current bug does not let compile later `jsx` detection. Trying to compile front-end bundler with _Depack_.
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/12.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/12.svg?sanitize=true">
+</a></p>
 
 ## Copyright
 
@@ -587,4 +611,6 @@ Our Wiki contains the following pages:
   </tr>
 </table>
 
-<p align="center"><a href="#table-of-contents"><img src="/.documentary/section-breaks/-1.svg?sanitize=true"></a></p>
+<p align="center"><a href="#table-of-contents">
+  <img src="/.documentary/section-breaks/-1.svg?sanitize=true">
+</a></p>
