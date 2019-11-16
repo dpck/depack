@@ -2,7 +2,7 @@
 import {
   _source, _advanced, _noSourcemap, _debug, _language_in, _language_out, _level, _noWarnings, _output, _prettyPrint, _verbose, _help, _version, _argv,
   _iife, _preact, _temp, _external, _patch, // bundle
-  _compile, _library, _noStrict, // compile
+  _compile, _noStrict, // compile
 } from './get-args'
 import { createInterface } from 'readline'
 import { GOOGLE_CLOSURE_COMPILER, run, Bundle, Compile, getOptions, getCompilerVersion, getOutput } from '@depack/depack'
@@ -63,8 +63,8 @@ const restorePreact = () => {
     const { path: src } = await resolveDependency(_source)
     const output = _output ? getOutput(_output, src) : undefined
     let languageOut = _language_out
-    if (!_language_out && (_compile || _library)) {
-      languageOut = 2017
+    if (!_language_out && _compile) {
+      languageOut = 2018
     }
     const options = getOptions({
       compiler: GOOGLE_CLOSURE_COMPILER,
@@ -74,13 +74,12 @@ const restorePreact = () => {
       compilerVersion, output,
       noSourceMap: _noSourcemap || !!_debug, debug: _debug,
     }
-    if (_compile || _library) {
+    if (_compile) {
       return await Compile({
         src,
         noStrict: _noStrict,
         verbose: _verbose,
         debug: _debug,
-        library: _library,
       }, runOptions, options)
     }
     if (_external) {

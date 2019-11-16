@@ -200,11 +200,6 @@ export const argsConfigCompile = {
     boolean: true,
     short: 'c',
   },
-  'library': {
-    description: 'Set the _Depack_ mode to "library" to create a Node.JS library.\nInitialises the `DEPACK_EXPORT` variable kept via an extern\nwhich is also exported as `module.exports`. The source code\nneeds to assign the library to this variable.',
-    boolean: true,
-    short: 'l',
-  },
   'no-strict': {
     description: 'Whether to remove the `"use strict"` from the output.',
     boolean: true,
@@ -218,14 +213,6 @@ const argsCompile = argufy(argsConfigCompile, [process.argv[0], process.argv[1],
     Adds the `#!usr/bin/env node` at the top and sets +x permission.
  */
 export const _compile = /** @type {boolean} */ (argsCompile['compile'])
-
-/**
- * Set the _Depack_ mode to "library" to create a Node.JS library.
-    Initialises the `DEPACK_EXPORT` variable kept via an extern
-    which is also exported as `module.exports`. The source code
-    needs to assign the library to this variable.
- */
-export const _library = /** @type {boolean} */ (argsCompile['library'])
 
 /**
  * Whether to remove the `"use strict"` from the output.

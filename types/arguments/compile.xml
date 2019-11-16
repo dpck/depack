@@ -3,12 +3,6 @@
     Set the _Depack_ mode to "compile" to create a Node.JS binary.
     Adds the `#!usr/bin/env node` at the top and sets +x permission.
   </arg>
-  <arg boolean name="library" short="l">
-    Set the _Depack_ mode to "library" to create a Node.JS library.
-    Initialises the `DEPACK_EXPORT` variable kept via an extern
-    which is also exported as `module.exports`. The source code
-    needs to assign the library to this variable.
-  </arg>
   <arg boolean name="no-strict" short="s">
     Whether to remove the `"use strict"` from the output.
   </arg>
