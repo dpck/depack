@@ -25,13 +25,13 @@
   resolved "https://registry.yarnpkg.com/@artdeco/clean-stack/-/clean-stack-1.1.1.tgz#0a68b9a061b5076ebaf948c150ea26d09c1e753f"
   integrity sha512-q5lO3vGUo0WgkSqzgzjL0HQdA9t2HzQqZISuVuQWMh9xqLuiLFP/ZTsxFc8vpMl7mNpGk7Mm0OeyFQ+Evrp0Cw==
 
-"@depack/depack@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-2.1.1.tgz#a32854b3b7680ec60ab7c1b0e4ff40457f77fb04"
-  integrity sha512-ZP2NSqxxcISLHHt3DusNfQrAkDb04WTzxDbkB3n1ozHrzgo+NCPvWELU8yIpQZ6OiVYoqlVD9z56qUFx0lpXYQ==
+"@depack/depack@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@depack/depack/-/depack-2.1.2.tgz#af841af3aa44df1702d0bbae4dddc940120626f1"
+  integrity sha512-2IV/0HzbBFNHVV6ZZfyf6Dd3DcyO3BWlVVnzzGYTy+la4QrkvMWnrgZeVIHbr8d6MS9j9paOmsT9mnwz91T08Q==
   dependencies:
-    "@depack/externs" "^1.4.4"
     "@depack/nodejs" "^1.1.4"
+    "@externs/nodejs" "^1.5.0"
 
 "@depack/externs@^1.4.4":
   version "1.4.4"
@@ -42,6 +42,11 @@
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@depack/nodejs/-/nodejs-1.1.4.tgz#36195f33fef7a6b9b1f93a043a52a87fac087729"
   integrity sha512-vtmNtylOPNjFkQHOgC1M8Ru9c211FgtD3sG3KGS9dvlcHDUAiNoJ52gVwOep5Tkp0I4qmwPx3oyTV6OwKchmlg==
+
+"@externs/nodejs@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@externs/nodejs/-/nodejs-1.5.0.tgz#88ff9e7a03c53d19101ee49768e598ff0f39c9ad"
+  integrity sha512-2J+FRDjGfKKldTQ5YqLmhQ04/sA9swTQ6OTtPzo4xhg41u1+eiufciXiqW6u3UXEcmm413a27NakgnLbzfp0wQ==
 
 "@wrote/clone@^1.1.1":
   version "1.2.1"

@@ -5,7 +5,7 @@
   "main": "compile/index.js",
   "scripts": {
     "t": "zoroaster -a -t 60000",
-    "test": "yarn t test/spec test/mask",
+    "test": "yarn t test/mask",
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
     "test-compile": "ALAMODE_ENV=test-compile yarn test",
@@ -19,7 +19,7 @@
     "rec": "NODE_DEBUG=appshot appshot -T 23 -a Terminal -y 150 -f",
     "e": "node example",
     "example/": "yarn e example/example.js",
-    "args": "argufy types/arguments/*.xml -o src/get-args.js"
+    "args": "argufy types/arguments/index.xml types/arguments/bundle.xml types/arguments/compile.xml -o src/get-args.js"
   },
   "files": [
     "compile",
@@ -53,7 +53,7 @@
   "devDependencies": {
     "@a-la/fixture-babel": "^1.2.2",
     "@a-la/jsx": "^1.6.0",
-    "@depack/depack": "^2.1.1",
+    "@depack/depack": "^2.1.2",
     "alamode": "^3.2.0",
     "argufy": "^1.7.1",
     "catchment": "^3.3.0",

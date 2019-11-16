@@ -180,6 +180,24 @@
       "skipFiles": [
         "<node_internals>/**/*.js"
       ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Static Analysis",
+      "program": "${workspaceFolder}/src/index.js",
+      "args": [
+        "src/depack",
+        "-o", "compile", "-a", "-p", "-c", "-s", "--source_map_include_content"
+        // "src/stdlib",
+        // "-o", "stdlib/index.js", "-a", "-c", "-p", "-s",
+        // "-O", "2018", "--source_map_include_content"
+      ],
+      "cwd": "${workspaceFolder}/../static-analysis",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
     }
   ]
 }
