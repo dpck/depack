@@ -1,7 +1,7 @@
 {
   "name": "depack",
   "version": "1.0.0",
-  "description": "Front-End Code Bundler and Proper Node.js Package Compiler With Closure Compiler. Can create a single executable JS file and merge and optimise all dependencies.",
+  "description": "Proper Node.JS Package Compiler (And Front-End Code Bundler) With Closure Compiler. Can create a single executable JS file and merge and optimise all dependencies.",
   "main": "compile/index.js",
   "scripts": {
     "t": "zoroaster -a -t 60000",
@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "dev": "node src",
     "doc": "NODE_DEBUG=doc doc -o README.md",
-    "wiki": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc wiki -W ../depack.wiki",
+    "wiki": "DEPACK_MAX_COLUMNS=80 NODE_DEBUG=doc doc documentary-wiki -W wiki",
     "compile": "yarn dev src/depack -c -o compile -a -p -s --externs types/externs.js",
     "depack": "compile/depack.js src/depack -c -o build -a -p -s",
     "build": "yarn-s d b doc",
@@ -25,7 +25,8 @@
     "compile",
     "externs",
     "preact",
-    "inject-css.js"
+    "inject-css.js",
+    "src/index.js"
   ],
   "bin": {
     "depack": "compile/depack.js",
