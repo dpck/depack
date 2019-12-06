@@ -1,3 +1,9 @@
+## 6 December 2019
+
+### [1.0.1](https://github.com/dpck/depack/compare/v1.0.0...v1.0.1)
+
+- [fix] Fix `npm` installation by adding `src/index.js` file.
+
 ## 16 November 2019
 
 ### [1.0.0](https://github.com/dpck/depack/compare/v0.0.1...v1.0.0)
