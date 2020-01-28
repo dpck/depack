@@ -23,5 +23,12 @@ There are a few insignificant known issues with _Google Closure Compiler_.
 
     %FORK src/depack example/bugs/json -c%
     </details>
+1. [Destructuring is broken](https://github.com/google/closure-compiler/issues/3529) in Jan 2020 but should be fixed in Feb release.
+    %EXAMPLE: example/bugs/destructuring%
+    <details>
+    <summary>Show destructuring Error</summary>
+
+    %FORK src/depack example/bugs/destructuring -a -c%
+    </details>
 
 %~%
