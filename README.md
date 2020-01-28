@@ -310,11 +310,11 @@ depack example/example.js -c -V -a -w -p
 # -p:      add formatting PRETTY_PRINT
 
 # [-I 2018]: (default) set source code language to ECMA2018
-# [-O 2017]: (default) set output language to ECMA2017
+# [-O 2018]: (default) set output language to ECMA2017
 ```
 
 <pre>Modules' externs: node_modules/indicatrix/types/externs.js
-java -jar /Users/anton/node_modules/google-closure-compiler-java/compiler.jar \
+java -jar /Users/zavr/node_modules/google-closure-compiler-java/compiler.jar \
 --compilation_level ADVANCED --language_out ECMASCRIPT_2018 --create_source_map \
 %outname%.map --formatting PRETTY_PRINT --warning_level QUIET --js_output_file \
 example/generated-1.js --package_json_entry_names module,main --entry_point \
@@ -331,18 +331,18 @@ node_modules/indicatrix/types/externs.js --module_resolution NODE --output_wrapp
 const fs = require('fs');%output% --js \
 node_modules/indicatrix/package.json node_modules/indicatrix/src/index.js \
 node_modules/fs/package.json node_modules/fs/index.js example/example.js
-Running Google Closure Compiler 20190929<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
+Running Google Closure Compiler 20200112<a id="_ind0" href="#_ind0"><img src=".documentary/indicatrix.gif"></a>
 </pre>
 ```js
 #!/usr/bin/env node
 'use strict';
 const fs = require('fs');             
-const {createReadStream:h} = fs;
+const h = fs.createReadStream;
 async function k(a) {
   const {interval:d = 250, writable:e = process.stdout} = {};
   a = "function" == typeof a ? a() : a;
   const b = e.write.bind(e);
-  var {INDICATRIX_PLACEHOLDER:c} = process.env;
+  var c = process.env.INDICATRIX_PLACEHOLDER;
   if (c && "0" != c) {
     return b("Depack version is loading<INDICATRIX_PLACEHOLDER>"), await a;
   }
@@ -605,19 +605,12 @@ Our Wiki contains the following pages:
 <table>
   <tr>
     <th>
-      <a href="https://artd.eco">
+      <a href="https://www.artd.eco">
         <img width="100" src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png"
           alt="Art Deco">
       </a>
     </th>
-    <th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://artd.eco/depack">Depack</a> 2019</th>
-    <th>
-      <a href="https://www.technation.sucks" title="Tech Nation Visa">
-        <img width="100" src="https://raw.githubusercontent.com/idiocc/cookies/master/wiki/arch4.jpg"
-          alt="Tech Nation Visa">
-      </a>
-    </th>
-    <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
+    <th>© <a href="https://www.artd.eco">Art Deco™</a> for <a href="https://artd.eco/depack">Depack</a> 2020</th>
   </tr>
 </table>
 

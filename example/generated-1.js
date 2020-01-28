@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 'use strict';
 const fs = require('fs');             
-const {createReadStream:h} = fs;
+const h = fs.createReadStream;
 async function k(a) {
   const {interval:d = 250, writable:e = process.stdout} = {};
   a = "function" == typeof a ? a() : a;
   const b = e.write.bind(e);
-  var {INDICATRIX_PLACEHOLDER:c} = process.env;
+  var c = process.env.INDICATRIX_PLACEHOLDER;
   if (c && "0" != c) {
     return b("Depack version is loading<INDICATRIX_PLACEHOLDER>"), await a;
   }

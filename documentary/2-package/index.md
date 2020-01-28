@@ -56,10 +56,10 @@ depack example/example.js -c -V -a -w -p
 # -p:      add formatting PRETTY_PRINT
 
 # [-I 2018]: (default) set source code language to ECMA2018
-# [-O 2017]: (default) set output language to ECMA2017
+# [-O 2018]: (default) set output language to ECMA2017
 ```
 
-%FORKERR src/depack example/example.js -c -V -a -w -p -o example/generated-1.js%
+%/FORKERR src/depack example/example.js -c -V -a -w -p -o example/generated-1.js%
 <!-- %FORK-js src/depack example/example.js -c -V -a -w -p % -->
 
 %EXAMPLE: example/generated-1%
