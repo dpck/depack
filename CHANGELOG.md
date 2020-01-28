@@ -1,3 +1,10 @@
+## 28 January 2020
+
+### [1.1.0](https://github.com/dpck/depack/compare/v1.0.1...v1.1.0)
+
+- [license] Update to Affero.
+- [fix] Upgrade package to override Closure destructuring bug.
+
 ## 6 December 2019
 
 ### [1.0.1](https://github.com/dpck/depack/compare/v1.0.0...v1.0.1)

@@ -23,7 +23,7 @@ yarn add -E depack
 - [Wiki](#wiki)
 - [Org Structure](#org-structure)
 - [Notes](#notes)
-- [Copyright](#copyright)
+- [Copyright & License](#copyright--license)
 
 <p align="center"><a href="#table-of-contents">
   <img src="/.documentary/section-breaks/0.svg?sanitize=true">
@@ -600,7 +600,9 @@ Our Wiki contains the following pages:
   <img src="/.documentary/section-breaks/12.svg?sanitize=true">
 </a></p>
 
-## Copyright
+## Copyright & License
+
+GNU Affero General Public License v3.0
 
 <table>
   <tr>

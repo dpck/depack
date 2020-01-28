@@ -20,7 +20,9 @@
 
 - [ ] Add a new item to the todo list. -->
 
-## Copyright
+## Copyright & License
+
+GNU Affero General Public License v3.0
 
 <DepackFooter />
 
