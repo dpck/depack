@@ -44,7 +44,7 @@
     "browserify"
   ],
   "author": "Anton <anton@adc.sh>",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/dpck/depack/issues"
   },
@@ -53,7 +53,7 @@
     "@a-la/fixture-babel": "^1.2.2",
     "@a-la/jsx": "^1.6.0",
     "@depack/bundle": "^1.4.1",
-    "@depack/depack": "^2.1.3",
+    "@depack/depack": "^2.2.0",
     "@depack/detect": "^1.1.0",
     "@depack/split": "^1.0.0",
     "@wrote/wrote": "^1.2.3",
