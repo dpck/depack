@@ -61,7 +61,48 @@ export const argsConfig = {
     short: 'h',
   },
 }
-const args = argufy(argsConfig)
+
+export const argsConfigBundle = {
+  'iife': {
+    description: 'Add the IIFE flag to prevent name clashes.',
+    boolean: true,
+    short: 'i',
+  },
+  'temp': {
+    description: 'The path to the temp directory used to transpile JSX files.',
+    default: 'depack-temp',
+  },
+  'preact': {
+    description: 'Add the `import { h } from "preact"` to JSX files automatically.\nDoes not process files found in the `node_modules`, because\nthey are not placed in the temp, and must be built separately,\ne.g., with ÀLaMode transpiler.',
+    boolean: true,
+    short: 'H',
+  },
+  'external': {
+    description: 'The `preact` dependency in `node_modules` will be temporary\nrenamed to `_preact`, and a monkey-patching package that\nimports `＠externs/preact` will take its place. This is to allow\nbundles to import from _Preact_ installed as a script on a webpage,\nbut exclude it from compilation. `preact` will be restored at the end.',
+    boolean: true,
+    short: 'E',
+  },
+  'patch': {
+    description: 'Patches the `preact` directory like in `external`, and waits for\nuser input to restore it. Useful when linking packages and wanting\nto them from other projects.',
+    boolean: true,
+    short: 'P',
+  },
+}
+
+export const argsConfigCompile = {
+  'compile': {
+    description: 'Set the _Depack_ mode to "compile" to create a Node.JS binary.\nAdds the `#!usr/bin/env node` at the top and sets +x permission.',
+    boolean: true,
+    short: 'c',
+  },
+  'no-strict': {
+    description: 'Whether to remove the `"use strict"` from the output.',
+    boolean: true,
+    short: 's',
+  },
+}
+
+const args = argufy({ ...argsConfig, ...argsConfigBundle, ...argsConfigCompile })
 
 /**
  * The source entry to build.
@@ -132,43 +173,15 @@ export const _version = /** @type {boolean} */ (args['version'])
  */
 export const _help = /** @type {boolean} */ (args['help'])
 
-export const argsConfigBundle = {
-  'iife': {
-    description: 'Add the IIFE flag to prevent name clashes.',
-    boolean: true,
-    short: 'i',
-  },
-  'temp': {
-    description: 'The path to the temp directory used to transpile JSX files.',
-    default: 'depack-temp',
-  },
-  'preact': {
-    description: 'Add the `import { h } from "preact"` to JSX files automatically.\nDoes not process files found in the `node_modules`, because\nthey are not placed in the temp, and must be built separately,\ne.g., with ÀLaMode transpiler.',
-    boolean: true,
-    short: 'H',
-  },
-  'external': {
-    description: 'The `preact` dependency in `node_modules` will be temporary\nrenamed to `_preact`, and a monkey-patching package that\nimports `＠externs/preact` will take its place. This is to allow\nbundles to import from _Preact_ installed as a script on a webpage,\nbut exclude it from compilation. `preact` will be restored at the end.',
-    boolean: true,
-    short: 'E',
-  },
-  'patch': {
-    description: 'Patches the `preact` directory like in `external`, and waits for\nuser input to restore it. Useful when linking packages and wanting\nto them from other projects.',
-    boolean: true,
-    short: 'P',
-  },
-}
-const argsBundle = argufy(argsConfigBundle, [process.argv[0], process.argv[1], ...args._argv])
-
 /**
  * Add the IIFE flag to prevent name clashes.
  */
-export const _iife = /** @type {boolean} */ (argsBundle['iife'])
+export const _iife = /** @type {boolean} */ (args['iife'])
 
 /**
  * The path to the temp directory used to transpile JSX files. Default `depack-temp`.
  */
-export const _temp = /** @type {string} */ (argsBundle['temp'] || 'depack-temp')
+export const _temp = /** @type {string} */ (args['temp'] || 'depack-temp')
 
 /**
  * Add the `import { h } from "preact"` to JSX files automatically.
@@ -176,7 +189,7 @@ export const _temp = /** @type {string} */ (argsBundle['temp'] || 'depack-temp')
     they are not placed in the temp, and must be built separately,
     e.g., with ÀLaMode transpiler.
  */
-export const _preact = /** @type {boolean} */ (argsBundle['preact'])
+export const _preact = /** @type {boolean} */ (args['preact'])
 
 /**
  * The `preact` dependency in `node_modules` will be temporary
@@ -185,41 +198,27 @@ export const _preact = /** @type {boolean} */ (argsBundle['preact'])
     bundles to import from _Preact_ installed as a script on a webpage,
     but exclude it from compilation. `preact` will be restored at the end.
  */
-export const _external = /** @type {boolean} */ (argsBundle['external'])
+export const _external = /** @type {boolean} */ (args['external'])
 
 /**
  * Patches the `preact` directory like in `external`, and waits for
     user input to restore it. Useful when linking packages and wanting
     to them from other projects.
  */
-export const _patch = /** @type {boolean} */ (argsBundle['patch'])
-
-export const argsConfigCompile = {
-  'compile': {
-    description: 'Set the _Depack_ mode to "compile" to create a Node.JS binary.\nAdds the `#!usr/bin/env node` at the top and sets +x permission.',
-    boolean: true,
-    short: 'c',
-  },
-  'no-strict': {
-    description: 'Whether to remove the `"use strict"` from the output.',
-    boolean: true,
-    short: 's',
-  },
-}
-const argsCompile = argufy(argsConfigCompile, [process.argv[0], process.argv[1], ...argsBundle._argv])
+export const _patch = /** @type {boolean} */ (args['patch'])
 
 /**
  * Set the _Depack_ mode to "compile" to create a Node.JS binary.
     Adds the `#!usr/bin/env node` at the top and sets +x permission.
  */
-export const _compile = /** @type {boolean} */ (argsCompile['compile'])
+export const _compile = /** @type {boolean} */ (args['compile'])
 
 /**
  * Whether to remove the `"use strict"` from the output.
  */
-export const _noStrict = /** @type {boolean} */ (argsCompile['no-strict'])
+export const _noStrict = /** @type {boolean} */ (args['no-strict'])
 
 /**
  * The additional arguments passed to the program.
  */
-export const _argv = /** @type {!Array<string>} */ (argsCompile._argv)
+export const _argv = /** @type {!Array<string>} */ (args._argv)

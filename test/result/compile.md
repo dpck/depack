@@ -20,8 +20,8 @@ Built-ins: os, fs
 'use strict';
 const os = require('os');
 const fs = require('fs');             
-const {constants:a} = os;
-const {createReadStream:b, createWriteStream:c} = fs;
+const a = os.constants;
+const b = fs.createReadStream, c = fs.createWriteStream;
 console.log(process.version);
 console.log(a.errno.EACCES);
 const d = b(__filename), e = c(process.env.OUTPUT);
