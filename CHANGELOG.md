@@ -1,3 +1,9 @@
+## 3 January 2020
+
+### [1.1.1](https://github.com/dpck/depack/compare/v1.1.0...v1.1.1)
+
+- [deps] Upgrade `makePromise` to fix Node 12.
+
 ## 28 January 2020
 
 ### [1.1.0](https://github.com/dpck/depack/compare/v1.0.1...v1.1.0)
