@@ -1,6 +1,6 @@
 {
   "name": "depack",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Proper Node.JS Package Compiler (And Front-End Code Bundler) With Closure Compiler. Can create a single executable JS file and merge and optimise all dependencies.",
   "main": "compile/index.js",
   "scripts": {
