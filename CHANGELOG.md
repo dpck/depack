@@ -1,4 +1,10 @@
-## 3 January 2020
+## 26 February 2020
+
+### [1.1.2](https://github.com/dpck/depack/compare/v1.1.1...v1.1.2)
+
+- [deps] Update.
+
+## 3 February 2020
 
 ### [1.1.1](https://github.com/dpck/depack/compare/v1.1.0...v1.1.1)
 
